@@ -7,12 +7,21 @@ import PlayList from './components/playlist/playlist';
 
 class App extends Component {
   state = {
-    vidoes: [],
+    videos: [],
     current: []
   }
 
   componentDidMount() {
-    // let api = process.env.REACT_APP_YOUTUBE_API_KEY;
+    // 따로 뺄 예정.
+    const requestOptions = {
+      method: 'GET',
+      redirect: 'follow'
+    };
+    // 데이터 받아오는거 확인.
+    fetch(`https://youtube.googleapis.com/youtube/v3/videos?part=snippet&chart=mostPopular&maxResults=25&key=${process.env.REACT_APP_YOUTUBE_API_KEY}`, requestOptions)
+      .then(response => response.json())
+      .then(result => this.setState({videos: result.items}))
+      .catch(error => console.log('error', error));
   }
 
   getSearch = (text) => {
@@ -22,9 +31,9 @@ class App extends Component {
       redirect: 'follow'
     };
     // 데이터 받아오는거 확인.
-    fetch(`https://youtube.googleapis.com/youtube/v3/search?part=snippet&maxResults=25&q=december&key=${process.env.REACT_APP_YOUTUBE_API_KEY}`, requestOptions)
-      .then(response => response.text())
-      .then(result => console.log(result))
+    fetch(`https://youtube.googleapis.com/youtube/v3/search?part=snippet&maxResults=25&q=${text}&key=${process.env.REACT_APP_YOUTUBE_API_KEY}`, requestOptions)
+    .then(response => response.json())
+    .then(result => this.setState({videos: result.items}))
       .catch(error => console.log('error', error));
   }
 
@@ -36,7 +45,9 @@ class App extends Component {
       />
       <section>
         <VideoSection />
-        <PlayList />
+        <PlayList 
+          videos={this.state.videos}
+        />
       </section>
       </>
     );

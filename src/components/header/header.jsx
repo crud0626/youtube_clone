@@ -5,7 +5,8 @@ class Header extends Component {
     constructor(props) {
         super(props);
         this.inputRef = React.createRef();
-    }    
+    }
+       
     onSearch = (e) => {
         e.preventDefault();
         this.props.onSearch(this.inputRef.current.value);
