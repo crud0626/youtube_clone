@@ -1,3 +1,29 @@
 .playlist_container {
+  flex: 1 1 35%;
+  margin: 0;
+  padding: 0 0 0 8px;
+  list-style: none;
+}
 
+.playlist {
+  display: flex;
+  margin-bottom: 10px;
+  cursor: pointer;
+  /* border 제거 예정. */
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.thumbnail {
+  width: 40%;
+}
+
+.video_info {
+  padding-left: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.title {
+  margin: 0 0 10px 0;
 }

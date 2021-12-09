@@ -1,0 +1,8 @@
+.videoplayer_container {
+  flex: 1 1 65%;
+  padding-right: 8px;
+}
+
+.videoplayer {
+  width: 100%;
+}
