@@ -3,7 +3,6 @@ import styles from './videosection.module.css';
 
 class VideoSection extends Component {
     render() {
-        console.log(this.props.currentVid.snippet.description);
         return (
             <>
                 <div className={styles.videoplayer_container}>
@@ -25,6 +24,18 @@ class VideoSection extends Component {
                     {/* 얘네도 div로 묶을까 고민중. */}
                     <span className={styles.channel}>{this.props.currentVid.snippet.channelTitle}</span>
                     <pre className={styles.video_desc}>{this.props.currentVid.snippet.description}</pre>
+                    <div className='separateLine'></div>
+                    <div className="comment_container">
+                        {this.props.comments.map(comment => (
+                            // CSS는 아직 안함.
+                            <>
+                                <p>{comment.snippet.topLevelComment.snippet.authorDisplayName}</p>
+                                <span>{comment.snippet.topLevelComment.snippet.textDisplay}</span>
+                            </>
+                        ))}
+                        
+                        
+                    </div>
                 </div>
             </>
         );

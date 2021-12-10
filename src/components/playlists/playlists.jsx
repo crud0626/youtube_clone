@@ -6,13 +6,13 @@ class PlayLists extends Component {
     render() {
         return (
             <ul className={styles.playlist_container}>
-                {this.props.videos.map((video) => (
-                    <PlayList 
+                {this.props.videos.map((video) => {
+                    return (<PlayList 
                         key={video.id}
                         video={video}
                         clickedVideo={this.props.clickedVideo}
-                    />
-                ))}
+                    />);
+                })}
             </ul>
         );
     }

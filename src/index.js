@@ -4,16 +4,17 @@ import './index.css';
 import App from './app';
 
 // fetch
-import YoutubeFetch from './service/youtube-fetch';
-// Axios
-// import YoutubeAxios from './components/service/youtube-axios';
+// import YoutubeFetch from './service/youtube-fetch';
+// const youtubeFetch = new YoutubeFetch(process.env.REACT_APP_YOUTUBE_API_KEY);
 
-const youtubeFetch = new YoutubeFetch(process.env.REACT_APP_YOUTUBE_API_KEY);
+// Axios
+import YoutubeAxios from './service/youtube-axios';
+const youtubeAxios = new YoutubeAxios(process.env.REACT_APP_YOUTUBE_API_KEY);
 
 ReactDOM.render(
   <React.StrictMode>
     <App 
-      youtube = {youtubeFetch}
+      youtube = {youtubeAxios}
     />
   </React.StrictMode>,
   document.getElementById('root')
