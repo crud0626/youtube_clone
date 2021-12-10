@@ -6,3 +6,7 @@
 .videoplayer {
   width: 100%;
 }
+
+.video_desc {
+  white-space: pre-wrap;
+}

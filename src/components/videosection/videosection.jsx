@@ -12,11 +12,19 @@ class VideoSection extends Component {
                         type="text/html" 
                         title='videoplayer'
                         width="720" height="405"
-                        src="https://www.youtube.com/embed/M7lc1UVf-VE"
+                        src={`https://www.youtube.com/embed/${this.props.currentVid.id}`}
                         frameBorder="0" 
                         allowFullScreen
                     ></iframe>
-                    
+                    <div className='separateLine'></div>
+                    <div className={styles.video_info}>
+                        <h3 className={styles.video_title}>{this.props.currentVid.snippet.title}</h3>
+                        <span className={styles.video_date}>{this.props.currentVid.snippet.publishedAt}</span>
+                    </div>
+                    <div className='separateLine'></div>
+                    {/* 얘네도 div로 묶을까 고민중. */}
+                    <span className={styles.channel}>{this.props.currentVid.snippet.channelID}</span>
+                    <pre className={styles.video_desc}>{this.props.currentVid.snippet.description}</pre>
                 </div>
             </>
         );

@@ -1,0 +1,6 @@
+.playlist_container {
+  flex: 1 1 35%;
+  margin: 0;
+  padding: 0 0 0 8px;
+  list-style: none;
+}

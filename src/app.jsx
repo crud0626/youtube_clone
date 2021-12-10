@@ -3,12 +3,12 @@ import './app.css';
 import React, { Component } from 'react';
 import Header from './components/header/header';
 import VideoSection from './components/videosection/videosection';
-import PlayList from './components/playlist/playlist';
+import PlayLists from './components/playlists/playlists';
 
 class App extends Component {
   state = {
     videos: [],
-    current: []
+    current: {}
   }
 
   componentDidMount() {
@@ -30,11 +30,15 @@ class App extends Component {
       method: 'GET',
       redirect: 'follow'
     };
-    // 데이터 받아오는거 확인.
     fetch(`https://youtube.googleapis.com/youtube/v3/search?part=snippet&maxResults=25&q=${text}&key=${process.env.REACT_APP_YOUTUBE_API_KEY}`, requestOptions)
-    .then(response => response.json())
-    .then(result => this.setState({videos: result.items}))
+      .then(response => response.json())
+      .then(result => this.setState({videos: result.items}))
+      // current 빈 객체로 초기화 해줘야함.
       .catch(error => console.log('error', error));
+  }
+
+  clickedVideo = (video) => {
+    this.setState({current: video});
   }
 
   render() {
@@ -44,10 +48,15 @@ class App extends Component {
         onSearch = {this.getSearch}
       />
       <section>
-        <VideoSection />
-        <PlayList 
-          videos={this.state.videos}
-        />
+        {
+        Object.keys(this.state.current).length && 
+        <VideoSection currentVid={this.state.current} />
+        }
+        
+          <PlayLists 
+            videos={this.state.videos}
+            clickedVideo={this.clickedVideo}
+          />
       </section>
       </>
     );
