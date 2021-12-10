@@ -32,13 +32,16 @@ class App extends Component {
     };
     fetch(`https://youtube.googleapis.com/youtube/v3/search?part=snippet&maxResults=25&q=${text}&key=${process.env.REACT_APP_YOUTUBE_API_KEY}`, requestOptions)
       .then(response => response.json())
-      .then(result => this.setState({videos: result.items}))
-      // current 빈 객체로 초기화 해줘야함.
+      .then(result => this.setState({
+          videos: result.items, 
+          current: {}
+        }))
       .catch(error => console.log('error', error));
   }
 
   clickedVideo = (video) => {
     this.setState({current: video});
+    console.log(this.state.current);
   }
 
   render() {
@@ -49,7 +52,7 @@ class App extends Component {
       />
       <section>
         {
-        Object.keys(this.state.current).length && 
+        Object.keys(this.state.current).length !== 0 && 
         <VideoSection currentVid={this.state.current} />
         }
         

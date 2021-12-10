@@ -3,6 +3,7 @@ import styles from './videosection.module.css';
 
 class VideoSection extends Component {
     render() {
+        console.log(this.props.currentVid.snippet.description);
         return (
             <>
                 <div className={styles.videoplayer_container}>
@@ -16,14 +17,13 @@ class VideoSection extends Component {
                         frameBorder="0" 
                         allowFullScreen
                     ></iframe>
-                    <div className='separateLine'></div>
                     <div className={styles.video_info}>
                         <h3 className={styles.video_title}>{this.props.currentVid.snippet.title}</h3>
                         <span className={styles.video_date}>{this.props.currentVid.snippet.publishedAt}</span>
                     </div>
                     <div className='separateLine'></div>
                     {/* 얘네도 div로 묶을까 고민중. */}
-                    <span className={styles.channel}>{this.props.currentVid.snippet.channelID}</span>
+                    <span className={styles.channel}>{this.props.currentVid.snippet.channelTitle}</span>
                     <pre className={styles.video_desc}>{this.props.currentVid.snippet.description}</pre>
                 </div>
             </>
