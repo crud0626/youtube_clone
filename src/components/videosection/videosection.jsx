@@ -25,17 +25,27 @@ class VideoSection extends Component {
                     <span className={styles.channel}>{this.props.currentVid.snippet.channelTitle}</span>
                     <pre className={styles.video_desc}>{this.props.currentVid.snippet.description}</pre>
                     <div className='separateLine'></div>
-                    <div className="comment_container">
-                        {this.props.comments.map(comment => (
+                    <ul className="comment_container">
+                        {/* comments는 컴포넌트 분리. */}
+                        {this.props.comments.map((comment) => (
                             // CSS는 아직 안함.
-                            <>
-                                <p>{comment.snippet.topLevelComment.snippet.authorDisplayName}</p>
-                                <span>{comment.snippet.topLevelComment.snippet.textDisplay}</span>
-                            </>
+                            <li className="comment">
+                                <div className="user_info">
+                                    
+                                </div>
+                                <div className="comment_info">
+                                    <div className="comment_top">
+                                        {/* author랑 날짜 */}
+                                        <p>{comment.snippet.topLevelComment.snippet.authorDisplayName}</p>
+                                        <span>{comment.snippet.topLevelComment.snippet.publishedAt}</span>
+                                    </div>
+                                    <span>{comment.snippet.topLevelComment.snippet.textDisplay}</span>
+                                </div>
+                            </li>
                         ))}
                         
                         
-                    </div>
+                    </ul>
                 </div>
             </>
         );
