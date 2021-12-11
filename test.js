@@ -1,2 +1,1 @@
-const obj = {};
-console.log(Object.keys(obj).length);
+let decode = require('unescape');
