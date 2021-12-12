@@ -2,11 +2,6 @@ import axios from "axios";
 
 // InnerHTML로 넣어야 할 듯하다. <b> <br>등이 출력됨.
 const decode = require('unescape');
-
-// https://youtube.googleapis.com/youtube/v3/videos?part=contentDetails,statistics&id={비디오아이디들}=items&key={this.key}
-// 일단 테스트 결과 성공적이긴 하나 추가적으로 ID들이 정확히 순서대로 맞게 나오는건지 먼저 테스트해봐야하고 그 뒤에 적용예정.
-// 각 비디오들의 아이디들은 콤마로구분하며 contentDetails, statistics 부분만 빼서 기존 객체에 붙여넣는 방법으로 할 예정임.
-
 export default class YoutubeAxios {
     constructor(key) {
         this.key = key;
@@ -25,27 +20,21 @@ export default class YoutubeAxios {
                 fields : 'items(id,snippet,contentDetails,statistics)',
             }
         })
-        // let IDs = [];
-        // response.data.items.forEach(item => {
-        //     IDs.push(item.id);
-        // })
-        // console.log(IDs.join(","));
-        // console.log(response.data.items);
 
-        response.data.items.map(item => {
+        const items = response.data.items;
+
+        // 변환.
+        // 얘 함수로 빼고 싶은데 배열로 받음. 그래서 function (count, ...args)로 해서 배열로 어떻게 가능하지않을까?
+        items.map(item => {
             item.snippet.title = decode(item.snippet.title, 'all');
             item.snippet.description = decode(item.snippet.description, 'all');
             return item;
         })
 
-        return response.data.items;
+        return items;
     }
 
     async getSearchVideos(query) {
-        // part: 'snippet,contentDetails,statistics',
-        // fields : 'items(id,snippet,contentDetails,statistics)',
-        // search만으로는 안되는 것 같다. 비디오 id를 디테일하게 잡아주어야함.
-
         const response = await this.youtube.get('search', {
             params: {
                 part: 'snippet',
@@ -55,16 +44,39 @@ export default class YoutubeAxios {
                 fields : 'items(id,snippet)',
             }
         })
-        // id 나눠져있던거 하나로 합침.
-        response.data.items.map(item => item.id = item.id.videoId); // 이거 map말고 엘리가 했던것처럼해보기.
+        const items = JSON.parse(JSON.stringify(response.data.items));
 
-        // 테스트 완료, 검색 및 댓글에도 적용해야해서 async로 함수화 시켜야할 것 같다.
-        response.data.items.map(item => {
+        items.map(item => (
+            item.id = item.id.videoId
+        ));
+
+        //검색 및 댓글에도 적용해야해서 async로 함수화 시켜야할 것 같다.
+        items.map(item => {
             item.snippet.title = decode(item.snippet.title, 'all');
             item.snippet.description = decode(item.snippet.description, 'all');
             return item;
         })
-        return response.data.items;
+        
+        // ID가져오기.
+        const IDs = [];
+        items.forEach(item => {
+            IDs.push(item.id);
+        })
+
+        const otherInfos = await this.youtube.get('videos', {
+            params: {
+                part: 'contentDetails,statistics',
+                id: IDs.join(','),
+                fields: 'items(contentDetails,statistics)'
+            }
+        });
+        
+        // for문이 아닌 assign메소드로만 사용 가능한지 확인해보기.
+        for(let i = 0; i < items.length; i++) {
+            Object.assign(items[i], otherInfos.data.items[i]);
+        }
+
+        return items;
     }
 
     async getCurrentComment(currentId) {
@@ -78,13 +90,12 @@ export default class YoutubeAxios {
             }
         })
 
+        // repactoring 예정.
         response.data.items.map(item => {
             item.snippet.topLevelComment.snippet.authorDisplayName = decode(item.snippet.topLevelComment.snippet.authorDisplayName, 'all');
             item.snippet.topLevelComment.snippet.textDisplay = decode(item.snippet.topLevelComment.snippet.textDisplay, 'all');
             return item;
         })
-
-        console.log(response.data.items);
         
         return response.data.items;
     }
