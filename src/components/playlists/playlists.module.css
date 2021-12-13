@@ -4,3 +4,10 @@
   padding: 0 0 0 8px;
   list-style: none;
 }
+
+/* 클래스명 변경예정. */
+.noVideo {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+}

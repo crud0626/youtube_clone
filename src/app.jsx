@@ -49,6 +49,7 @@ class App extends Component {
   // }
 
   render() {
+    const selected = Object.keys(this.state.currentVid).length !== 0 ? true : false;
     return (
       <>
       <Header
@@ -57,16 +58,16 @@ class App extends Component {
       />
       <section>
         {
-        Object.keys(this.state.currentVid).length !== 0 && 
+        selected && 
         <VideoSection 
           currentVid={this.state.currentVid} 
           comments={this.state.comments}
         />
         }
-        
           <PlayLists 
             videos={this.state.videos}
             clickedVideo={this.clickedVideo}
+            selected={selected}
           />
       </section>
       </>

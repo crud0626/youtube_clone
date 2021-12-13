@@ -4,13 +4,16 @@ import styles from './playlists.module.css';
 
 class PlayLists extends Component {
     render() {
+        /* 클래스명 변경예정. */
+        const videoLayout= this.props.selected ? styles.selectedVideo : styles.noVideo;
         return (
-            <ul className={styles.playlist_container}>
+            <ul className={`${styles.playlist_container} ${videoLayout}`}>
                 {this.props.videos.map((video) => {
                     return (<PlayList 
                         key={video.id}
                         video={video}
                         clickedVideo={this.props.clickedVideo}
+                        selected={this.props.selected}
                     />);
                 })}
             </ul>
