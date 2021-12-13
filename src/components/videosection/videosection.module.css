@@ -5,6 +5,11 @@
 
 .videoplayer {
   width: 100%;
+  /* height는 widt의 56.25% */
+  min-width: 720px;
+  min-height: 405px;
+  max-width: 1280px;
+  max-height: 720px;
 }
 
 .video_date {

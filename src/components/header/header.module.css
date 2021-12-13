@@ -2,45 +2,110 @@ header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 8vh;
+  height: 56px;
   background-color: white;
   padding: 0px 10px;
 }
 
 .left {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 20%;
+  font-family: "Roboto", sans-serif;
+  cursor: pointer;
 }
 
 .left > img {
-  width: 50%;
+  width: 30px;
+}
+
+.left > span {
+  font-size: 24px;
+  font-weight: bold;
+  padding-left: 2px;
 }
 
 .center {
+  flex: 1 1 80%;
   display: flex;
+  justify-content: center;
   align-items: center;
+  padding-right: 30px;
   /* 임시 */
-  height: 100%;
+  height: 70%;
+}
+
+.center button {
+  cursor: pointer;
 }
 
 .searchbar_container {
+  flex: 0 1 70%;
   display: flex;
   align-items: center;
   /* 임시 */
-  height: 80%;
+  height: 100%;
+}
+
+.searchbar_container > button {
+  border: 1px solid #d3d3d3;
+  border-radius: 0 3px 3px 0;
+  background: #f8f8f8;
 }
 
 .searchbar {
+  flex: 1 1 100%;
   display: flex;
   align-items: center;
+  position: relative;
   height: 100%;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 3px 0 0 3px;
 }
 
 .searchbar > input {
+  flex: 1 1 100%;
   height: 100%;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  border-radius: 3px;
-  padding: 0px 7px;
+  border: none;
+  outline: none;
+  padding: 0 0 0 7px;
   font-size: 1rem;
+}
+
+input:focus {
+  outline: 1px solid black;
+}
+
+.input_icon {
+  margin: 1px 10px;
+  padding: 0;
+  background: transparent;
+  border: none;
+  font-size: 19px;
+  color: gray;
+}
+
+.search_icon {
+  display: flex;
+  width: 64px;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+}
+
+.search_icon > img {
+  width: 24px;
+}
+
+.voiceBtn {
+  width: 40px;
+  height: 40px;
+  background-color: #f9f9f9;
+  border-radius: 50%;
+  border: none;
+  margin-left: 10px;
+  font-size: 1.2rem;
 }
 
 .btns {
@@ -51,6 +116,7 @@ header {
 }
 
 .right {
+  flex: 1 1 5%;
   display: flex;
 }
 

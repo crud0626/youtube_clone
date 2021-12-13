@@ -25,6 +25,7 @@ export default class YoutubeAxios {
 
         // 변환.
         // 얘 함수로 빼고 싶은데 배열로 받음. 그래서 function (count, ...args)로 해서 배열로 어떻게 가능하지않을까?
+
         items.map(item => {
             item.snippet.title = decode(item.snippet.title, 'all');
             item.snippet.description = decode(item.snippet.description, 'all');
@@ -90,7 +91,9 @@ export default class YoutubeAxios {
             }
         })
 
-        // repactoring 예정.
+        // refactoring 예정.
+        console.log(response.data.items);
+
         response.data.items.map(item => {
             item.snippet.topLevelComment.snippet.authorDisplayName = decode(item.snippet.topLevelComment.snippet.authorDisplayName, 'all');
             item.snippet.topLevelComment.snippet.textDisplay = decode(item.snippet.topLevelComment.snippet.textDisplay, 'all');

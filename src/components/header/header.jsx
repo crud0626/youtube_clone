@@ -16,21 +16,22 @@ class Header extends Component {
         return (
             <header>
                 <div className={styles.left}>
-                    <img src="./images/youtube_logo.png" alt="mainlogo" />
+                    <img src="./images/logo.png" alt="mainlogo"/>
+                    <span>Youtube</span>
                 </div>
                 <div className={styles.center}>
                     <form className={styles.searchbar_container} onSubmit={this.onSearch}>
                         <div className={styles.searchbar}>
-                            <input ref={this.inputRef} type="text" name="" id="" />
-                            <button className={styles.btns}>
+                            <input ref={this.inputRef} type="text" />
+                            <button className={styles.input_icon}>
                                 <i className="fas fa-keyboard"></i>
                             </button>
                         </div>
-                        <button className={styles.btns}>
-                            <i className="fas fa-search"></i>
+                        <button className={styles.search_icon}>
+                            <img src="https://img.icons8.com/ios-glyphs/30/000000/search--v1.png" alt='searchButton'/>
                         </button>
                     </form>
-                    <button className={styles.btns}>
+                    <button className={styles.voiceBtn}>
                         <i className="fas fa-microphone"></i>
                     </button>
                 </div>

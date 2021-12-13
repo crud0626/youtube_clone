@@ -1,0 +1,19 @@
+.comment_container {
+  list-style: none;
+  padding-left: 0;
+}
+
+.comment_top {
+  display: flex;
+  align-items: center;
+}
+
+.author_name {
+  font-size: 0.9rem;
+}
+
+.comment_date {
+  padding-left: 5px;
+  color: gray;
+  font-size: 0.7rem;
+}
