@@ -15,7 +15,7 @@ class Header extends Component {
     render() {
         return (
             <header>
-                <div className={styles.left}>
+                <div className={styles.left} onClick={this.props.moveToMain}>
                     <img src="./images/logo.png" alt="mainlogo"/>
                     <span>Youtube</span>
                 </div>

@@ -44,16 +44,16 @@ class App extends Component {
     )
   }
 
-  // moveToMain = () => {
-  //   this.setState({currentVid: {}})
-  // }
+  moveToMain = () => {
+    this.setState({currentVid: {}})
+  }
 
   render() {
     const selected = Object.keys(this.state.currentVid).length !== 0 ? true : false;
     return (
       <>
       <Header
-        // moveToMain = {this.moveToMain} 
+        moveToMain = {this.moveToMain} 
         onSearch = {this.searchVideos}
       />
       <section>
