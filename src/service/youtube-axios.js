@@ -16,7 +16,7 @@ export default class YoutubeAxios {
             params: {
                 part: 'snippet,contentDetails,statistics',
                 chart: 'mostPopular',
-                maxResults: 25,
+                maxResults: 24,
                 fields : 'items(id,snippet,contentDetails,statistics)',
             }
         })
@@ -39,7 +39,7 @@ export default class YoutubeAxios {
         const response = await this.youtube.get('search', {
             params: {
                 part: 'snippet',
-                maxResults: 25,
+                maxResults: 24,
                 q: query,
                 type: 'video',
                 fields : 'items(id,snippet)',
