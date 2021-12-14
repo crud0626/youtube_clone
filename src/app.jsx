@@ -11,17 +11,9 @@ class App extends Component {
     currentVid: {},
     comments: {}
   }
-  // contentDetails.duration | 플레이시간
-  // statistics.commentCount | 댓글 수.
-  // statistics.dislikeCount | 싫어요 수
-  // statistics.likeCount | 좋아요
-  // statistics.viewCount | 조회수
-  // search에서 못 받아오고 있음.
 
   componentDidMount() {
-    this.props.youtube
-    .getMostPopular()
-    .then(videos => this.setState({videos}));
+    this.moveToMain();
   }
 
   searchVideos = (query) => {
@@ -44,7 +36,9 @@ class App extends Component {
   }
 
   moveToMain = () => {
-    this.setState({currentVid: {}})
+    this.props.youtube
+    .getMostPopular()
+    .then(videos => this.setState({videos, currentVid: {}}));
   }
 
   render() {
