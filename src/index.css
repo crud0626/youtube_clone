@@ -18,3 +18,7 @@ div.separateLine {
   height: 1px;
   margin: 8px 0;
 }
+
+.input_hidden {
+  display: none;
+}

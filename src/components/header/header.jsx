@@ -5,12 +5,29 @@ class Header extends Component {
     constructor(props) {
         super(props);
         this.inputRef = React.createRef();
+        this.eraser = document.querySelector("button#input_eraser");
     }
-       
+
     onSearch = (e) => {
         e.preventDefault();
         this.inputRef.current.value.search(/\S/g) === 0 &&
         this.props.onSearch(this.inputRef.current.value);
+    }
+
+    handleInput = () => {
+        if (this.inputRef.current.value.length === 0) {
+            const eraser = document.querySelector("button#input_eraser");
+            eraser.classList.add("input_hidden");
+        } else {
+            const eraser = document.querySelector("button#input_eraser");
+            eraser.classList.remove("input_hidden");
+        }
+    }
+
+    removeInputValue = () => {
+        const eraser = document.querySelector("button#input_eraser");
+        eraser.classList.add("input_hidden");
+        this.inputRef.current.value = "";
     }
 
     render() {
@@ -23,9 +40,12 @@ class Header extends Component {
                 <div className={styles.center}>
                     <form className={styles.searchbar_container} onSubmit={this.onSearch}>
                         <div className={styles.searchbar}>
-                            <input ref={this.inputRef} placeholder='검색' type="text" />
+                            <input ref={this.inputRef} placeholder='검색' type="text" onKeyUp={this.handleInput}/>
                             <button className={styles.input_icon}>
                                 <i className="fas fa-keyboard"></i>
+                            </button>
+                            <button id='input_eraser' className={`${styles.input_icon} input_hidden`} onClick={this.removeInputValue}>
+                                <i className="fas fa-times"></i>
                             </button>
                         </div>
                         <button className={styles.search_icon}>
