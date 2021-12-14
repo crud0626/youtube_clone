@@ -21,9 +21,9 @@ class PlayList extends Component {
                     <div className={styles.video_info}>
                         <span className={styles.channelTitle}>{this.props.video.snippet.channelTitle}</span>
                         <div className={styles.info_counter}>
-                            <span>{`조회수 ${calc.getViewCount(this.props.video.statistics.viewCount)} `}</span>
-                            <span>•</span>
-                            <span>{` 3일 전`}</span>
+                            <span>{`조회수 ${calc.getViewCount(this.props.video.statistics.viewCount)}`}</span>
+                            <span>{" • "}</span>
+                            <span>{`3일 전`}</span>
                         </div>
                     </div>
                 </div>

@@ -3,10 +3,6 @@ import styles from './comments.module.css';
 
 class Comments extends Component {
     render() {
-        console.log(this.props.comments[0].snippet.topLevelComment.snippet.publishedAt);
-        let test = new Date(this.props.comments[0].snippet.topLevelComment.snippet.publishedAt);
-        // 문자열
-        console.log(`${test.getFullYear()}. ${test.getMonth()}. ${test.getDate()}`);
         return (
             <ul className={styles.comment_container}>
                 {this.props.comments.map((comment) => {

@@ -1,5 +1,4 @@
 export default class Calculator {
-    
     getViewCount(num) {
         let result = "";
         
@@ -31,4 +30,5 @@ export default class Calculator {
         }
         return result;
     }
+
 }
