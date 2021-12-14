@@ -9,6 +9,7 @@ class Header extends Component {
        
     onSearch = (e) => {
         e.preventDefault();
+        this.inputRef.current.value.search(/\S/g) === 0 &&
         this.props.onSearch(this.inputRef.current.value);
     }
 
@@ -22,7 +23,7 @@ class Header extends Component {
                 <div className={styles.center}>
                     <form className={styles.searchbar_container} onSubmit={this.onSearch}>
                         <div className={styles.searchbar}>
-                            <input ref={this.inputRef} type="text" />
+                            <input ref={this.inputRef} placeholder='검색' type="text" />
                             <button className={styles.input_icon}>
                                 <i className="fas fa-keyboard"></i>
                             </button>
