@@ -19,7 +19,6 @@ class App extends Component {
   // search에서 못 받아오고 있음.
 
   componentDidMount() {
-    // 얘 함수로 뺴서  로고 클릭시에도 적용될 수 있도록.
     this.props.youtube
     .getMostPopular()
     .then(videos => this.setState({videos}));

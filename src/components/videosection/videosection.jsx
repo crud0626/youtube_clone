@@ -6,17 +6,19 @@ class VideoSection extends Component {
     render() {
         return (
             <>
-                <div className={styles.videoplayer_container}>
-                    <iframe 
-                        className={styles.videoplayer}
-                        id="ytplayer" 
-                        type="text/html" 
-                        title='videoplayer'
-                        width="720" height="405"
-                        src={`https://www.youtube.com/embed/${this.props.currentVid.id}`}
-                        frameBorder="0" 
-                        allowFullScreen
-                    ></iframe>
+                <div className={styles.videosection_container}>
+                    <div className={styles.videoplayer_container}>
+                        <iframe 
+                            className={styles.videoplayer}
+                            id="ytplayer" 
+                            type="text/html" 
+                            title='videoplayer'
+                            width="720" height="405"
+                            src={`https://www.youtube.com/embed/${this.props.currentVid.id}`}
+                            frameBorder="0" 
+                            allowFullScreen
+                        ></iframe>
+                    </div>
                     <div className={styles.video_info}>
                         <h3 className={styles.video_title}>{this.props.currentVid.snippet.title}</h3>
                         <span className={styles.video_date}>{this.props.currentVid.snippet.publishedAt}</span>
