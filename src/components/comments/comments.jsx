@@ -6,6 +6,7 @@ class Comments extends Component {
         return (
             <ul className={styles.comment_container}>
                 {this.props.comments.map((comment) => {
+                    const textHTML = {__html: comment.snippet.topLevelComment.snippet.textDisplay}
                     return (
                         // key설정필요.
                         <li className="comment">
@@ -17,7 +18,8 @@ class Comments extends Component {
                                     <p className={styles.author_name}>{comment.snippet.topLevelComment.snippet.authorDisplayName}</p>
                                     <span className={styles.comment_date}>{comment.snippet.topLevelComment.snippet.publishedAt}</span>
                                 </div>
-                                <span className={styles.comment_text}>{comment.snippet.topLevelComment.snippet.textDisplay}</span>
+                                <span dangerouslySetInnerHTML={textHTML}></span>
+                                {/* <span className={styles.comment_text}>{comment.snippet.topLevelComment.snippet.textDisplay}</span> */}
                             </div>
                         </li>
                     );

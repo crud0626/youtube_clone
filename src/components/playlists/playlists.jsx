@@ -4,7 +4,6 @@ import styles from './playlists.module.css';
 
 class PlayLists extends Component {
     render() {
-        console.log(this.props.videos);
         /* 클래스명 변경예정. */
         const videoLayout= this.props.selected ? styles.selectedVideo : styles.noVideo;
         return (
@@ -15,6 +14,7 @@ class PlayLists extends Component {
                         video={video}
                         clickedVideo={this.props.clickedVideo}
                         selected={this.props.selected}
+                        convertCount={this.props.convertCount}
                     />);
                 })}
             </ul>

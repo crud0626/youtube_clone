@@ -17,3 +17,8 @@
   color: gray;
   font-size: 0.7rem;
 }
+
+a {
+  color: rgb(6, 95, 212);
+  text-decoration: none;
+}

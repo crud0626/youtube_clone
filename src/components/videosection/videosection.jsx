@@ -13,8 +13,12 @@ class VideoSection extends Component {
         return count.toLocaleString("en");
     }
 
+    // testing..
+    convertShortCount = () => (
+        this.props.convertCount(this.props.currentVid.statistics.likeCount)
+    );
+
     render() {
-        console.log(this.props.currentVid.statistics.viewCount);
         return (
             <div className={styles.videosection_container}>
                 <div className={styles.videoplayer_container}>
@@ -32,9 +36,21 @@ class VideoSection extends Component {
                 <div className={styles.video_info_container}>
                     <h3 className={styles.video_title}>{this.props.currentVid.snippet.title}</h3>
                     <div className={styles.video_info}>
-                        <span>{`${this.convertViewCount()}회`}</span>
-                        <span>{" • "}</span>
-                        <span>{this.displayVideoDate()}</span>
+                        <div className={styles.video_info_left}>
+                            <span>{`${this.convertViewCount()}회`}</span>
+                            <span>{" • "}</span>
+                            <span>{this.displayVideoDate()}</span>
+                        </div>
+                        <div className={styles.video_info_right}>
+                            <div className={styles.video_info_item}>
+                                <i className="far fa-thumbs-up"></i>
+                                <span>{this.convertShortCount()}</span>
+                            </div>
+                            <div className={styles.video_info_item}>
+                                <i className="far fa-thumbs-down"></i>
+                                <span>싫어요</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div className='separateLine'></div>
