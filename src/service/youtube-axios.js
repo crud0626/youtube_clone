@@ -1,6 +1,5 @@
 import axios from "axios";
 
-// InnerHTML로 넣어야 할 듯하다. <b> <br>등이 출력됨.
 const decode = require('unescape');
 export default class YoutubeAxios {
     constructor(key) {
@@ -80,7 +79,7 @@ export default class YoutubeAxios {
         return items;
     }
 
-    async getCurrentComment(currentId) {
+    async getComment(currentId) {
         const response = await this.youtube.get('commentThreads', {
             params: {
                 part: 'snippet',
@@ -91,9 +90,6 @@ export default class YoutubeAxios {
             }
         })
 
-        // refactoring 예정.
-        console.log(response.data.items);
-
         response.data.items.map(item => {
             item.snippet.topLevelComment.snippet.authorDisplayName = decode(item.snippet.topLevelComment.snippet.authorDisplayName, 'all');
             item.snippet.topLevelComment.snippet.textDisplay = decode(item.snippet.topLevelComment.snippet.textDisplay, 'all');
@@ -103,4 +99,22 @@ export default class YoutubeAxios {
         return response.data.items;
     }
 
+    async getChannelInfo(id) {
+        const response = await this.youtube.get('channels', {
+            params: {
+                part: 'snippet,statistics',
+                id: id,
+                fields: 'items(snippet(thumbnails),statistics(subscriberCount))'
+            }
+        })
+        return response.data.items[0];
+    }
+
+    async getCurrentVidInfo(video) {
+        const channel = await this.getChannelInfo(video.snippet.channelId);
+        const comments = await this.getComment(video.id);
+        const result = {...video, comments, channel};
+        console.log(result);
+        return result;
+    }
 }

@@ -50,6 +50,31 @@
   font-size: 0.9rem;
 }
 
+.author_info_container {
+  display: flex;
+}
+
+.author_info_left > img {
+  width: 48px;
+  border-radius: 50%;
+}
+
+.author_info_right {
+  padding-left: 16px;
+}
+
+.author_info_right > a {
+  color: black;
+  font-weight: bold;
+}
+
+/* span태그 클래스 입히기. */
+.author_info_right > span {
+  font-size: 0.8rem;
+  color: rgb(96, 96, 96);
+  display: block;
+}
+
 .video_desc {
   white-space: pre-wrap;
 }

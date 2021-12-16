@@ -13,12 +13,12 @@ class VideoSection extends Component {
         return count.toLocaleString("en");
     }
 
-    // testing..
-    convertShortCount = () => (
-        this.props.convertCount(this.props.currentVid.statistics.likeCount)
+    convertShortCount = (count) => (
+        this.props.convertCount(count)
     );
 
     render() {
+        const currentVid = this.props.currentVid;
         return (
             <div className={styles.videosection_container}>
                 <div className={styles.videoplayer_container}>
@@ -28,13 +28,13 @@ class VideoSection extends Component {
                         type="text/html" 
                         title='videoplayer'
                         width="720" height="405"
-                        src={`https://www.youtube.com/embed/${this.props.currentVid.id}`}
+                        src={`https://www.youtube.com/embed/${currentVid.id}`}
                         frameBorder="0" 
                         allowFullScreen
                     ></iframe>
                 </div>
                 <div className={styles.video_info_container}>
-                    <h3 className={styles.video_title}>{this.props.currentVid.snippet.title}</h3>
+                    <h3 className={styles.video_title}>{currentVid.snippet.title}</h3>
                     <div className={styles.video_info}>
                         <div className={styles.video_info_left}>
                             <span>{`${this.convertViewCount()}회`}</span>
@@ -48,7 +48,7 @@ class VideoSection extends Component {
                                         <path d='M18.77,11h-4.23l1.52-4.94C16.38,5.03,15.54,4,14.38,4c-0.58,0-1.14,0.24-1.52,0.65L7,11H3v10h4h1h9.43 c1.06,0,1.98-0.67,2.19-1.61l1.34-6C21.23,12.15,20.18,11,18.77,11z M7,20H4v-8h3V20z M19.98,13.17l-1.34,6 C18.54,19.65,18.03,20,17.43,20H8v-8.61l5.6-6.06C13.79,5.12,14.08,5,14.38,5c0.26,0,0.5,0.11,0.63,0.3 c0.07,0.1,0.15,0.26,0.09,0.47l-1.52,4.94L13.18,12h1.35h4.23c0.41,0,0.8,0.17,1.03,0.46C19.92,12.61,20.05,12.86,19.98,13.17z'></path>
                                     </svg>
                                 </button>
-                                <span>{this.convertShortCount()}</span>
+                                <span>{this.convertShortCount(this.props.currentVid.statistics.likeCount)}</span>
                             </div>
                             <div className={styles.video_info_item}>
                                 <button title='이 동영상이 마음에 들지 않습니다.'>
@@ -79,12 +79,28 @@ class VideoSection extends Component {
                     </div>
                 </div>
                 <div className='separateLine'></div>
-                {/* 얘네도 div로 묶을까 고민중. */}
-                <span className={styles.channel}>{this.props.currentVid.snippet.channelTitle}</span>
-                <pre className={styles.video_desc}>{this.props.currentVid.snippet.description}</pre>
+                <div className={styles.author_info_container}>
+                    <div className={styles.author_info_left}>
+                        <img src={currentVid.channel.snippet.thumbnails.default.url} alt="channelImage" />
+                    </div>
+                    <div className={styles.author_info_right}>
+                        <a 
+                            href={`https://www.youtube.com/channel/${currentVid.snippet.channelId}`} 
+                            target="_blank" rel="noopener noreferrer" 
+                            className={styles.channel}
+                            title={currentVid.snippet.channelTitle}
+                        >
+                            {currentVid.snippet.channelTitle}
+                        </a>
+                        <span>{`구독자 ${this.convertShortCount(currentVid.channel.statistics.subscriberCount)}명`}</span>
+                        <pre className={styles.video_desc}>{currentVid.snippet.description}</pre>
+                    </div>
+                    
+                </div>
                 <div className='separateLine'></div>
                 <Comments 
                     comments={this.props.comments}
+                    calcDiffDate={this.props.calcDiffDate}
                 />
             </div>
         );

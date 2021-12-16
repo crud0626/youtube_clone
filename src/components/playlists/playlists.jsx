@@ -15,7 +15,7 @@ class PlayLists extends Component {
                         clickedVideo={this.props.clickedVideo}
                         selected={this.props.selected}
                         convertCount={this.props.convertCount}
-                        getDiffDate={this.props.getDiffDate}
+                        calcDiffDate={this.props.calcDiffDate}
                     />);
                 })}
             </ul>

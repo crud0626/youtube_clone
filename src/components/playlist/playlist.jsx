@@ -10,10 +10,10 @@ class PlayList extends Component {
         this.props.convertCount(num)
     )
 
-    getPublishDate = () => {
+    getDiffDate = () => {
         const now = Date.now();
         const publishDate = Date.parse(this.props.video.snippet.publishedAt);
-        return this.props.getDiffDate(parseInt((now - publishDate) / 60000));
+        return this.props.calcDiffDate(parseInt((now - publishDate) / 60000));
     }
 
     render() {
@@ -30,7 +30,7 @@ class PlayList extends Component {
                         <div className={styles.info_counter}>
                             <span>{`조회수 ${this.sendCounter(video.statistics.viewCount)}회`}</span>
                             <span>{" • "}</span>
-                            <span>{`${this.getPublishDate()} 전`}</span>
+                            <span>{`${this.getDiffDate()} 전`}</span>
                         </div>
                     </div>
                 </div>

@@ -29,19 +29,28 @@ class App extends Component {
   }
 
   clickedVideo = (video) => {
+    console.log(video);
+    // 아 얘 그냥 video 통째로 보낸다음에 조합해서 넘겨받아야할거같다.
+    // comments까지 함수선에서 다 조합하고 넘겨받아서
+    // currentVid: response 식으로 해야할 것 같다.
+    // getCurrentVidInfo라는 함수 만들어서 하나는 코멘트 하나는 채널정보 받아오는걸로.
+
+    // this.props.youtube
+    // .getCurrentComment(video.id)
+    // .then(comments => this.setState({
+    //     comments: comments,
+    //     currentVid: video
+    //   })
+    // )
     this.props.youtube
-    .getCurrentComment(video.id)
-    .then(comments => this.setState({
-        comments: comments,
-        currentVid: video
-      })
-    )
+    .getCurrentVidInfo(video)
+    .then(currentVid => this.setState({currentVid}))
   }
 
   moveToMain = () => {
     this.props.youtube
     .getMostPopular()
-    .then(videos => this.setState({videos, currentVid: {}}));
+    .then(videos => this.setState({videos, getChannelInfourrentVid: {}}));
   }
 
   // 왜 여기에 하위컴포넌트에서는 못부르고 여기서만 가능하지? 여기서도 prop으로 받는건데?
@@ -51,7 +60,7 @@ class App extends Component {
     return this.props.calc.convertCount(num);
   }
 
-  getDiffDate = (diffMinutes) => {
+  calcDiffDate = (diffMinutes) => {
     return this.props.calc.getDiffTime(diffMinutes);
   }
 
@@ -68,8 +77,9 @@ class App extends Component {
         selected && 
         <VideoSection 
           currentVid={this.state.currentVid} 
-          comments={this.state.comments}
+          comments={this.state.currentVid.comments}
           convertCount={this.convertCount}
+          calcDiffDate={this.calcDiffDate}
         />
         }
           <PlayLists 
@@ -77,7 +87,7 @@ class App extends Component {
             clickedVideo={this.clickedVideo}
             selected={selected}
             convertCount={this.convertCount}
-            getDiffDate={this.getDiffDate}
+            calcDiffDate={this.calcDiffDate}
           />
       </section>
       </>

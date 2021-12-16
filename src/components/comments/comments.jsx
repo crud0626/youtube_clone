@@ -2,6 +2,12 @@ import React, { Component } from 'react';
 import styles from './comments.module.css';
 
 class Comments extends Component {
+    getDiffDate = (publishDate) => {
+        const now = Date.now();
+        publishDate = Date.parse(publishDate);
+        return this.props.calcDiffDate(parseInt((now - publishDate) / 60000));
+    }
+
     render() {
         return (
             <ul className={styles.comment_container}>
@@ -16,10 +22,9 @@ class Comments extends Component {
                             <div className="comment_info">
                                 <div className={styles.comment_top}>
                                     <p className={styles.author_name}>{comment.snippet.topLevelComment.snippet.authorDisplayName}</p>
-                                    <span className={styles.comment_date}>{comment.snippet.topLevelComment.snippet.publishedAt}</span>
+                                    <span className={styles.comment_date}>{`${this.getDiffDate(comment.snippet.topLevelComment.snippet.publishedAt)} 전`}</span>
                                 </div>
                                 <span dangerouslySetInnerHTML={textHTML}></span>
-                                {/* <span className={styles.comment_text}>{comment.snippet.topLevelComment.snippet.textDisplay}</span> */}
                             </div>
                         </li>
                     );
