@@ -83,6 +83,11 @@ input:focus {
   border: none;
   font-size: 19px;
   color: gray;
+  opacity: 0.6;
+}
+
+.input_icon:hover {
+  opacity: 0.8;
 }
 
 .search_icon {

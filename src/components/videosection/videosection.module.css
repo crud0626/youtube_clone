@@ -19,7 +19,33 @@
   height: 100%;
 }
 
+.video_info_right {
+  display: flex;
+  height: 100%;
+  align-items: center;
+  color: black;
+}
+
+.video_info_item {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  margin-right: 10px;
+  cursor: pointer;
+}
+
+.video_info_item > button {
+  height: 100%;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+}
+
 .video_info {
+  display: flex;
+  height: 40px;
+  justify-content: space-between;
+  align-items: center;
   color: rgb(96, 96, 96);
   font-size: 0.9rem;
 }
