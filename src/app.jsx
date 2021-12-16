@@ -4,6 +4,9 @@ import React, { Component } from 'react';
 import Header from './components/header/header';
 import VideoSection from './components/videosection/videosection';
 import PlayLists from './components/playlists/playlists';
+// import Calculator from './service/calculator';
+
+// const calc = new Calculator();
 
 class App extends Component {
   state = {
@@ -45,8 +48,11 @@ class App extends Component {
   // videosection쪽 좋아요 하는거 안됨. 조회수는 잘되는데 왜 videosection쪽에서 안되지?
   // 안될꺼면 playlists에서도 안되야지;
   convertCount = (num) => {
-    console.log(num);
     return this.props.calc.convertCount(num);
+  }
+
+  getDiffDate = (diffMinutes) => {
+    return this.props.calc.getDiffTime(diffMinutes);
   }
 
   render() {
@@ -71,6 +77,7 @@ class App extends Component {
             clickedVideo={this.clickedVideo}
             selected={selected}
             convertCount={this.convertCount}
+            getDiffDate={this.getDiffDate}
           />
       </section>
       </>

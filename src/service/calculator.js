@@ -30,4 +30,24 @@ export default class Calculator {
         }
         return result;
     }
+    // convertCount함수도 아래처럼 수정하기.
+
+    getDiffTime(minutesDiff) {
+        switch (true) {
+            case (minutesDiff < 60):
+                return `${minutesDiff}분`;
+            case (minutesDiff > 59 && minutesDiff < 1440):
+                return `${parseInt(minutesDiff / 60)}시간`;
+            case (minutesDiff > 1439 && minutesDiff < 20160):
+                return `${parseInt(minutesDiff / 1440)}일`;
+            case (minutesDiff > 20159 && minutesDiff < 40320):
+                return `${parseInt(minutesDiff / 10080)}주`;
+            case (minutesDiff > 40319 && minutesDiff < 525600):
+                return `${parseInt(minutesDiff / 40320)}달`;
+            case (minutesDiff > 525599):
+                return `${parseInt(minutesDiff / 525600)}년`;
+            default:
+                return console.log("날짜 값이 잘못되었습니다.");
+        }
+    }
 }
