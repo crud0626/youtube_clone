@@ -2,4 +2,11 @@ section {
   display: flex;
   padding: 16px;
   background-color: #f9f9f9;
+  min-width: 700px;
+}
+
+@media screen and (max-width: 1080px) {
+  section {
+    display: block;
+  }
 }

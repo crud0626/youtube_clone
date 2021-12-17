@@ -29,19 +29,6 @@ class App extends Component {
   }
 
   clickedVideo = (video) => {
-    console.log(video);
-    // 아 얘 그냥 video 통째로 보낸다음에 조합해서 넘겨받아야할거같다.
-    // comments까지 함수선에서 다 조합하고 넘겨받아서
-    // currentVid: response 식으로 해야할 것 같다.
-    // getCurrentVidInfo라는 함수 만들어서 하나는 코멘트 하나는 채널정보 받아오는걸로.
-
-    // this.props.youtube
-    // .getCurrentComment(video.id)
-    // .then(comments => this.setState({
-    //     comments: comments,
-    //     currentVid: video
-    //   })
-    // )
     this.props.youtube
     .getCurrentVidInfo(video)
     .then(currentVid => this.setState({currentVid}))

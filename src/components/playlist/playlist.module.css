@@ -3,7 +3,7 @@
   margin: 0px 10px 10px 10px;
   cursor: pointer;
   /* border 제거 예정. */
-  border: 1px solid rgba(0, 0, 0, 0.1);
+  border: 1px solid #0000001a;
 }
 
 /* 클래스명 변경 예정. */
@@ -47,4 +47,10 @@
 
 .info_counter {
   font-size: 0.8rem;
+}
+
+@media screen and (max-width: 1080px) {
+  .selectedVideo {
+    margin: 0 0 10px 0;
+  }
 }
