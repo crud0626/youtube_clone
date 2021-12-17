@@ -9,6 +9,7 @@ class PlayLists extends Component {
         return (
             <ul className={`${styles.playlist_container} ${videoLayout}`}>
                 {this.props.videos.map((video) => {
+                    console.log(video.contentDetails.duration);
                     return (<PlayList 
                         key={video.id}
                         video={video}

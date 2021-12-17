@@ -17,6 +17,21 @@ class VideoSection extends Component {
         this.props.convertCount(count)
     );
 
+    onDescButton = (e) => {
+        const desc = document.querySelector("#desc");
+        if (e.target.dataset.func === "more") {
+            desc.style.overflow = "visible";
+            desc.style.height = "auto";
+            e.target.classList.add("hidden");
+            e.target.nextSibling.classList.remove("hidden");
+        } else {
+            desc.style.overflow = "hidden";
+            desc.style.height = "45px";
+            e.target.classList.add("hidden");
+            e.target.previousSibling.classList.remove("hidden");
+        }
+    }
+
     render() {
         const currentVid = this.props.currentVid;
         return (
@@ -93,7 +108,12 @@ class VideoSection extends Component {
                             {currentVid.snippet.channelTitle}
                         </a>
                         <span>{`구독자 ${this.convertShortCount(currentVid.channel.statistics.subscriberCount)}명`}</span>
-                        <pre className={styles.video_desc}>{currentVid.snippet.description}</pre>
+                        <div className={styles.desc_container}>
+                            <pre id='desc' className={styles.video_desc}>{currentVid.snippet.description}</pre>
+                            <button data-func="more" className={styles.desc_btn} onClick={this.onDescButton}>더보기</button>
+                            <button data-func="less" className={`${styles.desc_btn} hidden`} onClick={this.onDescButton}>간략히</button>
+                        </div>
+                        
                     </div>
                     
                 </div>

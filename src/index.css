@@ -22,3 +22,7 @@ div.separateLine {
 .input_hidden {
   display: none;
 }
+
+.hidden {
+  visibility: hidden;
+}
