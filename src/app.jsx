@@ -51,6 +51,10 @@ class App extends Component {
     return this.props.calc.getDiffTime(diffMinutes);
   }
 
+  convertVideoDuration = (time) => {
+    return this.props.calc.convertVideoDuration(time);
+  }
+
   render() {
     const selected = Object.keys(this.state.currentVid).length !== 0 ? true : false;
     return (
@@ -75,6 +79,7 @@ class App extends Component {
             selected={selected}
             convertCount={this.convertCount}
             calcDiffDate={this.calcDiffDate}
+            convertVideoDuration={this.convertVideoDuration}
           />
       </section>
       </>

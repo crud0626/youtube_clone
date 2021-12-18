@@ -16,13 +16,22 @@ class PlayList extends Component {
         return this.props.calcDiffDate(parseInt((now - publishDate) / 60000));
     }
 
+    sendDuration = () => {
+        return this.props.convertVideoDuration(this.props.video.contentDetails.duration);
+    }
+
     render() {
         /* 클래스명 변경예정. */
         const videoLayout= this.props.selected ? styles.selectedVideo : styles.noVideo;
         const video = this.props.video;
         return (
             <li key={video.id} className={`${styles.playlist} ${videoLayout}`} onClick={this.sendVideoId}>
-                <img className={styles.thumbnail} src={video.snippet.thumbnails.medium.url} alt="videoThumbnail" />
+                <div className={styles.thumbnail_container}>
+                    <img className={styles.thumbnail} src={video.snippet.thumbnails.medium.url} alt="videoThumbnail" />
+                    <div className={styles.video_duration}>
+                        <span>{this.sendDuration()}</span>
+                    </div>
+                </div>
                 <div className={styles.video_info_container}>
                     <h3 className={styles.title}>{video.snippet.title}</h3>
                     <div className={styles.video_info}>

@@ -50,4 +50,44 @@ export default class Calculator {
                 return console.log("날짜 값이 잘못되었습니다.");
         }
     }
+
+    convertVideoDuration(time) {
+        if (time === "P0D") {
+            return "LIVE NOW";
+        }
+    
+        let duration = time.split("PT")[1];
+    
+        let hour = "";
+        let minutes = "";
+        let second = "";
+    
+        if (duration.search("H") > -1) {
+            [hour, duration] = duration.split("H");
+            hour = hour + ":";
+        }
+        
+        if (duration.search("M") > -1) {
+            [minutes, duration] = duration.split("M");
+    
+            hour && minutes.length === 2 
+            ? minutes = `0${minutes}:`
+            : minutes = `${minutes}:`;
+            
+        } else {
+            hour ? minutes = "00:" : minutes = "0:";
+        }
+    
+        if (duration.split("S").length === 2) {
+            second = duration.split("S")[0];
+    
+            if (second.length === 1) {
+                second = `0${second}`;
+            }
+        } else {
+            second = "00"
+        }
+    
+        return `${hour}${minutes}${second}`;
+    }
 }

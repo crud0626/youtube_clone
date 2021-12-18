@@ -17,8 +17,31 @@
   width: 100%;
 }
 
+.thumbnail_container {
+  position: relative;
+}
+
+.noVideo > .thumbnail_container {
+  width: 100%;
+}
+
+.selectedVideo > .thumbnail_container {
+  width: 168px;
+}
+
 .thumbnail {
-  width: 40%;
+  width: 100%;
+}
+
+.video_duration {
+  position: absolute;
+  right: 5px;
+  bottom: 8px;
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+  font-size: 12px;
+  padding: 3px 4px;
+  border-radius: 3px;
 }
 
 .video_info_container {
