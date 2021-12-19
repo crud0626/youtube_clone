@@ -70,7 +70,7 @@ export default class Calculator {
         if (duration.search("M") > -1) {
             [minutes, duration] = duration.split("M");
     
-            hour && minutes.length === 2 
+            hour && minutes.length === 1
             ? minutes = `0${minutes}:`
             : minutes = `${minutes}:`;
             

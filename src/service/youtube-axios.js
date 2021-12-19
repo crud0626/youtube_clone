@@ -114,7 +114,6 @@ export default class YoutubeAxios {
         const channel = await this.getChannelInfo(video.snippet.channelId);
         const comments = await this.getComment(video.id);
         const result = {...video, comments, channel};
-        console.log(result);
         return result;
     }
 }
