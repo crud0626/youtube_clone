@@ -10,19 +10,17 @@ class Comments extends Component {
 
     render() {
         return (
-            <ul className={styles.comment_container}>
-                {this.props.comments.map((comment) => {
-                    const textHTML = {__html: comment.snippet.topLevelComment.snippet.textDisplay}
+            <ul className={styles.comments}>
+                {this.props.comments.map(({snippet : {topLevelComment}}) => {
+                    const textHTML = {__html: topLevelComment.snippet.textDisplay}
                     return (
-                        // key설정필요.
-                        <li className="comment">
-                            <div className="user_info">
-                                
+                        <li key={topLevelComment.id} className={styles.comment_container}>
+                            <div className={styles.user_info}>
                             </div>
-                            <div className="comment_info">
+                            <div className={styles.comment_info}>
                                 <div className={styles.comment_top}>
-                                    <p className={styles.author_name}>{comment.snippet.topLevelComment.snippet.authorDisplayName}</p>
-                                    <span className={styles.comment_date}>{`${this.getDiffDate(comment.snippet.topLevelComment.snippet.publishedAt)} 전`}</span>
+                                    <p className={styles.author_name}>{topLevelComment.snippet.authorDisplayName}</p>
+                                    <span className={styles.comment_date}>{`${this.getDiffDate(topLevelComment.snippet.publishedAt)} 전`}</span>
                                 </div>
                                 <span dangerouslySetInnerHTML={textHTML}></span>
                             </div>
