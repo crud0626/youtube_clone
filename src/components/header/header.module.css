@@ -166,6 +166,7 @@ header {
 .login_btn {
   justify-content: space-evenly;
   width: 99.5px;
+  margin-left: 8px;
   padding: 5px 11px;
   border: 1px solid rgb(6, 95, 212);
   border-radius: 3px;

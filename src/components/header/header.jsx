@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import styles from './header.module.css';
 
-class Header extends Component {
+class Header extends PureComponent {
     constructor(props) {
         super(props);
         this.inputRef = React.createRef();

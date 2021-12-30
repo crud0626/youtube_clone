@@ -5,8 +5,7 @@
   list-style: none;
 }
 
-/* 클래스명 변경예정. */
-.noVideo {
+.notSelectedVideo {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-evenly;

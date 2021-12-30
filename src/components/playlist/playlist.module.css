@@ -5,17 +5,17 @@
 }
 
 /* 클래스명 변경 예정. */
-.noVideo {
+.notSelectedVideo {
   flex-direction: column;
   flex: 1 23%;
   min-width: 240px;
 }
 
-.noVideo > img {
+.notSelectedVideo > img {
   width: 100%;
 }
 
-.noVideo > .thumbnail_container {
+.notSelectedVideo > .thumbnail_container {
   width: 100%;
 }
 

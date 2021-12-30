@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import styles from "./playlist.module.css";
 
-class PlayList extends Component {
+class PlayList extends PureComponent {
     sendVideoId = () => {
         this.props.clickedVideo(this.props.video);
     }
@@ -21,13 +21,13 @@ class PlayList extends Component {
     }
 
     render() {
-        /* 클래스명 변경예정. */
-        const videoLayout= this.props.selected ? styles.selectedVideo : styles.noVideo;
+        const videoLayout= this.props.selected ? styles.selectedVideo : styles.notSelectedVideo;
         const video = this.props.video;
+        console.log(video);
         return (
             <li key={video.id} className={`${styles.playlist} ${videoLayout}`} onClick={this.sendVideoId}>
                 <div className={styles.thumbnail_container}>
-                    <img className={styles.thumbnail} src={video.snippet.thumbnails.medium.url} alt="videoThumbnail" />
+                    <img className={styles.thumbnail} src={video.snippet.thumbnails.medium.url} alt="video thumbnail" />
                     <div className={styles.video_duration}>
                         <span>{this.sendDuration()}</span>
                     </div>

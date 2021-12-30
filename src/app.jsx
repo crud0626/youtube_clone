@@ -3,7 +3,8 @@ import './App.css';
 import React, { Component } from 'react';
 import Header from './components/header/header';
 import VideoSection from './components/videosection/videosection';
-import PlayLists from './components/playlists/playlists';
+import PlaylistContainer from './components/playlist_container/playlist_container';
+
 
 class App extends Component {
   state = {
@@ -38,8 +39,6 @@ class App extends Component {
   }
 
   // 왜 여기에 하위컴포넌트에서는 못부르고 여기서만 가능하지? 여기서도 prop으로 받는건데?
-  // videosection쪽 좋아요 하는거 안됨. 조회수는 잘되는데 왜 videosection쪽에서 안되지?
-  // 안될꺼면 playlists에서도 안되야지;
   convertCount = (num) => {
     return this.props.calc.convertCount(num);
   }
@@ -70,7 +69,7 @@ class App extends Component {
           calcDiffDate={this.calcDiffDate}
         />
         }
-          <PlayLists 
+          <PlaylistContainer 
             videos={this.state.videos}
             clickedVideo={this.clickedVideo}
             selected={selected}

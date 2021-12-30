@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
-import Comments from '../comments/comments';
+import React, { PureComponent } from 'react';
+import CommentsContainer from '../comments_container/comments_container';
 import styles from './videosection.module.css';
 
-class VideoSection extends Component {
+class VideoSection extends PureComponent {
     displayVideoDate = () => {
         const date = new Date(this.props.currentVid.snippet.publishedAt);
         return `${date.getFullYear()}. ${date.getMonth()}. ${date.getDate()}.`;
@@ -118,7 +118,7 @@ class VideoSection extends Component {
                     
                 </div>
                 <div className='separateLine'></div>
-                <Comments 
+                <CommentsContainer 
                     comments={this.props.comments}
                     calcDiffDate={this.props.calcDiffDate}
                 />
