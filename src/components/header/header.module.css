@@ -136,6 +136,7 @@ header {
   display: flex;
   align-items: center;
   position: relative;
+  padding: 8px;
   border: none;
   background-color: white;
   cursor: pointer;
@@ -162,14 +163,10 @@ header {
   justify-content: flex-end;
 }
 
-.right > .btns {
-  /* background-color: white; */
-  padding: 8px;
-}
-
 .login_btn {
   justify-content: space-evenly;
   width: 99.5px;
+  padding: 5px 11px;
   border: 1px solid rgb(6, 95, 212);
   border-radius: 3px;
   color: rgb(6, 95, 212);

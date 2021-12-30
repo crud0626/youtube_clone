@@ -95,13 +95,13 @@ class VideoSection extends Component {
                 </div>
                 <div className='separateLine'></div>
                 <div className={styles.author_info_container}>
-                    <div className={styles.author_info_left}>
+                    <a href={`https://www.youtube.com/channel/${currentVid.snippet.channelId}`} target="_blank" rel="noreferrer" className={styles.author_info_left}>
                         <img src={currentVid.channel.snippet.thumbnails.default.url} alt="channelImage" />
-                    </div>
+                    </a>
                     <div className={styles.author_info_right}>
                         <a 
                             href={`https://www.youtube.com/channel/${currentVid.snippet.channelId}`} 
-                            target="_blank" rel="noopener noreferrer" 
+                            target="_blank" rel="noreferrer"
                             className={styles.channel}
                             title={currentVid.snippet.channelTitle}
                         >

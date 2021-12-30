@@ -15,11 +15,12 @@ class Comments extends Component {
                     const textHTML = {__html: topLevelComment.snippet.textDisplay}
                     return (
                         <li key={topLevelComment.id} className={styles.comment_container}>
-                            <div className={styles.user_info}>
-                            </div>
+                            <a href={topLevelComment.snippet.authorChannelUrl} target="_blank" rel='noreferrer' className={styles.author_thumbnail}>
+                                <img src={topLevelComment.snippet.authorProfileImageUrl} alt="author thumbnail" />
+                            </a>
                             <div className={styles.comment_info}>
                                 <div className={styles.comment_top}>
-                                    <p className={styles.author_name}>{topLevelComment.snippet.authorDisplayName}</p>
+                                    <a href={topLevelComment.snippet.authorChannelUrl} target="_blank" rel='noreferrer' className={styles.author_name}>{topLevelComment.snippet.authorDisplayName}</a>
                                     <span className={styles.comment_date}>{`${this.getDiffDate(topLevelComment.snippet.publishedAt)} 전`}</span>
                                 </div>
                                 <span dangerouslySetInnerHTML={textHTML}></span>
