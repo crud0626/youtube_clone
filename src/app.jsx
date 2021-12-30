@@ -1,12 +1,9 @@
-import './app.css';
+import './App.css';
 
 import React, { Component } from 'react';
 import Header from './components/header/header';
 import VideoSection from './components/videosection/videosection';
 import PlayLists from './components/playlists/playlists';
-// import Calculator from './service/calculator';
-
-// const calc = new Calculator();
 
 class App extends Component {
   state = {
