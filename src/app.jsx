@@ -34,7 +34,7 @@ class App extends Component {
   moveToMain = () => {
     this.props.youtube
     .getMostPopular()
-    .then(videos => this.setState({videos, getChannelInfourrentVid: {}}));
+    .then(videos => this.setState({videos, currentVid: {}}));
   }
 
   // 왜 여기에 하위컴포넌트에서는 못부르고 여기서만 가능하지? 여기서도 prop으로 받는건데?
