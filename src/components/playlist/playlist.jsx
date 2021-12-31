@@ -23,7 +23,6 @@ class PlayList extends PureComponent {
     render() {
         const videoLayout= this.props.selected ? styles.selectedVideo : styles.notSelectedVideo;
         const video = this.props.video;
-        console.log(video);
         return (
             <li key={video.id} className={`${styles.playlist} ${videoLayout}`} onClick={this.sendVideoId}>
                 <div className={styles.thumbnail_container}>

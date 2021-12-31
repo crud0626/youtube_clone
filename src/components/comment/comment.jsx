@@ -21,7 +21,7 @@ class Comment extends PureComponent {
                 <div className={styles.comment_info}>
                     <div className={styles.comment_top}>
                         <a href={this.props.topLevelComment.snippet.authorChannelUrl} target="_blank" rel='noreferrer' className={styles.author_name}>{this.props.topLevelComment.snippet.authorDisplayName}</a>
-                        <span className={styles.comment_date}>{`${this.props.getDiffDate} 전`}</span>
+                        <span className={styles.comment_date}>{`${this.getDiffDate()} 전`}</span>
                     </div>
                     <span id='span' dangerouslySetInnerHTML={textHTML}></span>
                 </div>

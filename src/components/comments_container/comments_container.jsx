@@ -11,17 +11,27 @@ class CommentsContainer extends PureComponent {
         }
     }
 
+    convertCommentCount = () => {
+        const count = parseInt(this.props.commentCount);
+        return count.toLocaleString("en");
+    }
+
 
     render() {
         return (
-            <ul className={styles.comments}>
-                {this.props.comments.map(({snippet : {topLevelComment}}) => (
-                    <Comment
-                        topLevelComment = {topLevelComment}
-                        calcDiffDate={this.props.calcDiffDate}
-                    />
-                ))}
-            </ul>
+            <>
+                <div className={styles.comments_top}>
+                    <h3>{`댓글 ${this.convertCommentCount()} 개`}</h3>
+                </div>
+                <ul className={styles.comments}>
+                    {this.props.comments.map(({snippet : {topLevelComment}}) => (
+                        <Comment
+                            topLevelComment = {topLevelComment}
+                            calcDiffDate={this.props.calcDiffDate}
+                        />
+                    ))}
+                </ul>
+            </>
         );
     }
 }

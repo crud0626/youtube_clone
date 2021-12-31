@@ -119,6 +119,7 @@ class VideoSection extends PureComponent {
                 </div>
                 <div className='separateLine'></div>
                 <CommentsContainer 
+                    commentCount={this.props.currentVid.statistics.commentCount}
                     comments={this.props.comments}
                     calcDiffDate={this.props.calcDiffDate}
                 />
