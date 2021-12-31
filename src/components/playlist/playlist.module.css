@@ -4,7 +4,6 @@
   cursor: pointer;
 }
 
-/* 클래스명 변경 예정. */
 .notSelectedVideo {
   flex-direction: column;
   flex: 1 23%;
