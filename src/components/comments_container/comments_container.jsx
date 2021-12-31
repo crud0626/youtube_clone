@@ -3,7 +3,6 @@ import Comment from '../comment/comment';
 import styles from './comments_container.module.css';
 
 class CommentsContainer extends PureComponent {
-    
     componentDidMount = () => {
         const spans = document.querySelectorAll('#span');
         for (let i = 0; i < spans.length; i++) {
@@ -11,17 +10,11 @@ class CommentsContainer extends PureComponent {
         }
     }
 
-    convertCommentCount = () => {
-        const count = parseInt(this.props.commentCount);
-        return count.toLocaleString("en");
-    }
-
-
     render() {
         return (
             <>
                 <div className={styles.comments_top}>
-                    <h3>{`댓글 ${this.convertCommentCount()} 개`}</h3>
+                    <h3>{`댓글 ${Number(this.props.commentCount).toLocaleString("en")} 개`}</h3>
                 </div>
                 <ul className={styles.comments}>
                     {this.props.comments.map(({snippet : {topLevelComment}}) => (

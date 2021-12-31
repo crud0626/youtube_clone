@@ -8,11 +8,6 @@ class VideoSection extends PureComponent {
         return `${date.getFullYear()}. ${date.getMonth()}. ${date.getDate()}.`;
     }
 
-    convertViewCount = () => {
-        const count = parseInt(this.props.currentVid.statistics.viewCount);
-        return count.toLocaleString("en");
-    }
-
     convertShortCount = (count) => (
         this.props.convertCount(count)
     );
@@ -52,7 +47,7 @@ class VideoSection extends PureComponent {
                     <h3 className={styles.video_title}>{currentVid.snippet.title}</h3>
                     <div className={styles.video_info}>
                         <div className={styles.video_info_left}>
-                            <span>{`${this.convertViewCount()}회`}</span>
+                            <span>{`${Number(this.props.currentVid.statistics.viewCount).toLocaleString("en")}회`}</span>
                             <span>{" • "}</span>
                             <span>{this.displayVideoDate()}</span>
                         </div>
