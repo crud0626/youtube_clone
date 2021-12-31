@@ -9,6 +9,8 @@ class Comment extends PureComponent {
         return this.props.calcDiffDate(parseInt((now - publishDate) / 60000));
     }
 
+
+
     render() {
         const textHTML = {__html: this.props.topLevelComment.snippet.textDisplay};
         return (
@@ -21,7 +23,7 @@ class Comment extends PureComponent {
                         <a href={this.props.topLevelComment.snippet.authorChannelUrl} target="_blank" rel='noreferrer' className={styles.author_name}>{this.props.topLevelComment.snippet.authorDisplayName}</a>
                         <span className={styles.comment_date}>{`${this.props.getDiffDate} 전`}</span>
                     </div>
-                    <span dangerouslySetInnerHTML={textHTML}></span>
+                    <span id='span' dangerouslySetInnerHTML={textHTML}></span>
                 </div>
             </li>
         );

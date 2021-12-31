@@ -67,18 +67,24 @@ header {
   border-radius: 3px 0 0 3px;
 }
 
-.searchbar:focus-within {
-  border: 1px solid black;
+/* test */
+.input_form {
+  flex: 1 1 100%;
+  height: 100%;
 }
 
-.searchbar > input {
-  flex: 1 1 100%;
+.input_form > input {
+  width: 100%;
   height: 100%;
   border: none;
   outline: none;
   padding: 0 0 0 7px;
   font-size: 1rem;
   outline: none;
+}
+
+.searchbar:focus-within {
+  border: 1px solid black;
 }
 
 .input_icons_container {
@@ -97,6 +103,8 @@ header {
 
 .input_icon:last-child {
   margin-left: 0;
+  width: 20px;
+  height: 20px;
 }
 
 .input_icon:hover {
