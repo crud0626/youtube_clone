@@ -2,11 +2,9 @@ import axios from "axios";
 
 const decode = require('unescape');
 export default class YoutubeAxios {
-    constructor(key) {
-        this.key = key;
+    constructor() {
         this.youtube = axios.create({
-            baseURL: "https://youtube.googleapis.com/youtube/v3",
-            params: {key: key},
+            baseURL: "https://crud0626-serverless-youtube.netlify.app/youtube/v3",
         })
     }
 

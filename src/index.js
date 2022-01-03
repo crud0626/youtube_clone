@@ -6,7 +6,7 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './app';
 
-const youtubeAxios = new YoutubeAxios(process.env.REACT_APP_YOUTUBE_API_KEY);
+const youtubeAxios = new YoutubeAxios();
 const calc = new Calculator();
 
 ReactDOM.render(

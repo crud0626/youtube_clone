@@ -24,18 +24,22 @@ class App extends Component {
       videos: videos,
       currentVid: {}
     }))
+    
+    
   }
 
   clickedVideo = (video) => {
     this.props.youtube
     .getCurrentVidInfo(video)
     .then(currentVid => this.setState({currentVid}))
+    .catch(console.log(`Cannot load datas`))
   }
 
   moveToMain = () => {
     this.props.youtube
     .getMostPopular()
-    .then(videos => this.setState({videos, currentVid: {}}));
+    .then(videos => this.setState({videos, currentVid: {}}))
+    .catch(console.log(`Cannot load datas`))
   }
 
   // 왜 여기에 하위컴포넌트에서는 못부르고 여기서만 가능하지? 여기서도 prop으로 받는건데?
