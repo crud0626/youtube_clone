@@ -120,7 +120,7 @@ class VideoSection extends PureComponent {
                         </a>
                         <span>{`구독자 ${this.convertShortCount(currentVid.channel.statistics.subscriberCount)}명`}</span>
                         <div className={styles.desc_container}>
-                            <span id='expander' ref={this.descRef} className={`${styles.video_desc} shortcut`}>{currentVid.snippet.description}</span>
+                            <pre id='expander' ref={this.descRef} className={`${styles.video_desc} shortcut`}>{currentVid.snippet.description}</pre>
                             {this.state.textOver && <button className={styles.desc_btn} onClick={this.onDescButton}>더보기</button>}
                         </div>
                         
