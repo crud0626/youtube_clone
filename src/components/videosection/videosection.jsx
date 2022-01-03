@@ -5,7 +5,7 @@ import styles from './videosection.module.css';
 class VideoSection extends PureComponent {
     displayVideoDate = () => {
         const date = new Date(this.props.currentVid.snippet.publishedAt);
-        return `${date.getFullYear()}. ${date.getMonth()}. ${date.getDate()}.`;
+        return `${date.getFullYear()}. ${date.getMonth() + 1}. ${date.getDate()}.`;
     }
 
     convertShortCount = (count) => (
