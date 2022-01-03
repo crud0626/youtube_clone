@@ -3,6 +3,14 @@ import CommentsContainer from '../comments_container/comments_container';
 import styles from './videosection.module.css';
 
 class VideoSection extends PureComponent {
+    constructor(props) {
+        super(props);
+        this.descRef = React.createRef();
+        this.state = {
+            textOver: false
+        }
+    }
+
     displayVideoDate = () => {
         const date = new Date(this.props.currentVid.snippet.publishedAt);
         return `${date.getFullYear()}. ${date.getMonth() + 1}. ${date.getDate()}.`;
@@ -11,19 +19,27 @@ class VideoSection extends PureComponent {
     convertShortCount = (count) => (
         this.props.convertCount(count)
     );
+    
+    onDescButton = (event) => {
+        const target = event.target.previousSibling;
 
-    onDescButton = (e) => {
-        const desc = document.querySelector("#desc");
-        if (e.target.dataset.func === "more") {
-            desc.style.overflow = "visible";
-            desc.style.height = "auto";
-            e.target.classList.add("hidden");
-            e.target.nextSibling.classList.remove("hidden");
-        } else {
-            desc.style.overflow = "hidden";
-            desc.style.height = "45px";
-            e.target.classList.add("hidden");
-            e.target.previousSibling.classList.remove("hidden");
+        if (target.matches("#expander")) {
+            target.classList.remove("expander");
+            target.classList.add("shortcut");
+            target.id = "shortcut";
+            event.target.innerText = "더보기";
+            return;
+        }
+        target.classList.remove("shortcut");
+        target.classList.add("expander");
+        target.id = "expander";
+        event.target.innerText = "간략히";
+        return;
+    }
+
+    componentDidMount = () => {
+        if (this.descRef.current.clientHeight < this.descRef.current.scrollHeight) {
+            this.setState({textOver: true})
         }
     }
 
@@ -104,9 +120,8 @@ class VideoSection extends PureComponent {
                         </a>
                         <span>{`구독자 ${this.convertShortCount(currentVid.channel.statistics.subscriberCount)}명`}</span>
                         <div className={styles.desc_container}>
-                            <pre id='desc' className={styles.video_desc}>{currentVid.snippet.description}</pre>
-                            <button data-func="more" className={styles.desc_btn} onClick={this.onDescButton}>더보기</button>
-                            <button data-func="less" className={`${styles.desc_btn} hidden`} onClick={this.onDescButton}>간략히</button>
+                            <span id='expander' ref={this.descRef} className={`${styles.video_desc} shortcut`}>{currentVid.snippet.description}</span>
+                            {this.state.textOver && <button className={styles.desc_btn} onClick={this.onDescButton}>더보기</button>}
                         </div>
                         
                     </div>

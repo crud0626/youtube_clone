@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import Comment from '../comment/comment';
 import styles from './comments_container.module.css';
 
-class CommentsContainer extends PureComponent {
+class CommentsContainer extends PureComponent {    
     render() {
         return (
             <>
