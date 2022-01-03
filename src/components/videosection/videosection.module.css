@@ -54,9 +54,15 @@
   display: flex;
 }
 
-.author_info_left > img {
+.author_info_left {
   width: 48px;
+  height: 48px;
   border-radius: 50%;
+}
+
+.author_info_left > img {
+  width: 100%;
+  height: 100%;
 }
 
 .author_info_right {

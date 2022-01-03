@@ -41,7 +41,7 @@ class Comment extends PureComponent {
     }
 
     render() {
-        const textHTML = {__html: this.props.topLevelComment.snippet.textDisplay};
+        const spanRef = {__html: this.props.topLevelComment.snippet.textDisplay};
         return (
             <li key={this.props.topLevelComment.id} className={styles.comment_container}>
                 <a href={this.props.topLevelComment.snippet.authorChannelUrl} target="_blank" rel='noreferrer' className={styles.author_thumbnail}>
@@ -54,7 +54,7 @@ class Comment extends PureComponent {
                     </div>
                     <div className={styles.info_bottom}>
                         <div ref={this.ref} className={`${styles.span_container} shortcut`}>
-                            <span dangerouslySetInnerHTML={textHTML}></span>
+                            <span dangerouslySetInnerHTML={spanRef}></span>
                         </div>
                         {this.state.textOver && <button className="toggle" onClick={this.onClickToggle}>자세히 보기</button>}
                     </div>
