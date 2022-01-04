@@ -43,7 +43,7 @@ class Comment extends PureComponent {
     render() {
         const spanRef = {__html: this.props.topLevelComment.snippet.textDisplay};
         return (
-            <li key={this.props.topLevelComment.id} className={styles.comment_container}>
+            <li className={styles.comment_container}>
                 <a href={this.props.topLevelComment.snippet.authorChannelUrl} target="_blank" rel='noreferrer' className={styles.author_thumbnail}>
                     <img src={this.props.topLevelComment.snippet.authorProfileImageUrl} alt="author thumbnail" />
                 </a>

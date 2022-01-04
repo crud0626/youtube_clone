@@ -12,6 +12,7 @@ class CommentsContainer extends PureComponent {
                 <ul className={styles.comments}>
                     {this.props.comments.map(({snippet : {topLevelComment}}) => (
                         <Comment
+                            key={topLevelComment.id}
                             topLevelComment = {topLevelComment}
                             calcDiffDate={this.props.calcDiffDate}
                         />
