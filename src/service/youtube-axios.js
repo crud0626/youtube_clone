@@ -18,12 +18,7 @@ export default class YoutubeAxios {
             }
         })
 
-        const items = response.data.items;
-
-        // 변환.
-        // 얘 함수로 빼고 싶은데 배열로 받음. 그래서 function (count, ...args)로 해서 배열로 어떻게 가능하지않을까?
-
-        items.map(item => {
+        const items = response.data.items.map(item => {
             item.snippet.title = decode(item.snippet.title, 'all');
             item.snippet.description = decode(item.snippet.description, 'all');
             return item;
@@ -42,36 +37,37 @@ export default class YoutubeAxios {
                 fields : 'items(id,snippet)',
             }
         })
+        
         const items = JSON.parse(JSON.stringify(response.data.items));
 
-        items.map(item => (
-            item.id = item.id.videoId
-        ));
-
-        //검색 및 댓글에도 적용해야해서 async로 함수화 시켜야할 것 같다.
         items.map(item => {
+            item.id = item.id.videoId;
             item.snippet.title = decode(item.snippet.title, 'all');
             item.snippet.description = decode(item.snippet.description, 'all');
             return item;
         })
+
+        const itemsWithInfo = await this.getVideosInfo(items);
         
-        // ID가져오기.
+        return itemsWithInfo;
+    }
+
+    async getVideosInfo(items) {
         const IDs = [];
         items.forEach(item => {
             IDs.push(item.id);
         })
 
-        const otherInfos = await this.youtube.get('videos', {
+        const Infos = await this.youtube.get('videos', {
             params: {
                 part: 'contentDetails,statistics',
                 id: IDs.join(','),
                 fields: 'items(contentDetails,statistics)'
             }
         });
-        
-        // for문이 아닌 assign메소드로만 사용 가능한지 확인해보기.
+
         for(let i = 0; i < items.length; i++) {
-            Object.assign(items[i], otherInfos.data.items[i]);
+            Object.assign(items[i], Infos.data.items[i]);
         }
 
         return items;
@@ -88,13 +84,14 @@ export default class YoutubeAxios {
             }
         })
 
-        response.data.items.map(item => {
-            item.snippet.topLevelComment.snippet.authorDisplayName = decode(item.snippet.topLevelComment.snippet.authorDisplayName, 'all');
-            item.snippet.topLevelComment.snippet.textDisplay = decode(item.snippet.topLevelComment.snippet.textDisplay, 'all');
+        const items = response.data.items.map(item => {
+            const snippet = item.snippet.topLevelComment.snippet;
+            snippet.authorDisplayName = decode(snippet.authorDisplayName, 'all');
+            snippet.textDisplay = decode(snippet.textDisplay, 'all');
             return item;
         })
         
-        return response.data.items;
+        return items;
     }
 
     async getChannelInfo(id) {
