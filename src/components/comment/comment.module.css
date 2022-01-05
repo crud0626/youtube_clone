@@ -1,3 +1,5 @@
+@value linkColor, grayLight from '../../common/colors.css';
+
 .comment_container {
   display: flex;
   margin: 0 0 16px 0;
@@ -22,7 +24,7 @@
   margin-bottom: 3px;
 }
 
-.info_bottom * {
+.info_bottom {
   font-size: 14px;
 }
 
@@ -34,16 +36,14 @@
 
 .comment_date {
   padding-left: 5px;
-  color: gray;
+  color: grayLight;
   font-size: 0.7rem;
 }
 
 a {
-  color: rgb(6, 95, 212);
+  color: linkColor;
   text-decoration: none;
 }
-
-/*  test */
 
 .span_container {
   display: -webkit-box;

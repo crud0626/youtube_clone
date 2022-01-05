@@ -1,3 +1,5 @@
+@value grayLight from '../../common/colors.css';
+
 .videosection_container {
   flex: 1 1 65%;
   padding-right: 8px;
@@ -46,7 +48,7 @@
   height: 40px;
   justify-content: space-between;
   align-items: center;
-  color: rgb(96, 96, 96);
+  color: grayLight;
   font-size: 0.9rem;
 }
 
@@ -76,7 +78,7 @@
 
 .author_info_right > span {
   font-size: 0.8rem;
-  color: rgb(96, 96, 96);
+  color: grayLight;
   display: block;
 }
 
@@ -97,7 +99,7 @@
   margin-top: 8px;
   padding: 0;
   border: none;
-  color: rgb(96, 96, 96);
+  color: grayLight;
   background-color: transparent;
   font-size: 12px;
   cursor: pointer;
