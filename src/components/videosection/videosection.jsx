@@ -43,6 +43,14 @@ class VideoSection extends PureComponent {
         }
     }
 
+    componentDidUpdate = () => {
+        if (this.descRef.current.clientHeight < this.descRef.current.scrollHeight) {
+            this.setState({textOver: true})
+        } else {
+            this.setState({textOver: false})
+        }
+    }
+
     render() {
         const currentVid = this.props.currentVid;
         return (
@@ -106,7 +114,7 @@ class VideoSection extends PureComponent {
                 </div>
                 <div className='separateLine'></div>
                 <div className={styles.author_info_container}>
-                    <a href={`https://www.youtube.com/channel/${currentVid.snippet.channelId}`} target="_blank" rel="noreferrer" className={styles.author_info_left}>
+                    <a className={styles.author_info_left} href={`https://www.youtube.com/channel/${currentVid.snippet.channelId}`} target="_blank" rel="noreferrer" >
                         <img src={currentVid.channel.snippet.thumbnails.default.url} alt="channelImage" />
                     </a>
                     <div className={styles.author_info_right}>

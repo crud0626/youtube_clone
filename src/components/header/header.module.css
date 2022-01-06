@@ -21,16 +21,14 @@ header {
   justify-content: flex-start;
   align-items: center;
   cursor: pointer;
-}
-
-.left > img {
-  width: 30px;
-}
-
-.left > h1 {
-  margin: 0;
-  padding-left: 2px;
-  font-size: 24px;
+  & img {
+    width: 30px;
+  }
+  & h1 {
+    margin: 0;
+    padding-left: 2px;
+    font-size: 24px;
+  }
 }
 
 .center {
@@ -40,10 +38,9 @@ header {
   align-items: center;
   padding: 0 30px;
   height: 70%;
-}
-
-.center button {
-  cursor: pointer;
+  & button {
+    cursor: pointer;
+  }
 }
 
 .searchbar_container {
@@ -51,12 +48,11 @@ header {
   display: flex;
   align-items: center;
   height: 100%;
-}
-
-.searchbar_container > button {
-  border: 1px solid #d3d3d3;
-  border-radius: 0 3px 3px 0;
-  background: #f8f8f8;
+  & > button {
+    border: 1px solid #d3d3d3;
+    border-radius: 0 3px 3px 0;
+    background: #f8f8f8;
+  }
 }
 
 .searchbar {
@@ -67,25 +63,22 @@ header {
   height: 100%;
   border: blackBoder;
   border-radius: 3px 0 0 3px;
-}
-
-.input_form {
-  flex: 1 1 100%;
-  height: 100%;
-}
-
-.input_form > input {
-  width: 100%;
-  height: 100%;
-  border: none;
-  outline: none;
-  padding: 0 0 0 7px;
-  font-size: 1rem;
-  outline: none;
-}
-
-.searchbar:focus-within {
-  border: blackBoder;
+  & .input_form {
+    flex: 1 1 100%;
+    height: 100%;
+    & input {
+      width: 100%;
+      height: 100%;
+      border: none;
+      outline: none;
+      padding: 0 0 0 7px;
+      font-size: 1rem;
+      outline: none;
+    }
+  }
+  &:focus-within {
+    border: 1px solid black;
+  }
 }
 
 .input_icons_container {
@@ -100,16 +93,14 @@ header {
   font-size: 19px;
   color: grayLight;
   opacity: 0.6;
-}
-
-.input_icon:last-child {
-  margin-left: 0;
-  width: 20px;
-  height: 20px;
-}
-
-.input_icon:hover {
-  opacity: 0.8;
+  &:last-child {
+    margin-left: 0;
+    width: 20px;
+    height: 20px;
+  }
+  &:hover {
+    opacity: 0.8;
+  }
 }
 
 .search_icon {
@@ -118,14 +109,12 @@ header {
   height: 100%;
   justify-content: center;
   align-items: center;
-}
-
-.search_icon:hover {
-  background-color: #f0f0f0;
-}
-
-.search_icon > img {
-  width: 24px;
+  &:hover {
+    background-color: #f0f0f0;
+  }
+  & img {
+    width: 24px;
+  }
 }
 
 .voiceBtn {
@@ -141,48 +130,47 @@ header {
   font-size: 1.2rem;
 }
 
-.right_btns {
-  display: flex;
-  align-items: center;
-  padding: 8px;
-  border: none;
-  background-color: white;
-  cursor: pointer;
-}
-
 .btns[title] {
   position: relative;
-}
-
-.btns[title]:hover::after {
-  content: attr(title);
-  position: absolute;
-  width: max-content;
-  top: 100%;
-  left: 0;
-  padding: 7px 5px;
-  font-size: 12px;
-  color: white;
-  border-radius: 5px;
-  background-color: rgba(0, 0, 0, 0.6);
-  cursor: auto;
-  z-index: 1;
+  &:hover::after {
+    content: attr(title);
+    position: absolute;
+    width: max-content;
+    top: 100%;
+    left: 0;
+    padding: 7px 5px;
+    font-size: 12px;
+    color: white;
+    border-radius: 5px;
+    background-color: rgba(0, 0, 0, 0.6);
+    cursor: auto;
+    z-index: 1;
+  }
 }
 
 .right {
   min-width: 225px;
   display: flex;
   justify-content: flex-end;
-}
 
-.login_btn {
-  justify-content: space-evenly;
-  width: 99.5px;
-  margin-left: 8px;
-  padding: 5px 11px;
-  border: 1px solid linkColor;
-  border-radius: 3px;
-  color: linkColor;
-  fill: linkColor;
-  font-size: 14px;
+  & > .right_btns {
+    display: flex;
+    align-items: center;
+    padding: 8px;
+    border: none;
+    background-color: white;
+    cursor: pointer;
+  }
+
+  & > .login_btn {
+    justify-content: space-evenly;
+    width: 99.5px;
+    margin-left: 8px;
+    padding: 5px 11px;
+    border: 1px solid linkColor;
+    border-radius: 3px;
+    color: linkColor;
+    fill: linkColor;
+    font-size: 14px;
+  }
 }

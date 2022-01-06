@@ -59,29 +59,32 @@ class App extends Component {
     const selected = Object.keys(this.state.currentVid).length !== 0 ? true : false;
     return (
       <>
-      <Header
-        moveToMain = {this.moveToMain} 
-        onSearch = {this.searchVideos}
-      />
-      <section>
-        {
-        selected && 
-        <VideoSection 
-          currentVid={this.state.currentVid} 
-          comments={this.state.currentVid.comments}
-          convertCount={this.convertCount}
-          calcDiffDate={this.calcDiffDate}
+        <Header
+          moveToMain = {this.moveToMain} 
+          onSearch = {this.searchVideos}
         />
-        }
-          <PlaylistContainer 
-            videos={this.state.videos}
-            clickedVideo={this.clickedVideo}
-            selected={selected}
+        <section>
+          {
+          selected && 
+          <VideoSection 
+            currentVid={this.state.currentVid} 
+            comments={this.state.currentVid.comments}
             convertCount={this.convertCount}
             calcDiffDate={this.calcDiffDate}
-            convertVideoDuration={this.convertVideoDuration}
           />
-      </section>
+          }
+            <PlaylistContainer 
+              videos={this.state.videos}
+              clickedVideo={this.clickedVideo}
+              selected={selected}
+              convertCount={this.convertCount}
+              calcDiffDate={this.calcDiffDate}
+              convertVideoDuration={this.convertVideoDuration}
+            />
+        </section>
+        <div className="App">
+          <div className="circle"></div>
+        </div>
       </>
     );
   }
