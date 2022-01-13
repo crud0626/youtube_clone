@@ -1,12 +1,11 @@
 import React, { PureComponent } from 'react';
-import { createRef } from 'react/cjs/react.development';
 import Comment from '../comment/comment';
 import styles from './comments_container.module.css';
 
 class CommentsContainer extends PureComponent {
     constructor(props) {
         super(props);
-        this.lastCommentRef = createRef();
+        this.lastCommentRef = React.createRef();
         this.observer = "";
     }
 

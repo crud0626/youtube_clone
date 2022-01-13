@@ -1,11 +1,11 @@
-import React, { createRef, PureComponent } from 'react';
+import React, { PureComponent } from 'react';
 import PlayList from '../playlist/playlist';
 import styles from './playlist_container.module.css';
 
 class PlaylistContainer extends PureComponent {
     constructor(props) {
         super(props);
-        this.lastVideoRef = createRef();
+        this.lastVideoRef = React.createRef();
         this.observer = "";
     }
 

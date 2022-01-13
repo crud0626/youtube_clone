@@ -9,6 +9,7 @@
     "@testing-library/user-event": "^12.1.10",
     "axios": "^0.24.0",
     "craco-alias": "^3.0.1",
+    "netlify-cli": "^8.6.23",
     "postcss-calc": "^8.0.0",
     "postcss-custom-properties": "^12.0.0",
     "react": "^17.0.2",

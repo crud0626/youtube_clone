@@ -25,6 +25,7 @@ yarn-error.log*
 # API key
 .env
 
+# Etc
 *.txt
 test.*
 src/service/youtube-fetch.js
