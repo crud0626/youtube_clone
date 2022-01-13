@@ -12,7 +12,8 @@ class App extends Component {
     currentVid: {},
     comments: {},
     isSearched: false,
-    nextPageToken: ""
+    nextPageToken: "",
+    searchQuery: ""
   }
 
   componentDidMount() {
@@ -22,23 +23,39 @@ class App extends Component {
   searchVideos = (query) => {
     this.props.youtube
     .getSearchVideos(query)
-    .then(videos => this.setState({
-      videos: videos,
-      currentVid: {}
+    .then(response => this.setState({
+      videos: response.items,
+      currentVid: {},
+      isSearched: true,
+      nextPageToken: response.nextPageToken,
+      searchQuery: query
     }))
   }
 
   getMoreVideos = () => {
-    this.props.youtube
-    .getNextVideos(this.state.nextPageToken)
-    .then(response => {
-      const data = [...this.state.videos];
-      data.push(...response.items);
-      this.setState({
-        videos: data,
-        nextPageToken: response.nextPageToken
+    if (this.state.isSearched) {
+      this.props.youtube
+      .getSearchVideos(this.state.searchQuery, this.state.nextPageToken)
+      .then(response => {
+        const data = [...this.state.videos];
+        data.push(...response.items);
+        this.setState({
+          videos: data,
+          nextPageToken: response.nextPageToken
+        })
       })
-    })
+    } else {
+      this.props.youtube
+      .getMostPopular(this.state.nextPageToken)
+      .then(response => {
+        const data = [...this.state.videos];
+        data.push(...response.items);
+        this.setState({
+          videos: data,
+          nextPageToken: response.nextPageToken
+        })
+      })
+    }
   }
 
   clickedVideo = (video) => {
@@ -51,7 +68,13 @@ class App extends Component {
   moveToMain = () => {
     this.props.youtube
     .getMostPopular()
-    .then(response => this.setState({videos: response.items, currentVid: {}, nextPageToken: response.nextPageToken}))
+    .then(response => this.setState({
+      videos: response.items, 
+      currentVid: {}, 
+      isSearched: false,
+      nextPageToken: response.nextPageToken,
+      searchQuery: ""
+    }))
     .catch(console.log(`Cannot load datas`))
   }
 

@@ -9,60 +9,45 @@ export default class YoutubeAxios {
         })
     }
 
-    async getMostPopular() {
-        const response = await this.youtube.get('videos', {
-            params: {
-                part: 'snippet,contentDetails,statistics',
-                chart: 'mostPopular',
-                maxResults: 24,
-                fields : 'items(id,snippet,contentDetails,statistics),nextPageToken',
-            }
-        })
+    async getMostPopular(token) {
+        const params = {
+            part: 'snippet,contentDetails,statistics',
+            chart: 'mostPopular',
+            maxResults: 24,
+            fields : 'items(id,snippet,contentDetails,statistics),nextPageToken',
+        }
 
-        const datas = response.data;
+        if (token) {
+            params.pageToken = token;
+        }
+        
+        const response = await this.youtube.get('videos', {params: params});
 
-        datas.items.map(item => {
+        const result = response.data;
+
+        result.items.map(item => {
             item.snippet.title = decode(item.snippet.title, 'all');
             item.snippet.description = decode(item.snippet.description, 'all');
             return item;
         })
 
-        return datas;
+        return result;
     }
 
-    // getMostPopular랑 token차이밖에 없음.
-    async getNextVideos(token) {
-        const response = await this.youtube.get('videos', {
-            params: {
-                part: 'snippet,contentDetails,statistics',
-                chart: 'mostPopular',
-                maxResults: 24,
-                pageToken: token,
-                fields : 'items(id,snippet,contentDetails,statistics),nextPageToken',
-            }
-        })
+    async getSearchVideos(query, token) {
+        const params = {
+            part: 'snippet',
+            maxResults: 24,
+            q: query,
+            type: 'video',
+            fields : 'items(id,snippet),nextPageToken',
+        };
 
-        const datas = response.data;
+        if (token) {
+            params.pageToken = token;
+        };
 
-        datas.items.map(item => {
-            item.snippet.title = decode(item.snippet.title, 'all');
-            item.snippet.description = decode(item.snippet.description, 'all');
-            return item;
-        })
-
-        return datas;
-    }
-
-    async getSearchVideos(query) {
-        const response = await this.youtube.get('search', {
-            params: {
-                part: 'snippet',
-                maxResults: 24,
-                q: query,
-                type: 'video',
-                fields : 'items(id,snippet)',
-            }
-        })
+        const response = await this.youtube.get('search', {params: params});
         
         const items = JSON.parse(JSON.stringify(response.data.items));
 
@@ -74,8 +59,10 @@ export default class YoutubeAxios {
         })
 
         const itemsWithInfo = await this.getVideosInfo(items);
+
+        const result = {items: itemsWithInfo, nextPageToken: response.data.nextPageToken};
         
-        return itemsWithInfo;
+        return result;
     }
 
     async getVideosInfo(items) {
