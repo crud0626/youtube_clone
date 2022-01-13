@@ -28,11 +28,12 @@ class App extends Component {
   }
 
   getMoreVideos = () => {
+    console.log("more!");
     this.props.youtube
     .getNextVideos(this.state.nextPageToken)
     .then(response => {
       const data = [...this.state.videos];
-      data.push(response.items);
+      data.push(...response.items);
       this.setState({
         videos: data,
         nextPageToken: response.nextPageToken
