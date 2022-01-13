@@ -4,7 +4,8 @@ const decode = require('unescape');
 export default class YoutubeAxios {
     constructor() {
         this.youtube = axios.create({
-            baseURL: "https://crud0626-serverless-youtube.netlify.app/youtube/v3",
+            // baseURL: "https://crud0626-serverless-youtube.netlify.app/youtube/v3",
+            baseURL: "https://eloquent-yalow-62a51f.netlify.app/youtube/v3",
         })
     }
 
@@ -14,17 +15,42 @@ export default class YoutubeAxios {
                 part: 'snippet,contentDetails,statistics',
                 chart: 'mostPopular',
                 maxResults: 24,
-                fields : 'items(id,snippet,contentDetails,statistics)',
+                fields : 'items(id,snippet,contentDetails,statistics),nextPageToken',
             }
         })
 
-        const items = response.data.items.map(item => {
+        const datas = response.data;
+
+        datas.items.map(item => {
             item.snippet.title = decode(item.snippet.title, 'all');
             item.snippet.description = decode(item.snippet.description, 'all');
             return item;
         })
 
-        return items;
+        return datas;
+    }
+
+    // getMostPopular랑 token차이밖에 없음.
+    async getNextVideos(token) {
+        const response = await this.youtube.get('videos', {
+            params: {
+                part: 'snippet,contentDetails,statistics',
+                chart: 'mostPopular',
+                maxResults: 24,
+                pageToken: token,
+                fields : 'items(id,snippet,contentDetails,statistics),nextPageToken',
+            }
+        })
+
+        const datas = response.data;
+
+        datas.items.map(item => {
+            item.snippet.title = decode(item.snippet.title, 'all');
+            item.snippet.description = decode(item.snippet.description, 'all');
+            return item;
+        })
+
+        return datas;
     }
 
     async getSearchVideos(query) {

@@ -10,7 +10,8 @@ class App extends Component {
   state = {
     videos: [],
     currentVid: {},
-    comments: {}
+    comments: {},
+    nextPageToken: ""
   }
 
   componentDidMount() {
@@ -24,8 +25,19 @@ class App extends Component {
       videos: videos,
       currentVid: {}
     }))
-    
-    
+  }
+
+  getMoreVideos = () => {
+    this.props.youtube
+    .getNextVideos(this.state.nextPageToken)
+    .then(response => {
+      const data = [...this.state.videos];
+      data.push(response.items);
+      this.setState({
+        videos: data,
+        nextPageToken: response.nextPageToken
+      })
+    })
   }
 
   clickedVideo = (video) => {
@@ -38,7 +50,7 @@ class App extends Component {
   moveToMain = () => {
     this.props.youtube
     .getMostPopular()
-    .then(videos => this.setState({videos, currentVid: {}}))
+    .then(response => this.setState({videos: response.items, currentVid: {}, nextPageToken: response.nextPageToken}))
     .catch(console.log(`Cannot load datas`))
   }
 
@@ -80,6 +92,7 @@ class App extends Component {
               convertCount={this.convertCount}
               calcDiffDate={this.calcDiffDate}
               convertVideoDuration={this.convertVideoDuration}
+              getMoreVideos={this.getMoreVideos}
             />
         </section>
         <div className="App">
