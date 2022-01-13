@@ -11,6 +11,7 @@ class App extends Component {
     videos: [],
     currentVid: {},
     comments: {},
+    isSearched: false,
     nextPageToken: ""
   }
 
@@ -28,7 +29,6 @@ class App extends Component {
   }
 
   getMoreVideos = () => {
-    console.log("more!");
     this.props.youtube
     .getNextVideos(this.state.nextPageToken)
     .then(response => {

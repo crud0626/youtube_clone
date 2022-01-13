@@ -10,22 +10,23 @@ class PlaylistContainer extends PureComponent {
     }
 
     setObserve = () => {
-        console.log(this.lastRef.current);
         const options = {
             root: null,
             rootMargin: '0px',
             threshold: 1
         }
 
-        this.observer = new IntersectionObserver(this.testObserver, options);
+        this.observer = new IntersectionObserver((entries) => {
+            if (entries[0].isIntersecting) {
+                this.testObserver();
+            }
+        },options)
         this.observer.observe(this.lastRef.current);
     }
 
     testObserver = () => {
-        console.log("observe!");
         this.props.getMoreVideos();
         this.observer.disconnect();
-        debugger;
     }
 
     render() {

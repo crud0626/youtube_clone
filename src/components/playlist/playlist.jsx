@@ -21,7 +21,6 @@ class PlayList extends PureComponent {
     }
 
     componentDidMount = () => {
-        console.log(this.props.video.snippet.title);
         if (this.props.lastRef) {
             this.props.setObserve()
         }
