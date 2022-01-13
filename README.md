@@ -29,6 +29,7 @@ Demo Link : [![Netlify Status](https://api.netlify.com/api/v1/badges/21afc7b3-a6
 2. 조회수, date, 구독자등의 데이터들이 데이터별, 페이지별로 표시되는 방식이 달라서 상황에 알맞는 데이터를 보여주기 위해 string을 변환하는 과정이 필요하였고</br> 이를 위한 별도의 모듈 파일을 만들어 적용
 3. 영상이 선택되었을 때 영상의 설명 및 댓글이 정해진 일정 줄을 넘기게 되면 toggle이 생성되어 사용자의 선택에 따라 해당 부분을 접고 펼 수 있음. (영상 설명의 경우 기존 유튜브에서는 적용되어있지 않으나 일관성있는게 좋다고 판단되어 영상 설명에도 적용)
 4. dotenv를 이용해 API key를 숨기고자 하였으나 Youtube DATA API의 특성상 요청 헤더에 노출되는것을 발견하였고</br> 현재 프로젝트가 CSR형태이기 때문에 Netlify의 serverless functions를 이용해 만들어진 오픈소스를 활용하여</br> redirect server를 통해 API key 노출 문제를 해결하였다.
+5. 댓글과 비디오에 대해 Intersection Observer API를 활용하여 Infinite Scrolling 적용
 
 ## 수정 예정
 
@@ -37,6 +38,5 @@ Demo Link : [![Netlify Status](https://api.netlify.com/api/v1/badges/21afc7b3-a6
 - [ ] React router 적용
 - [ ] nav 추가
 - [ ] 스켈레톤 UI 적용
-- [ ] 댓글 및 플레이리스트에 대해 infinite scrolling 적용
 - [ ] 로그인 기능
 - [ ] Redux 적용

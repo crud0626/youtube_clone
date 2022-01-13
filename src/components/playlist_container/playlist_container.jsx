@@ -5,7 +5,7 @@ import styles from './playlist_container.module.css';
 class PlaylistContainer extends PureComponent {
     constructor(props) {
         super(props);
-        this.lastRef = createRef();
+        this.lastVideoRef = createRef();
         this.observer = "";
     }
 
@@ -18,13 +18,13 @@ class PlaylistContainer extends PureComponent {
 
         this.observer = new IntersectionObserver((entries) => {
             if (entries[0].isIntersecting) {
-                this.testObserver();
+                this.catchObserver();
             }
         },options)
-        this.observer.observe(this.lastRef.current);
+        this.observer.observe(this.lastVideoRef.current);
     }
 
-    testObserver = () => {
+    catchObserver = () => {
         this.props.getMoreVideos();
         this.observer.disconnect();
     }
@@ -45,7 +45,7 @@ class PlaylistContainer extends PureComponent {
                                 convertCount={this.props.convertCount}
                                 calcDiffDate={this.props.calcDiffDate}
                                 convertVideoDuration={this.props.convertVideoDuration}
-                                lastRef={this.lastRef}
+                                lastVideoRef={this.lastVideoRef}
                                 setObserve={this.setObserve}
                             />
                         );

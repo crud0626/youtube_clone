@@ -4,8 +4,7 @@ const decode = require('unescape');
 export default class YoutubeAxios {
     constructor() {
         this.youtube = axios.create({
-            // baseURL: "https://crud0626-serverless-youtube.netlify.app/youtube/v3",
-            baseURL: "https://eloquent-yalow-62a51f.netlify.app/youtube/v3",
+            baseURL: "https://crud0626-serverless-youtube.netlify.app/youtube/v3",
         })
     }
 
@@ -21,7 +20,7 @@ export default class YoutubeAxios {
             params.pageToken = token;
         }
         
-        const response = await this.youtube.get('videos', {params: params});
+        const response = await this.youtube.get('videos', { params });
 
         const result = response.data;
 
@@ -86,25 +85,30 @@ export default class YoutubeAxios {
         return items;
     }
 
-    async getComment(currentId) {
-        const response = await this.youtube.get('commentThreads', {
-            params: {
-                part: 'snippet',
-                maxResults: 20,
-                order: 'relevance',
-                videoId: currentId,
-                fields: 'items'
-            }
-        })
+    async getComment(currentId, token) {
+        const params = {
+            part: 'snippet',
+            maxResults: 20,
+            order: 'relevance',
+            videoId: currentId,
+            fields: 'items,nextPageToken'
+        }
 
-        const items = response.data.items.map(item => {
+        if (token) {
+            params.pageToken = token;
+        }
+
+        const response = await this.youtube.get('commentThreads', {params: params})
+
+        const result = response.data;
+        result.items.map(item => {
             const snippet = item.snippet.topLevelComment.snippet;
             snippet.authorDisplayName = decode(snippet.authorDisplayName, 'all');
             snippet.textDisplay = decode(snippet.textDisplay, 'all');
             return item;
         })
         
-        return items;
+        return result;
     }
 
     async getChannelInfo(id) {
@@ -120,8 +124,15 @@ export default class YoutubeAxios {
 
     async getCurrentVidInfo(video) {
         const channel = await this.getChannelInfo(video.snippet.channelId);
+        video.channel = channel;
+
         const comments = await this.getComment(video.id);
-        const result = {...video, comments, channel};
+
+        const result = {
+            info: video,
+            comments: comments
+        };
+
         return result;
     }
 }

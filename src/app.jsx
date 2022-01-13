@@ -10,9 +10,10 @@ class App extends Component {
   state = {
     videos: [],
     currentVid: {},
-    comments: {},
+    comments: [],
     isSearched: false,
-    nextPageToken: "",
+    videoNextToken: "",
+    commentNextToken: "",
     searchQuery: ""
   }
 
@@ -27,7 +28,7 @@ class App extends Component {
       videos: response.items,
       currentVid: {},
       isSearched: true,
-      nextPageToken: response.nextPageToken,
+      videoNextToken: response.nextPageToken,
       searchQuery: query
     }))
   }
@@ -35,24 +36,24 @@ class App extends Component {
   getMoreVideos = () => {
     if (this.state.isSearched) {
       this.props.youtube
-      .getSearchVideos(this.state.searchQuery, this.state.nextPageToken)
+      .getSearchVideos(this.state.searchQuery, this.state.videoNextToken)
       .then(response => {
         const data = [...this.state.videos];
         data.push(...response.items);
         this.setState({
           videos: data,
-          nextPageToken: response.nextPageToken
+          videoNextToken: response.nextPageToken
         })
       })
     } else {
       this.props.youtube
-      .getMostPopular(this.state.nextPageToken)
+      .getMostPopular(this.state.videoNextToken)
       .then(response => {
         const data = [...this.state.videos];
         data.push(...response.items);
         this.setState({
           videos: data,
-          nextPageToken: response.nextPageToken
+          videoNextToken: response.nextPageToken
         })
       })
     }
@@ -61,8 +62,25 @@ class App extends Component {
   clickedVideo = (video) => {
     this.props.youtube
     .getCurrentVidInfo(video)
-    .then(currentVid => this.setState({currentVid}))
+    .then(response => this.setState({
+      currentVid: response.info,
+      comments: response.comments.items,
+      commentNextToken: response.comments.nextPageToken
+    }))
     .catch(console.log(`Cannot load datas`))
+  }
+
+  getMoreComments = () => {
+    this.props.youtube
+    .getComment(this.state.currentVid.id, this.state.commentNextToken)
+    .then(response => {
+      const comments = [...this.state.comments];
+      comments.push(...response.items);
+      this.setState({
+        comments: comments,
+        commentNextToken: response.nextPageToken
+      })
+    })
   }
 
   moveToMain = () => {
@@ -72,7 +90,7 @@ class App extends Component {
       videos: response.items, 
       currentVid: {}, 
       isSearched: false,
-      nextPageToken: response.nextPageToken,
+      videoNextToken: response.nextPageToken,
       searchQuery: ""
     }))
     .catch(console.log(`Cannot load datas`))
@@ -104,9 +122,10 @@ class App extends Component {
           selected && 
           <VideoSection 
             currentVid={this.state.currentVid} 
-            comments={this.state.currentVid.comments}
+            comments={this.state.comments}
             convertCount={this.convertCount}
             calcDiffDate={this.calcDiffDate}
+            getMoreComments={this.getMoreComments}
           />
           }
             <PlaylistContainer 
