@@ -14,7 +14,19 @@ class App extends Component {
     isSearched: false,
     videoNextToken: "",
     commentNextToken: "",
-    searchQuery: ""
+    searchQuery: "",
+    users: {}
+  }
+
+  updateLogin = (id, url) => {
+    const users = {
+      "uid" : id,
+      "url" : url
+    };
+
+    const state = {...this.state};
+    state.users = users;
+    this.setState(state);
   }
 
   componentDidMount() {
@@ -116,6 +128,7 @@ class App extends Component {
         <Header
           moveToMain = {this.moveToMain} 
           onSearch = {this.searchVideos}
+          updateLogin = {this.updateLogin}
         />
         <section>
           {
