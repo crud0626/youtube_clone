@@ -5,7 +5,8 @@ import Header from './components/header/header';
 import VideoSection from './components/videosection/videosection';
 import PlaylistContainer from './components/playlist_container/playlist_container';
 
-
+import AuthService from '~/service/auth';
+const authService = new AuthService();
 class App extends Component {
   state = {
     videos: [],
@@ -18,20 +19,32 @@ class App extends Component {
     users: {}
   }
 
-  updateLogin = (id, name, url) => {
-    const users = {
-      "uid" : id,
-      "name": name,
-      "url" : url
-    };
-
-    const state = {...this.state};
-    state.users = users;
-    this.setState(state);
-  }
-
   componentDidMount() {
     this.moveToMain();
+  }
+
+  onLogIn = () => {
+    authService.login()
+    .then(result => {
+      const users = {
+        "uid" : result.user.uid,
+        "name": result.user.displayName,
+        "url" : result.user.photoURL
+      };
+
+      const state = {...this.state};
+      state.users = users;
+      this.setState(state);
+    })
+  }
+
+  onLogOut = () => {
+    authService.logOut()
+    .then(() => {
+      const state = {...this.state};
+      state.users = {};
+      this.setState(state);
+    })
   }
 
   searchVideos = (query) => {
@@ -129,7 +142,8 @@ class App extends Component {
         <Header
           moveToMain = {this.moveToMain} 
           onSearch = {this.searchVideos}
-          updateLogin = {this.updateLogin}
+          onLogIn = {this.onLogIn}
+          onLogOut = {this.onLogOut}
           userInfo = {this.state.users}
         />
         <section>

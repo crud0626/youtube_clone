@@ -1,4 +1,4 @@
-import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { getAuth, GoogleAuthProvider, signInWithPopup, signOut } from "firebase/auth";
 import firebaseApp from "./firebase";
 
 export default class AuthService {
@@ -10,5 +10,16 @@ export default class AuthService {
     login() {
         const provider = new GoogleAuthProvider();
         return signInWithPopup(this.auth, provider);
+    }
+
+    logOut() {
+        return signOut(this.auth);
+    }
+
+    checkUser() {
+        if (this.auth.currentUser) {
+            return true;
+        }
+        return false;
     }
 }
