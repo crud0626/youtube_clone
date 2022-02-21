@@ -18,9 +18,10 @@ class App extends Component {
     users: {}
   }
 
-  updateLogin = (id, url) => {
+  updateLogin = (id, name, url) => {
     const users = {
       "uid" : id,
+      "name": name,
       "url" : url
     };
 
@@ -129,6 +130,7 @@ class App extends Component {
           moveToMain = {this.moveToMain} 
           onSearch = {this.searchVideos}
           updateLogin = {this.updateLogin}
+          userInfo = {this.state.users}
         />
         <section>
           {
