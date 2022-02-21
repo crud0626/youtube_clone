@@ -8,6 +8,7 @@ Demo Link : [![Netlify Status](https://api.netlify.com/api/v1/badges/21afc7b3-a6
 ## 기술 스택
 
 <img src="https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white" /> <img src="https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white" /> <img src="https://img.shields.io/badge/JavaScript-323330?style=for-the-badge&logo=javascript&logoColor=F7DF1E" /> <img src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB" /> <img src ="https://img.shields.io/badge/PostCSS-DD3A0A.svg?&style=for-the-badge&logo=PostCSS&logoColor=#DD3A0A"/></br>
+<img src="https://img.shields.io/badge/firebase-ffca28?style=for-the-badge&logo=firebase&logoColor=black" />
 <img src="https://img.shields.io/badge/Postman-FF6C37?style=for-the-badge&logo=Postman&logoColor=white" />
 <img src="https://img.shields.io/badge/Netlify-00C7B7?style=for-the-badge&logo=netlify&logoColor=white" />
 <img src="https://img.shields.io/badge/Yarn-2C8EBB?style=for-the-badge&logo=yarn&logoColor=white" />
@@ -25,13 +26,17 @@ Demo Link : [![Netlify Status](https://api.netlify.com/api/v1/badges/21afc7b3-a6
 - Netlify를 통해 배포 자동화.
 
 ## 구현된 기능
-* 비디오 관련
-<br>조회수, 해당 채널관련 정보, 제목, 재생시간, 업로드일자, 채널 설명 접고 펴는 기능.
 
-* 댓글
-<br>작성일자, 작성자 링크, 썸네일, 댓글 총 개수, 플립, 일정 줄 이상의 댓글에만 접고 펴는 기능.
+- 비디오 관련
+  <br>조회수, 해당 채널관련 정보, 제목, 재생시간, 업로드일자, 채널 설명 접고 펴는 기능.
 
-* 검색기능
+- 댓글
+  <br>작성일자, 작성자 링크, 썸네일, 댓글 총 개수, 플립, 일정 줄 이상의 댓글에만 접고 펴는 기능.
+
+- 검색기능
+
+- 로그인 기능
+  <br>댓글과 좋아요 및 싫어요 상호작용에 관련된 부분도 추가 수정 예정.
 
 ## 개인적으로 수정 및 추가한 사항
 
@@ -40,6 +45,7 @@ Demo Link : [![Netlify Status](https://api.netlify.com/api/v1/badges/21afc7b3-a6
 3. 영상이 선택되었을 때 영상의 설명 및 댓글이 정해진 일정 줄을 넘기게 되면 toggle이 생성되어 사용자의 선택에 따라 해당 부분을 접고 펼 수 있음. (영상 설명의 경우 기존 유튜브에서는 적용되어있지 않으나 일관성있는게 좋다고 판단되어 영상 설명에도 적용)
 4. dotenv를 이용해 API key를 숨기고자 하였으나 Youtube DATA API의 특성상 요청 헤더에 노출되는것을 발견하였고</br> 현재 프로젝트가 CSR형태이기 때문에 Netlify의 serverless functions를 이용해 만들어진 오픈소스를 활용하여</br> redirect server를 통해 API key 노출 문제를 해결하였다.
 5. 댓글과 비디오에 대해 Intersection Observer API를 활용하여 Infinite Scrolling 적용
+6. Firebase auth를 이용하여 구글 소셜 로그인 기능 적용
 
 ## 수정 예정
 
@@ -48,5 +54,4 @@ Demo Link : [![Netlify Status](https://api.netlify.com/api/v1/badges/21afc7b3-a6
 - [ ] React router 적용
 - [ ] nav 추가
 - [ ] 스켈레톤 UI 적용
-- [ ] 로그인 기능
 - [ ] Redux 적용
