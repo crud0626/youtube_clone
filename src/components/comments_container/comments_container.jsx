@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import Comment from '../comment/comment';
+import Spinner from '../spinner/spinner';
 import styles from './comments_container.module.css';
 
 class CommentsContainer extends PureComponent {
@@ -8,6 +9,10 @@ class CommentsContainer extends PureComponent {
         this.lastCommentRef = React.createRef();
         this.observer = "";
     }
+
+    state = {
+        loading: false
+    };
 
     setObserve = () => {
         const options = {
@@ -25,7 +30,9 @@ class CommentsContainer extends PureComponent {
     }
 
     catchObserver = () => {
-        this.props.getMoreComments();
+        this.setState({loading: true});
+        this.props.getMoreComments()
+        .then(() => this.setState({loading: false}))
         this.observer.disconnect();
     }
 
@@ -56,6 +63,7 @@ class CommentsContainer extends PureComponent {
                             />
                         );
                     })}
+                    {this.state.loading && <Spinner />}
                 </ul>
             </>
         );

@@ -61,7 +61,7 @@ class App extends Component {
 
   getMoreVideos = () => {
     if (this.state.isSearched) {
-      this.props.youtube
+      return this.props.youtube
       .getSearchVideos(this.state.searchQuery, this.state.videoNextToken)
       .then(response => {
         const data = [...this.state.videos];
@@ -72,7 +72,7 @@ class App extends Component {
         })
       })
     } else {
-      this.props.youtube
+      return this.props.youtube
       .getMostPopular(this.state.videoNextToken)
       .then(response => {
         const data = [...this.state.videos];
@@ -97,7 +97,7 @@ class App extends Component {
   }
 
   getMoreComments = () => {
-    this.props.youtube
+    return this.props.youtube
     .getComment(this.state.currentVid.id, this.state.commentNextToken)
     .then(response => {
       const comments = [...this.state.comments];

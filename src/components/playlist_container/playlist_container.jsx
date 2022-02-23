@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import PlayList from '../playlist/playlist';
+import Spinner from '../spinner/spinner';
 import styles from './playlist_container.module.css';
 
 class PlaylistContainer extends PureComponent {
@@ -8,6 +9,10 @@ class PlaylistContainer extends PureComponent {
         this.lastVideoRef = React.createRef();
         this.observer = "";
     }
+
+    state = {
+        loading: false
+    };
 
     setObserve = () => {
         const options = {
@@ -25,7 +30,9 @@ class PlaylistContainer extends PureComponent {
     }
 
     catchObserver = () => {
-        this.props.getMoreVideos();
+        this.setState({loading: true});
+        this.props.getMoreVideos()
+        .then(() => this.setState({loading: false}));
         this.observer.disconnect();
     }
 
@@ -33,6 +40,7 @@ class PlaylistContainer extends PureComponent {
         const videoLayout = this.props.selected ? styles.selectedVideo : styles.notSelectedVideo;
 
         return (
+            <>
             <ul className={`${styles.playlist_container} ${videoLayout}`}>
                 {this.props.videos.map((video, index) => {
                     if (index === this.props.videos.length - 1) {
@@ -62,7 +70,10 @@ class PlaylistContainer extends PureComponent {
                         />
                     );
                 })}
+                {this.state.loading && <Spinner />}
             </ul>
+            
+            </>
         );
     }
 }
