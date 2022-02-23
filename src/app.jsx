@@ -93,7 +93,7 @@ class App extends Component {
       comments: response.comments.items,
       commentNextToken: response.comments.nextPageToken
     }))
-    .catch(console.log(`Cannot load datas`))
+    .catch((error) => console.log(error))
   }
 
   getMoreComments = () => {
@@ -119,7 +119,7 @@ class App extends Component {
       videoNextToken: response.nextPageToken,
       searchQuery: ""
     }))
-    .catch(console.log(`Cannot load datas`))
+    .catch((error) => console.log(error))
   }
 
   // 왜 여기에 하위컴포넌트에서는 못부르고 여기서만 가능하지? 여기서도 prop으로 받는건데?
