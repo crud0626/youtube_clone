@@ -5,7 +5,7 @@ export default class YoutubeAxios {
     constructor() {
         this.youtube = axios.create({
             // baseURL: "https://crud0626-serverless-youtube.netlify.app/youtube/v3",
-            baseURL: "https://eloquent-yalow-62a51f.netlify.app/youtube/v3",
+            baseURL: process.env.REACT_APP_TEST_URL
         })
     }
 
