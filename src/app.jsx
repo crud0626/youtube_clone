@@ -2,10 +2,13 @@ import './App.css';
 
 import React, { Component } from 'react';
 import Header from './components/header/header';
-import VideoSection from './components/videosection/videosection';
-import PlaylistContainer from './components/playlist_container/playlist_container';
+// import VideoSection from './components/videosection/videosection';
+// import PlaylistContainer from './components/playlist_container/playlist_container';
 
 import AuthService from '~/service/auth';
+import { Route, Routes } from 'react-router-dom';
+import Home from './pages/home';
+import Watch from './pages/watch';
 const authService = new AuthService();
 class App extends Component {
   state = {
@@ -147,25 +150,39 @@ class App extends Component {
           userInfo = {this.state.users}
         />
         <section>
-          {
-          selected && 
-          <VideoSection 
-            currentVid={this.state.currentVid} 
-            comments={this.state.comments}
-            convertCount={this.convertCount}
-            calcDiffDate={this.calcDiffDate}
-            getMoreComments={this.getMoreComments}
-          />
-          }
-            <PlaylistContainer 
-              videos={this.state.videos}
-              clickedVideo={this.clickedVideo}
-              selected={selected}
-              convertCount={this.convertCount}
-              calcDiffDate={this.calcDiffDate}
-              convertVideoDuration={this.convertVideoDuration}
-              getMoreVideos={this.getMoreVideos}
+          <Routes>
+            <Route 
+            path='/watch'
+            element={
+              <Watch 
+                currentVid={this.state.currentVid} 
+                comments={this.state.comments}
+                convertCount={this.convertCount}
+                calcDiffDate={this.calcDiffDate}
+                getMoreComments={this.getMoreComments}
+                videos={this.state.videos}
+                clickedVideo={this.clickedVideo}
+                selected={selected}
+                convertVideoDuration={this.convertVideoDuration}
+                getMoreVideos={this.getMoreVideos}
+              />
+            }
             />
+            <Route 
+              path='/'
+              element={
+                <Home 
+                  videos={this.state.videos}
+                  clickedVideo={this.clickedVideo}
+                  selected={selected}
+                  convertCount={this.convertCount}
+                  calcDiffDate={this.calcDiffDate}
+                  convertVideoDuration={this.convertVideoDuration}
+                  getMoreVideos={this.getMoreVideos}
+                />
+              }
+            />
+          </Routes>
         </section>
         <div className="App">
           <div className="circle"></div>
