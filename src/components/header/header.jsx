@@ -1,7 +1,9 @@
 import React, { memo, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styles from './header.module.css';
 
 const Header = memo((props) => {
+    const navigate = useNavigate();
     const inputRef = useRef();
     const eraser = document.querySelector("button#input_eraser");
 
@@ -39,10 +41,15 @@ const Header = memo((props) => {
         e.preventDefault();
     }
 
+    const clickedLogo = async () => {
+        await props.moveToMain();
+        navigate("/");
+    }
+
     return (
         <header>
             <div className={styles.header_container}>
-                <div className={styles.left} onClick={props.moveToMain}>
+                <div className={styles.left} onClick={clickedLogo}>
                     <img src="./images/logo.png" alt="mainlogo"/>
                     <h1>YouTube</h1>
                 </div>

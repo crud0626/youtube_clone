@@ -79,8 +79,6 @@ const App = (props) => {
       }
 
     const clickedVideo = async (video) => {
-        console.log("clicked video!");
-    
         await props.youtube
         .getCurrentVidInfo(video)
         .then(response => {
