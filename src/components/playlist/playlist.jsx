@@ -1,63 +1,40 @@
-import React, { PureComponent } from 'react';
+import React, { memo, useEffect } from 'react';
 import styles from "./playlist.module.css";
 
-class PlayList extends PureComponent {
-    sendVideoId = () => {
-        this.props.clickedVideo(this.props.video);
+const Playlist = memo((props) => {
+    useEffect(() => {
+        if (props.lastVideoRef) {
+            props.setObserve()
+        }
+    });
+
+    const sendVideoId = () => {
+        props.clickedVideo(props.video);
     }
 
-    sendCounter = (num) => (
-        this.props.convertCount(num)
-    )
+    const sendCounter = num => props.convertCount(num);
 
-    getDiffDate = () => {
+    const getDiffDate = () => {
         const now = Date.now();
-        const publishDate = Date.parse(this.props.video.snippet.publishedAt);
-        return this.props.calcDiffDate(parseInt((now - publishDate) / 60000));
+        const publishDate = Date.parse(props.video.snippet.publishedAt);
+        return props.calcDiffDate(parseInt((now - publishDate) / 60000));
     }
 
-    sendDuration = () => {
-        return this.props.convertVideoDuration(this.props.video.contentDetails.duration);
+    const sendDuration = () => {
+        return props.convertVideoDuration(props.video.contentDetails.duration);
     }
 
-    componentDidMount = () => {
-        if (this.props.lastVideoRef) {
-            this.props.setObserve()
-        }
-    }
 
-    render() {
-        const videoLayout= this.props.selected ? styles.selectedVideo : styles.notSelectedVideo;
-        const video = this.props.video;
-        if (this.props.lastVideoRef) {
-            return (
-                <li ref={this.props.lastVideoRef} key={video.id} className={`${styles.playlist} ${videoLayout}`} onClick={this.sendVideoId}>
-                    <div className={styles.thumbnail_container}>
-                        <img className={styles.thumbnail} src={video.snippet.thumbnails.medium.url} alt="video thumbnail" />
-                        <div className={styles.video_duration}>
-                            <span>{this.sendDuration()}</span>
-                        </div>
-                    </div>
-                    <div className={styles.video_info_container}>
-                        <h3 className={styles.title}>{video.snippet.title}</h3>
-                        <div className={styles.video_info}>
-                            <span className={styles.channelTitle}>{video.snippet.channelTitle}</span>
-                            <div className={styles.info_counter}>
-                                <span>{`조회수 ${this.sendCounter(video.statistics.viewCount)}회`}</span>
-                                <span>{" • "}</span>
-                                <span>{`${this.getDiffDate()} 전`}</span>
-                            </div>
-                        </div>
-                    </div>
-                </li>
-            );
-        }
+    const videoLayout= props.selected ? styles.selectedVideo : styles.notSelectedVideo;
+    const video = props.video;
+
+    if (props.lastVideoRef) {
         return (
-            <li key={video.id} className={`${styles.playlist} ${videoLayout}`} onClick={this.sendVideoId}>
+            <li ref={props.lastVideoRef} key={video.id} className={`${styles.playlist} ${videoLayout}`} onClick={sendVideoId}>
                 <div className={styles.thumbnail_container}>
                     <img className={styles.thumbnail} src={video.snippet.thumbnails.medium.url} alt="video thumbnail" />
                     <div className={styles.video_duration}>
-                        <span>{this.sendDuration()}</span>
+                        <span>{sendDuration()}</span>
                     </div>
                 </div>
                 <div className={styles.video_info_container}>
@@ -65,15 +42,38 @@ class PlayList extends PureComponent {
                     <div className={styles.video_info}>
                         <span className={styles.channelTitle}>{video.snippet.channelTitle}</span>
                         <div className={styles.info_counter}>
-                            <span>{`조회수 ${this.sendCounter(video.statistics.viewCount)}회`}</span>
+                            <span>{`조회수 ${sendCounter(video.statistics.viewCount)}회`}</span>
                             <span>{" • "}</span>
-                            <span>{`${this.getDiffDate()} 전`}</span>
+                            <span>{`${getDiffDate()} 전`}</span>
                         </div>
                     </div>
                 </div>
             </li>
         );
-    }
-}
+    };
 
-export default PlayList;
+    return (
+        <li key={video.id} className={`${styles.playlist} ${videoLayout}`} onClick={sendVideoId}>
+            <div className={styles.thumbnail_container}>
+                <img className={styles.thumbnail} src={video.snippet.thumbnails.medium.url} alt="video thumbnail" />
+                <div className={styles.video_duration}>
+                    <span>{sendDuration()}</span>
+                </div>
+            </div>
+            <div className={styles.video_info_container}>
+                <h3 className={styles.title}>{video.snippet.title}</h3>
+                <div className={styles.video_info}>
+                    <span className={styles.channelTitle}>{video.snippet.channelTitle}</span>
+                    <div className={styles.info_counter}>
+                        <span>{`조회수 ${sendCounter(video.statistics.viewCount)}회`}</span>
+                        <span>{" • "}</span>
+                        <span>{`${getDiffDate()} 전`}</span>
+                    </div>
+                </div>
+            </div>
+        </li>
+    );
+});
+
+export default Playlist;
+

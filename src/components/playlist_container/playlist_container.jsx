@@ -1,60 +1,53 @@
-import React, { PureComponent } from 'react';
+import React, { memo, useRef, useState } from 'react';
 import PlayList from '../playlist/playlist';
 import Spinner from '../spinner/spinner';
 import styles from './playlist_container.module.css';
 
-class PlaylistContainer extends PureComponent {
-    constructor(props) {
-        super(props);
-        this.lastVideoRef = React.createRef();
-        this.observer = "";
-    }
+const PlaylistContainer = memo((props) => {
+    const [loading, setLoading] = useState(false);
+    const lastVideoRef = useRef();
+    let observer = "";
 
-    state = {
-        loading: false
-    };
-
-    setObserve = () => {
+    const setObserve = () => {
         const options = {
             root: null,
             rootMargin: '0px',
             threshold: 1
         }
 
-        this.observer = new IntersectionObserver((entries) => {
+        observer = new IntersectionObserver((entries) => {
             if (entries[0].isIntersecting) {
-                this.catchObserver();
+                catchObserver();
             }
         },options)
-        this.observer.observe(this.lastVideoRef.current);
+        observer.observe(lastVideoRef.current);
     }
 
-    catchObserver = () => {
-        this.setState({loading: true});
-        this.props.getMoreVideos()
-        .then(() => this.setState({loading: false}));
-        this.observer.disconnect();
+    const catchObserver = () => {
+        setLoading(true);
+
+        props.getMoreVideos()
+        .then(() => setLoading(false));
+        observer.disconnect();
     }
 
-    render() {
-        const videoLayout = this.props.selected ? styles.selectedVideo : styles.notSelectedVideo;
-
-        return (
-            <>
+    const videoLayout = props.selected ? styles.selectedVideo : styles.notSelectedVideo;
+    return (
+        <>
             <ul className={`${styles.playlist_container} ${videoLayout}`}>
-                {this.props.videos.map((video, index) => {
-                    if (index === this.props.videos.length - 1) {
+                {props.videos.map((video, index) => {
+                    if (index === props.videos.length - 1) {
                         return (
                             <PlayList 
                                 key={video.id}
                                 video={video}
-                                clickedVideo={this.props.clickedVideo}
-                                selected={this.props.selected}
-                                convertCount={this.props.convertCount}
-                                calcDiffDate={this.props.calcDiffDate}
-                                convertVideoDuration={this.props.convertVideoDuration}
-                                lastVideoRef={this.lastVideoRef}
-                                setObserve={this.setObserve}
+                                clickedVideo={props.clickedVideo}
+                                selected={props.selected}
+                                convertCount={props.convertCount}
+                                calcDiffDate={props.calcDiffDate}
+                                convertVideoDuration={props.convertVideoDuration}
+                                lastVideoRef={lastVideoRef}
+                                setObserve={setObserve}
                             />
                         );
                     }
@@ -62,20 +55,18 @@ class PlaylistContainer extends PureComponent {
                         <PlayList 
                             key={video.id}
                             video={video}
-                            clickedVideo={this.props.clickedVideo}
-                            selected={this.props.selected}
-                            convertCount={this.props.convertCount}
-                            calcDiffDate={this.props.calcDiffDate}
-                            convertVideoDuration={this.props.convertVideoDuration}
+                            clickedVideo={props.clickedVideo}
+                            selected={props.selected}
+                            convertCount={props.convertCount}
+                            calcDiffDate={props.calcDiffDate}
+                            convertVideoDuration={props.convertVideoDuration}
                         />
                     );
                 })}
-                {this.state.loading && <Spinner />}
+                {loading && <Spinner />}
             </ul>
-            
-            </>
-        );
-    }
-}
+        </>
+    );
+});
 
 export default PlaylistContainer;

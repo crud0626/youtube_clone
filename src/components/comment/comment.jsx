@@ -1,23 +1,28 @@
-import React, { PureComponent } from 'react';
+import React, { memo, useEffect, useRef, useState } from 'react';
 import styles from './comment.module.css';
 
-class Comment extends PureComponent {
-    constructor(props) {
-        super(props);
-        this.spanRef = React.createRef();
-        this.state = {
-            textOver: false
-        };
-    }
+const Comment = memo((props) => {
+    const spanRef = useRef();
+    const [textOver, setTextOver] = useState(false);
 
-    getDiffDate = () => {
-        let publishDate = this.props.topLevelComment.snippet.publishedAt;
+    // if문 끝에 return 안넣어도 되나?
+    useEffect(() => {
+        if (spanRef.current.clientHeight < spanRef.current.scrollHeight) {
+            !textOver && setTextOver(true);
+        }
+        if (props.lastCommentRef) {
+            props.setObserve();
+        }
+    }, []);
+
+    const getDiffDate = () => {
+        let publishDate = props.topLevelComment.snippet.publishedAt;
         const now = Date.now();
         publishDate = Date.parse(publishDate);
-        return this.props.calcDiffDate(parseInt((now - publishDate) / 60000));
+        return props.calcDiffDate(parseInt((now - publishDate) / 60000));
     }
 
-    onClickToggle = (event) => {
+    const onClickToggle = (event) => {
         const target = event.target.previousSibling;
         if (target.matches("#expander")) {
             target.classList.remove("expander");
@@ -33,60 +38,49 @@ class Comment extends PureComponent {
         return;
     }
 
-    componentDidMount = () => {
-        if (this.spanRef.current.clientHeight < this.spanRef.current.scrollHeight) {
-            !this.state.textOver && this.setState({textOver: true});
-        }
-        if (this.props.lastCommentRef) {
-            this.props.setObserve();
-        }
-    }
+    const commentText = {__html: props.topLevelComment.snippet.textDisplay};
 
-    render() {
-        const commentText = {__html: this.props.topLevelComment.snippet.textDisplay};
-
-        if (this.props.lastCommentRef) {
-            return (
-                <li ref={this.props.lastCommentRef} className={styles.comment_container}>
-                    <a href={this.props.topLevelComment.snippet.authorChannelUrl} target="_blank" rel='noreferrer' className={styles.author_thumbnail}>
-                        <img src={this.props.topLevelComment.snippet.authorProfileImageUrl} alt="author thumbnail" />
-                    </a>
-                    <div className={styles.comment_info}>
-                        <div className={styles.info_top}>
-                            <a href={this.props.topLevelComment.snippet.authorChannelUrl} target="_blank" rel='noreferrer' className={styles.author_name}>{this.props.topLevelComment.snippet.authorDisplayName}</a>
-                            <span className={styles.comment_date}>{`${this.getDiffDate()} 전`}</span>
-                        </div>
-                        <div className={styles.info_bottom}>
-                            <div ref={this.spanRef} className={`${styles.span_container} shortcut`}>
-                                <span dangerouslySetInnerHTML={commentText}></span>
-                            </div>
-                            {this.state.textOver && <button className="toggle" onClick={this.onClickToggle}>자세히 보기</button>}
-                        </div>
+    if (props.lastCommentRef) {
+        return (
+            <li ref={props.lastCommentRef} className={styles.comment_container}>
+                <a href={props.topLevelComment.snippet.authorChannelUrl} target="_blank" rel='noreferrer' className={styles.author_thumbnail}>
+                    <img src={props.topLevelComment.snippet.authorProfileImageUrl} alt="author thumbnail" />
+                </a>
+                <div className={styles.comment_info}>
+                    <div className={styles.info_top}>
+                        <a href={props.topLevelComment.snippet.authorChannelUrl} target="_blank" rel='noreferrer' className={styles.author_name}>{props.topLevelComment.snippet.authorDisplayName}</a>
+                        <span className={styles.comment_date}>{`${getDiffDate()} 전`}</span>
                     </div>
-                </li>
-            );
-        } else {
-            return (
-                <li className={styles.comment_container}>
-                    <a href={this.props.topLevelComment.snippet.authorChannelUrl} target="_blank" rel='noreferrer' className={styles.author_thumbnail}>
-                        <img src={this.props.topLevelComment.snippet.authorProfileImageUrl} alt="author thumbnail" />
-                    </a>
-                    <div className={styles.comment_info}>
-                        <div className={styles.info_top}>
-                            <a href={this.props.topLevelComment.snippet.authorChannelUrl} target="_blank" rel='noreferrer' className={styles.author_name}>{this.props.topLevelComment.snippet.authorDisplayName}</a>
-                            <span className={styles.comment_date}>{`${this.getDiffDate()} 전`}</span>
+                    <div className={styles.info_bottom}>
+                        <div ref={spanRef} className={`${styles.span_container} shortcut`}>
+                            <span dangerouslySetInnerHTML={commentText}></span>
                         </div>
-                        <div className={styles.info_bottom}>
-                            <div ref={this.spanRef} className={`${styles.span_container} shortcut`}>
-                                <span dangerouslySetInnerHTML={commentText}></span>
-                            </div>
-                            {this.state.textOver && <button className="toggle" onClick={this.onClickToggle}>자세히 보기</button>}
-                        </div>
+                        {textOver && <button className="toggle" onClick={onClickToggle}>자세히 보기</button>}
                     </div>
-                </li>
-            );
-        }
+                </div>
+            </li>
+        );
+    } else {
+        return (
+            <li className={styles.comment_container}>
+                <a href={props.topLevelComment.snippet.authorChannelUrl} target="_blank" rel='noreferrer' className={styles.author_thumbnail}>
+                    <img src={props.topLevelComment.snippet.authorProfileImageUrl} alt="author thumbnail" />
+                </a>
+                <div className={styles.comment_info}>
+                    <div className={styles.info_top}>
+                        <a href={props.topLevelComment.snippet.authorChannelUrl} target="_blank" rel='noreferrer' className={styles.author_name}>{props.topLevelComment.snippet.authorDisplayName}</a>
+                        <span className={styles.comment_date}>{`${getDiffDate()} 전`}</span>
+                    </div>
+                    <div className={styles.info_bottom}>
+                        <div ref={spanRef} className={`${styles.span_container} shortcut`}>
+                            <span dangerouslySetInnerHTML={commentText}></span>
+                        </div>
+                        {textOver && <button className="toggle" onClick={onClickToggle}>자세히 보기</button>}
+                    </div>
+                </div>
+            </li>
+        );
     }
-}
+});
 
 export default Comment;

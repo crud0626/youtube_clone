@@ -18,7 +18,6 @@ Demo Link : [![Netlify Status](https://api.netlify.com/api/v1/badges/21afc7b3-a6
 - Axios 라이브러리를 적용하여 Youtube Data API의 데이터 사용
 - CSS Module을 사용하여 각 컴포넌트별 독립적인 클래스명 사용
 - PostCSS의 nesting 적용
-- 클래스형 컴포넌트만을 사용하여 개발
 - unescape-js 라이브러리를 사용하여 댓글, 영상 설명에 관련된 데이터들의 디코딩 이슈 해결
 - 미디어 쿼리를 적용하여 반응형 웹사이트로 제작
 - PureComponent 적용하여 각 컴포넌트별 리렌더링을 최소화
