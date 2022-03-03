@@ -1,7 +1,7 @@
 import './App.css';
 
 import React, { useEffect, useState } from 'react';
-import { Route, Routes, useNavigate } from 'react-router-dom';
+import { Route, Routes, useNavigate, useParams } from 'react-router-dom';
 import Header from './components/header/header';
 import Home from './pages/home';
 import Watch from './pages/watch';
@@ -20,7 +20,6 @@ const App = (props) => {
     const [users, setUsers] = useState({});
 
     const navigate = useNavigate();
-
 
     useEffect(() => moveToMain(), []);
     
@@ -88,7 +87,7 @@ const App = (props) => {
         })
         .catch((error) => console.log(error));
 
-        navigate("/watch");
+        navigate(`/watch?v=${video.id}`);
       }
 
     const getMoreComments = () => {
