@@ -1,7 +1,7 @@
-import './App.css';
+import "./App.css";
 
 import React, { useEffect, useState } from 'react';
-import { Route, Routes, useNavigate, useParams } from 'react-router-dom';
+import { Route, Routes, useNavigate } from 'react-router-dom';
 import Header from './components/header/header';
 import Home from './pages/home';
 import Watch from './pages/watch';
@@ -53,6 +53,8 @@ const App = (props) => {
             setVideoNextToken(response.nextPageToken);
             setSearchQuery(query);
         });
+
+        navigate(`results?search_query=${query}`);
       }
 
     const getMoreVideos = () => {
@@ -125,54 +127,61 @@ const App = (props) => {
         return props.calc.convertVideoDuration(time);
       }
 
-
     return (
         <>
         <Header
-            moveToMain = {moveToMain} 
-            onSearch = {searchVideos}
-            onLogIn = {onLogIn}
-            onLogOut = {onLogOut}
-            userInfo = {users}
+          moveToMain = {moveToMain} 
+          onSearch = {searchVideos}
+          onLogIn = {onLogIn}
+          onLogOut = {onLogOut}
+          userInfo = {users}
         />
         <section>
-            <Routes>
-                <Route 
-                    path='/watch'
-                    element={
-                        <Watch 
-                        currentVid={currentVid} 
-                        comments={comments}
-                        convertCount={convertCount}
-                        calcDiffDate={calcDiffDate}
-                        getMoreComments={getMoreComments}
-                        videos={videos}
-                        clickedVideo={clickedVideo}
-                        // selected={selected}
-                        convertVideoDuration={convertVideoDuration}
-                        getMoreVideos={getMoreVideos}
-                        />
-                    }
-                />
-                <Route 
-                    path='/'
-                    element={
-                    <Home 
-                        videos={videos}
-                        clickedVideo={clickedVideo}
-                        // selected={selected}
-                        convertCount={convertCount}
-                        calcDiffDate={calcDiffDate}
-                        convertVideoDuration={convertVideoDuration}
-                        getMoreVideos={getMoreVideos}
+          <Routes>
+            <Route 
+                path='/watch'
+                element={
+                    <Watch 
+                    currentVid={currentVid} 
+                    comments={comments}
+                    convertCount={convertCount}
+                    calcDiffDate={calcDiffDate}
+                    getMoreComments={getMoreComments}
+                    videos={videos}
+                    clickedVideo={clickedVideo}
+                    convertVideoDuration={convertVideoDuration}
+                    getMoreVideos={getMoreVideos}
                     />
-                    }
+                }
+            />
+            <Route 
+                path='/'
+                element={
+                <Home 
+                    videos={videos}
+                    clickedVideo={clickedVideo}
+                    convertCount={convertCount}
+                    calcDiffDate={calcDiffDate}
+                    convertVideoDuration={convertVideoDuration}
+                    getMoreVideos={getMoreVideos}
                 />
-                </Routes>
-            </section>
-            <div className="App">
-                <div className="circle"></div>
-            </div>
+                }
+            />
+            <Route 
+              path='/results'
+              element={
+                <Home 
+                videos={videos}
+                clickedVideo={clickedVideo}
+                convertCount={convertCount}
+                calcDiffDate={calcDiffDate}
+                convertVideoDuration={convertVideoDuration}
+                getMoreVideos={getMoreVideos}
+                />
+              }
+            />
+          </Routes>
+        </section>
         </>
     );
 };

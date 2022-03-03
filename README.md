@@ -45,12 +45,12 @@ Demo Link : [![Netlify Status](https://api.netlify.com/api/v1/badges/21afc7b3-a6
 4. dotenv를 이용해 API key를 숨기고자 하였으나 Youtube DATA API의 특성상 요청 헤더에 노출되는것을 발견하였고</br> 현재 프로젝트가 CSR형태이기 때문에 Netlify의 serverless functions를 이용해 만들어진 오픈소스를 활용하여</br> redirect server를 통해 API key 노출 문제를 해결하였다.
 5. 댓글과 비디오에 대해 Intersection Observer API를 활용하여 Infinite Scrolling 적용
 6. Firebase auth를 이용하여 구글 소셜 로그인 기능 적용
+7. React router를 적용하여 검색결과 및 비디오 클릭시 알맞은 URL로 이동
 
 ## 수정 예정
 
 - [ ] JS-XSS 라이브러리 적용 (불가피하게 HTML을 직접 삽입하는 방식에 의한 보안 이슈 방지 차원)
 - [ ] 가상키보드 적용
-- [ ] React router 적용
 - [ ] nav 추가
 - [ ] 스켈레톤 UI 적용
 - [ ] Redux 적용

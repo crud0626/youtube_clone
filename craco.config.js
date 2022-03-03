@@ -1,5 +1,5 @@
 const { POSTCSS_MODES } = require("@craco/craco");
-const CracoAlias = require('craco-alias');  //추가
+const CracoAlias = require('craco-alias');
 
 module.exports = {
   style: {

@@ -7,43 +7,44 @@ const VideoSection = memo((props) => {
     const [textOver, setTextOver] = useState(false);
 
     const displayVideoDate = () => {
-        const date = new Date(props.currentVid.snippet.publishedAt);
-        return `${date.getFullYear()}. ${date.getMonth() + 1}. ${date.getDate()}.`;
+      const date = new Date(props.currentVid.snippet.publishedAt);
+      return `${date.getFullYear()}. ${date.getMonth() + 1}. ${date.getDate()}.`;
     }
 
-    const convertShortCount = (count) => (
-        props.convertCount(count)
-    );
+    const convertShortCount = (count) => {
+      props.convertCount(count)
+    };
     
     const onDescButton = (event) => {
-        const target = event.target.previousSibling;
+      const target = event.target.previousSibling;
 
-        if (target.matches("#expander")) {
-            target.classList.remove("expander");
-            target.classList.add("shortcut");
-            target.id = "shortcut";
-            event.target.innerText = "더보기";
-            return;
-        }
-        target.classList.remove("shortcut");
-        target.classList.add("expander");
-        target.id = "expander";
-        event.target.innerText = "간략히";
+      if (target.matches("#expander")) {
+        target.classList.remove("expander");
+        target.classList.add("shortcut");
+        target.id = "shortcut";
+        event.target.innerText = "더보기";
         return;
-    }
+      }
+
+      target.classList.remove("shortcut");
+      target.classList.add("expander");
+      target.id = "expander";
+      event.target.innerText = "간략히";
+      return;
+    };
 
     useEffect(() => {
-        if (descRef.current.clientHeight < descRef.current.scrollHeight) {
-            setTextOver(true);
-        }
+      if (descRef.current.clientHeight < descRef.current.scrollHeight) {
+        setTextOver(true);
+      }
     }, [])
 
     useEffect(() => {
-        if (descRef.current.clientHeight < descRef.current.scrollHeight) {
-            setTextOver(true);
-        } else {
-            setTextOver(false);
-        }
+      if (descRef.current.clientHeight < descRef.current.scrollHeight) {
+        setTextOver(true);
+      } else {
+        setTextOver(false);
+      }
     });
 
     const currentVid = props.currentVid;
