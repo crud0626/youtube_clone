@@ -22,6 +22,20 @@ const App = (props) => {
     const navigate = useNavigate();
 
     useEffect(() => moveToMain(), []);
+
+    useEffect(() => {
+      if (!users.uid) {
+        const userData = authService.checkUser();
+        if (userData) {
+          const data = {
+            "uid" : userData.uid,
+            "name": userData.displayName,
+            "url" : userData.photoURL
+          };
+          setUsers(data);
+        }
+      }
+    });
     
     const onLogIn = () => {
         authService.login()
@@ -31,10 +45,7 @@ const App = (props) => {
             "name": result.user.displayName,
             "url" : result.user.photoURL
           };
-    
-          const state = {...users};
-          state.users = data;
-          setUsers(state);
+          setUsers(data);
         })
       }
 

@@ -17,9 +17,7 @@ export default class AuthService {
     }
 
     checkUser() {
-        if (this.auth.currentUser) {
-            return true;
-        }
-        return false;
+        return this.auth.currentUser;
     }
+    // 
 }

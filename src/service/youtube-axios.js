@@ -4,8 +4,7 @@ const decode = require('unescape');
 export default class YoutubeAxios {
     constructor() {
       this.youtube = axios.create({
-        // baseURL: "https://crud0626-serverless-youtube.netlify.app/youtube/v3",
-        baseURL: process.env.REACT_APP_TEST_URL
+        baseURL: "https://crud0626-serverless-youtube.netlify.app/youtube/v3",
       })
     }
 
