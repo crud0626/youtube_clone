@@ -1,36 +1,25 @@
 export default class Calculator {
     convertCount(num) {
-        let result = "";
-        
         switch (true) {
             case (num > 1000 && num < 10000):
                 if (num < 2000) {
-                    result = `${parseInt(num / 100) / 10}천`;
-                    break;
+                    return `${parseInt(num / 100) / 10}천`;
                 }
-                result =`${parseInt(num / 1000)}천`;
-                break;
+                return `${parseInt(num / 1000)}천`;
             case (num > 10000 && num < 100000000):
                 if (num < 20000) {
-                    result = `${parseInt(num / 1000) / 10}만`;
-                    break;
+                    return `${parseInt(num / 1000) / 10}만`;
                 }
-                result = `${parseInt(num / 10000)}만`;
-                break;
+                return `${parseInt(num / 10000)}만`;
             case (num > 100000000):
                 if (num < 200000000) {
-                    result = `${parseInt(num / 10000000) / 10}억`;
-                    break;
+                    return `${parseInt(num / 10000000) / 10}억`;
                 }
-                result = `${parseInt(num / 100000000)}억`;
-                break;
+                return `${parseInt(num / 100000000)}억`;;
             default:
-                result = num ;
-                break;
+                return num;
         }
-        return result;
     }
-    // convertCount함수도 아래처럼 수정하기.
 
     getDiffTime(minutesDiff) {
         switch (true) {
