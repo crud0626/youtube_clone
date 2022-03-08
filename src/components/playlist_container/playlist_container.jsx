@@ -19,16 +19,17 @@ const PlaylistContainer = memo((props) => {
             if (entries[0].isIntersecting) {
                 catchObserver();
             }
-        },options)
+        }, options)
         observer.observe(lastVideoRef.current);
     }
 
     const catchObserver = () => {
-        setLoading(true);
-
-        props.getMoreVideos()
-        .then(() => setLoading(false));
         observer.disconnect();
+        setLoading(true);
+        props.getMoreVideos()
+        .then(() => {
+            setLoading(false);
+        });
     }
 
     const videoLayout = props.selected ? styles.selectedVideo : styles.notSelectedVideo;

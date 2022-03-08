@@ -14,7 +14,7 @@ const App = (props) => {
     const [currentVid, setCurrentVid] = useState({});
     const [comments, setComments] = useState([]);
     const [isSearched, setIsSearched] = useState(false);
-    const [videoNextToken, setVideoNextToken] = useState("");
+    const [videoNextToken, setVideoNextToken] = useState();
     const [commentNextToken, setCommentNextToken] = useState("");
     const [searchQuery, setSearchQuery] = useState("");
     const [users, setUsers] = useState({});
@@ -47,10 +47,10 @@ const App = (props) => {
         props.youtube
         .getSearchVideos(query)
         .then(response => {
+            setVideoNextToken(response.nextPageToken);
             setVideos(response.items);
             setCurrentVid({});
             setIsSearched(true);
-            setVideoNextToken(response.nextPageToken);
             setSearchQuery(query);
         });
 
@@ -64,8 +64,8 @@ const App = (props) => {
           .then(response => {
             const data = [...videos];
             data.push(...response.items);
-            setVideos(data);
             setVideoNextToken(response.nextPageToken);
+            setVideos(data);
           })
         } else {
           return props.youtube
@@ -73,8 +73,8 @@ const App = (props) => {
           .then(response => {
             const data = [...videos];
             data.push(...response.items);
-            setVideos(data);
             setVideoNextToken(response.nextPageToken);
+            setVideos(data);
           })
         }
       }
@@ -93,39 +93,40 @@ const App = (props) => {
       }
 
     const getMoreComments = () => {
-        return props.youtube
-        .getComment(currentVid.id, commentNextToken)
-        .then(response => {
-          const data = [...comments];
-          data.push(...response.items);
-          setComments(data);
-          setCommentNextToken(response.nextPageToken);
-        })
-      }
+      return props.youtube
+      .getComment(currentVid.id, commentNextToken)
+      .then(response => {
+        const data = [...comments];
+        data.push(...response.items);
+        setComments(data);
+        setCommentNextToken(response.nextPageToken);
+      })
+    }
 
     const moveToMain = () => {
-        props.youtube
-        .getMostPopular()
-        .then(response => {
-            setVideos(response.items);
-            setCurrentVid({});
-            setIsSearched(false);
-            setVideoNextToken(response.nextPageToken);
-            setSearchQuery("");
-        })
-        .catch((error) => console.log(error))
-      }
+      props.youtube
+      .getMostPopular()
+      .then(response => {
+          setVideoNextToken(response.nextPageToken);
+          setVideos(response.items);
+          setCurrentVid({});
+          setIsSearched(false);
+          setSearchQuery("");
+      })
+      .catch((error) => console.log(error))
+    }
 
     const convertCount = (num) => {
-        return props.calc.convertCount(num);
-      }
+      return props.calc.convertCount(num);
+    }
     
     const calcDiffDate = (diffMinutes) => {
-        return props.calc.getDiffTime(diffMinutes);
-      }
+      return props.calc.getDiffTime(diffMinutes);
+    }
+
     const convertVideoDuration = (time) => {
-        return props.calc.convertVideoDuration(time);
-      }
+      return props.calc.convertVideoDuration(time);
+    }
 
     return (
         <>

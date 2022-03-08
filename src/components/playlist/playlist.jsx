@@ -6,7 +6,7 @@ const Playlist = memo((props) => {
         if (props.lastVideoRef) {
             props.setObserve()
         }
-    });
+    }, []);
 
     const sendVideoId = () => {
         props.clickedVideo(props.video);
@@ -24,8 +24,8 @@ const Playlist = memo((props) => {
         return props.convertVideoDuration(props.video.contentDetails.duration);
     }
 
-
     const videoLayout= props.selected ? styles.selectedVideo : styles.notSelectedVideo;
+
     const video = props.video;
 
     if (props.lastVideoRef) {
