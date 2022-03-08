@@ -34,10 +34,11 @@ const PlaylistContainer = memo((props) => {
 
     const videoLayout = props.selected ? styles.selectedVideo : styles.notSelectedVideo;
     return (
-        <>
-            <ul className={`${styles.playlist_container} ${videoLayout}`}>
+        <div>
+            <ul className={`${styles.container} ${videoLayout}`}>
                 {props.videos.map((video, index) => {
                     if (index === props.videos.length - 1) {
+                        console.log('last videos!');
                         return (
                             <PlayList 
                                 key={video.id}
@@ -64,9 +65,9 @@ const PlaylistContainer = memo((props) => {
                         />
                     );
                 })}
-                {loading && <Spinner />}
             </ul>
-        </>
+            {loading && <Spinner />}
+        </div>
     );
 });
 

@@ -104,7 +104,7 @@ const App = (props) => {
     }
 
     const moveToMain = () => {
-      props.youtube
+      return props.youtube
       .getMostPopular()
       .then(response => {
           setVideoNextToken(response.nextPageToken);
