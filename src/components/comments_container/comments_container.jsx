@@ -20,13 +20,14 @@ const CommentsContainer = memo((props) => {
                 catchObserver();
             }
         }, options)
+
         observer.observe(lastCommentRef.current);
     }
 
     const catchObserver = () => {
         setLoading(true);
         props.getMoreComments()
-        .then(() => setLoading(false))
+        .then(() => setLoading(false));
         observer.disconnect();
     }
 
@@ -37,25 +38,20 @@ const CommentsContainer = memo((props) => {
             </div>
             <ul className={styles.comments}>
                 {props.comments.map(({snippet : {topLevelComment}}, index) => {
+                    const renderProp = {
+                        "key" : topLevelComment.id,
+                        "topLevelComment" : topLevelComment,
+                        "calcDiffDate" : props.calcDiffDate
+                    };
+
                     if (index === props.comments.length - 1) {
-                        return (
-                            <Comment
-                                key={topLevelComment.id}
-                                topLevelComment = {topLevelComment}
-                                calcDiffDate={props.calcDiffDate}
-                                lastCommentRef={lastCommentRef}
-                                setObserve={setObserve}
-                            />
-                        );
+                        renderProp.lastCommentRef = lastCommentRef;
+                        renderProp.setObserve = setObserve;
                     }
-                    return(
-                        <Comment
-                            key={topLevelComment.id}
-                            topLevelComment = {topLevelComment}
-                            calcDiffDate={props.calcDiffDate}
-                        />
-                    );
+
+                    return <Comment {...renderProp} />;
                 })}
+
                 {loading && <Spinner />}
             </ul>
         </>

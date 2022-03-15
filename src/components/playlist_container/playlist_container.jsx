@@ -38,7 +38,6 @@ const PlaylistContainer = memo((props) => {
             <ul className={`${styles.container} ${videoLayout}`}>
                 {props.videos.map((video, index) => {
                     if (index === props.videos.length - 1) {
-                        console.log('last videos!');
                         return (
                             <PlayList 
                                 key={video.id}
