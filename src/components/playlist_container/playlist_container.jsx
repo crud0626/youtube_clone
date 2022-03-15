@@ -13,13 +13,12 @@ const PlaylistContainer = memo((props) => {
             root: null,
             rootMargin: '0px',
             threshold: 1
-        }
+        };
 
         observer = new IntersectionObserver((entries) => {
-            if (entries[0].isIntersecting) {
-                catchObserver();
-            }
-        }, options)
+            if (entries[0].isIntersecting) catchObserver()
+        }, options);
+
         observer.observe(lastVideoRef.current);
     }
 
@@ -27,42 +26,31 @@ const PlaylistContainer = memo((props) => {
         observer.disconnect();
         setLoading(true);
         props.getMoreVideos()
-        .then(() => {
-            setLoading(false);
-        });
+        .then(() => setLoading(false));
     }
 
     const videoLayout = props.selected ? styles.selectedVideo : styles.notSelectedVideo;
+
     return (
         <div>
             <ul className={`${styles.container} ${videoLayout}`}>
                 {props.videos.map((video, index) => {
+                    const renderProps = {
+                            "key" : video.id,
+                            "video" : video,
+                            "clickedVideo" : props.clickedVideo,
+                            "selected" : props.selected,
+                            "convertCount" : props.convertCount,
+                            "calcDiffDate" : props.calcDiffDate,
+                            "convertVideoDuration" : props.convertVideoDuration
+                    };
+
                     if (index === props.videos.length - 1) {
-                        return (
-                            <PlayList 
-                                key={video.id}
-                                video={video}
-                                clickedVideo={props.clickedVideo}
-                                selected={props.selected}
-                                convertCount={props.convertCount}
-                                calcDiffDate={props.calcDiffDate}
-                                convertVideoDuration={props.convertVideoDuration}
-                                lastVideoRef={lastVideoRef}
-                                setObserve={setObserve}
-                            />
-                        );
+                        renderProps.lastVideoRef = lastVideoRef;
+                        renderProps.setObserve = setObserve;
                     }
-                    return (
-                        <PlayList 
-                            key={video.id}
-                            video={video}
-                            clickedVideo={props.clickedVideo}
-                            selected={props.selected}
-                            convertCount={props.convertCount}
-                            calcDiffDate={props.calcDiffDate}
-                            convertVideoDuration={props.convertVideoDuration}
-                        />
-                    );
+
+                    return <PlayList {...renderProps}/>;
                 })}
             </ul>
             {loading && <Spinner />}
