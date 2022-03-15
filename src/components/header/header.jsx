@@ -42,8 +42,8 @@ const Header = memo((props) => {
     }
 
     const clickedLogo = async () => {
-        await props.moveToMain();
         navigate("/");
+        await props.moveToMain();
     }
 
     return (
