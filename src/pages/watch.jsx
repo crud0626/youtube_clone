@@ -1,8 +1,13 @@
-import React, { memo } from 'react';
+import React, { memo, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import PlaylistContainer from '~/components/playlist_container/playlist_container';
 import VideoSection from '~/components/videosection/videosection';
 
 const Watch = memo((props) => {
+    const {pathname, search} = useLocation();
+    
+    useEffect(() => window.scrollTo(0, 0), [pathname, search]);
+    
     return (
         <>
             <VideoSection
