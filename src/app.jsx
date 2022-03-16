@@ -6,6 +6,7 @@ import Header from './components/header/header';
 import Home from './pages/home';
 import Watch from './pages/watch';
 import AuthService from './service/auth';
+import Results from "./pages/results";
 
 const authService = new AuthService();
 
@@ -182,13 +183,14 @@ const App = (props) => {
             <Route 
               path='/results'
               element={
-                <Home 
-                videos={videos}
-                clickedVideo={clickedVideo}
-                convertCount={convertCount}
-                calcDiffDate={calcDiffDate}
-                convertVideoDuration={convertVideoDuration}
-                getMoreVideos={getMoreVideos}
+                <Results 
+                  videos={videos}
+                  clickedVideo={clickedVideo}
+                  convertCount={convertCount}
+                  calcDiffDate={calcDiffDate}
+                  convertVideoDuration={convertVideoDuration}
+                  getMoreVideos={getMoreVideos}
+                  onSearch={searchVideos}
                 />
               }
             />
