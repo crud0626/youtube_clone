@@ -27,9 +27,11 @@ export default class YoutubeAxios {
       result.items.map(item => {
           item.snippet.title = decode(item.snippet.title, 'all');
           item.snippet.description = decode(item.snippet.description, 'all');
+
+          const keys = Object.keys(item.statistics);
+          keys.map(key => item.statistics[key] = +item.statistics[key]);
           return item;
       })
-
       return result;
     }
 
@@ -113,7 +115,11 @@ export default class YoutubeAxios {
           fields: 'items(snippet(thumbnails),statistics(subscriberCount))'
         }
       })
-      return response.data.items[0];
+      
+      const result = response.data.items[0];
+      result.statistics.subscriberCount = +result.statistics.subscriberCount;
+
+      return result;
     }
 
     async getCurrentVidInfo(video) {
