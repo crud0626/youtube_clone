@@ -38,8 +38,9 @@ const CommentsContainer = memo((props) => {
             </div>
             <ul className={styles.comments}>
                 {props.comments.map(({snippet : {topLevelComment}}, index) => {
+                    const componentKey = topLevelComment.id + index;
                     const renderProp = {
-                        "key" : topLevelComment.id,
+                        "key": componentKey,
                         "topLevelComment" : topLevelComment,
                         "calcDiffDate" : props.calcDiffDate
                     };

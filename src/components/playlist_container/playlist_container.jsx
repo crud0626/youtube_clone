@@ -35,8 +35,9 @@ const PlaylistContainer = memo((props) => {
         <div>
             <ul className={`${styles.container} ${videoLayout}`}>
                 {props.videos.map((video, index) => {
+                    const componentKey = video.id + index;
                     const renderProps = {
-                            "key" : video.id,
+                            "key" : componentKey,
                             "video" : video,
                             "clickedVideo" : props.clickedVideo,
                             "selected" : props.selected,
