@@ -7,6 +7,7 @@ import Home from './pages/home';
 import Watch from './pages/watch';
 import AuthService from './service/auth';
 import Results from "./pages/results";
+import { unstable_batchedUpdates } from "react-dom";
 
 const authService = new AuthService();
 
@@ -73,21 +74,21 @@ const App = (props) => {
         if (isSearched) {
           return props.youtube
           .getSearchVideos(searchQuery, videoNextToken)
-          .then(response => {
+          .then(response => unstable_batchedUpdates(() => {
             const data = [...videos];
             data.push(...response.items);
-            setVideoNextToken(response.nextPageToken);
             setVideos(data);
-          })
+            setVideoNextToken(response.nextPageToken);
+            }))
         } else {
           return props.youtube
           .getMostPopular(videoNextToken)
-          .then(response => {
+          .then(response => unstable_batchedUpdates(() => {
             const data = [...videos];
             data.push(...response.items);
-            setVideoNextToken(response.nextPageToken);
             setVideos(data);
-          })
+            setVideoNextToken(response.nextPageToken);
+          }));
         }
       }
 
@@ -119,11 +120,13 @@ const App = (props) => {
       return props.youtube
       .getMostPopular()
       .then(response => {
-          setVideoNextToken(response.nextPageToken);
-          setVideos(response.items);
-          setCurrentVid({});
-          setIsSearched(false);
-          setSearchQuery("");
+          unstable_batchedUpdates(() => {
+            setVideos(response.items);
+            setVideoNextToken(response.nextPageToken);
+            setCurrentVid({});
+            setIsSearched(false);
+            setSearchQuery("");
+          });
       })
       .catch((error) => console.log(error))
     }
