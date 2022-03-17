@@ -21,7 +21,11 @@ export default class YoutubeAxios {
         params.pageToken = token;
       }
       
-      const response = await this.youtube.get('videos', { params });
+      const response = await this.youtube.get('videos', { params })
+      .then(res => res)
+      .catch(function(reason) {
+        console.log(reason);
+      })
       const result = response.data;
 
       result.items.map(item => {
@@ -48,7 +52,12 @@ export default class YoutubeAxios {
           params.pageToken = token;
       };
 
-      const response = await this.youtube.get('search', {params: params});
+      const response = await this.youtube.get('search', {params: params})
+      .then((res) => res)
+      .catch(function(error) {
+        console.dir(error.response.data.error.errors[0].reason); // 에러찾음.
+        // 할당량 초과시 quotaExceeded
+      })
       const items = JSON.parse(JSON.stringify(response.data.items));
 
       items.map(item => {
@@ -96,15 +105,21 @@ export default class YoutubeAxios {
 
       if (token) params.pageToken = token;
 
-      const response = await this.youtube.get('commentThreads', {params: params})
-      const result = response.data;
-      result.items.map(item => {
-        const snippet = item.snippet.topLevelComment.snippet;
-        snippet.authorDisplayName = decode(snippet.authorDisplayName, 'all');
-        snippet.textDisplay = decode(snippet.textDisplay, 'all');
-        return item;
+      return await this.youtube.get('commentThreads', {params: params})
+      .then((response) => {
+        const result = response.data;
+        result.items.map(item => {
+          const snippet = item.snippet.topLevelComment.snippet;
+          snippet.authorDisplayName = decode(snippet.authorDisplayName, 'all');
+          snippet.textDisplay = decode(snippet.textDisplay, 'all');
+          return item;
+        })
+        return result;
       })
-      return result;
+      .catch(function(error) {
+        console.dir(error.response.data.error.errors[0].reason); // 에러찾음.
+        // 댓글 없을 때 나타나는 에러 메세지 기준으로 조건문 작성하여 컨트롤하기.
+      });
     }
 
     async getChannelInfo(id) {
