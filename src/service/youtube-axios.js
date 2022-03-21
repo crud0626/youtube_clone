@@ -19,7 +19,7 @@ export default class YoutubeAxios {
 
       if (token) {
         params.pageToken = token;
-      }
+      };
       
       const response = await this.youtube.get('videos', { params });
       const result = response.data;

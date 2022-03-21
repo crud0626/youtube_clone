@@ -19,5 +19,4 @@ export default class AuthService {
     checkUser() {
         return this.auth.currentUser;
     }
-    // 
 }

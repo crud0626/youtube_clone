@@ -9,7 +9,6 @@ const PlaylistContainer = memo((props) => {
     const lastVideoRef = useRef();
     const skeletonCount = new Array(8).fill({undefined});
     let observer = "";
-    
 
     const setObserve = () => {
         const options = {
@@ -61,7 +60,7 @@ const PlaylistContainer = memo((props) => {
                     }})
                 }
                 {
-                    skeletonCount.map((item, index) => <VideoSkeleton key={index} />)
+                    !loading && skeletonCount.map((item, index) => <VideoSkeleton key={index} />)
                 }
             </ul>
             {loading && <Spinner />}
