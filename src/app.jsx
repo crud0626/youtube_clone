@@ -20,6 +20,7 @@ const App = (props) => {
     const [commentNextToken, setCommentNextToken] = useState("");
     const [searchQuery, setSearchQuery] = useState("");
     const [users, setUsers] = useState({});
+    const [isVideoLoading, setIsVideoLoading] = useState(false);
 
     const navigate = useNavigate();
 
@@ -71,6 +72,8 @@ const App = (props) => {
       }
 
     const getMoreVideos = () => {
+        setIsVideoLoading(true);
+        
         if (isSearched) {
           return props.youtube
           .getSearchVideos(searchQuery, videoNextToken)
@@ -79,6 +82,7 @@ const App = (props) => {
             data.push(...response.items);
             setVideos(data);
             setVideoNextToken(response.nextPageToken);
+            setIsVideoLoading(false);
             }))
         } else {
           return props.youtube
@@ -88,6 +92,7 @@ const App = (props) => {
             data.push(...response.items);
             setVideos(data);
             setVideoNextToken(response.nextPageToken);
+            setIsVideoLoading(false);
           }));
         }
       }
@@ -117,6 +122,8 @@ const App = (props) => {
     }
 
     const moveToMain = () => {
+      setIsVideoLoading(true);
+
       return props.youtube
       .getMostPopular()
       .then(response => {
@@ -126,6 +133,7 @@ const App = (props) => {
             setCurrentVid({});
             setIsSearched(false);
             setSearchQuery("");
+            setIsVideoLoading(false);
           });
       })
       .catch((error) => console.log(error))
@@ -180,6 +188,7 @@ const App = (props) => {
                     calcDiffDate={calcDiffDate}
                     convertVideoDuration={convertVideoDuration}
                     getMoreVideos={getMoreVideos}
+                    videoLoading={isVideoLoading}
                 />
                 }
             />

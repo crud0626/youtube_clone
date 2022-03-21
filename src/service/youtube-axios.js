@@ -21,11 +21,7 @@ export default class YoutubeAxios {
         params.pageToken = token;
       }
       
-      const response = await this.youtube.get('videos', { params })
-      .then(res => res)
-      .catch(function(reason) {
-        console.log(reason);
-      })
+      const response = await this.youtube.get('videos', { params });
       const result = response.data;
 
       result.items.map(item => {
@@ -55,9 +51,9 @@ export default class YoutubeAxios {
       const response = await this.youtube.get('search', {params: params})
       .then((res) => res)
       .catch(function(error) {
-        console.dir(error.response.data.error.errors[0].reason); // 에러찾음.
-        // 할당량 초과시 quotaExceeded
+        alert(`검색 도중 에러가 발생했습니다 : ${error.response.data.error.errors[0].reason}`);
       })
+
       const items = JSON.parse(JSON.stringify(response.data.items));
 
       items.map(item => {
@@ -117,8 +113,13 @@ export default class YoutubeAxios {
         return result;
       })
       .catch(function(error) {
-        console.dir(error.response.data.error.errors[0].reason); // 에러찾음.
-        // 댓글 없을 때 나타나는 에러 메세지 기준으로 조건문 작성하여 컨트롤하기.
+        const reason = error.response.data.error.errors[0].reason;
+        if (reason === "commentsDisabled") {
+          return {"items": [null], "nextPageToken": null};
+        } else {
+          alert(`에러가 발생했습니다 : ${reason}`);
+          return {"items": [null], "nextPageToken": null};
+        }
       });
     }
 

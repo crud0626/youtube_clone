@@ -1,0 +1,28 @@
+.item {
+  margin: 0px 10px 10px 10px;
+  display: flex;
+  flex: 1 1 23%;
+  flex-direction: column;
+  min-width: 240px;
+  max-width: 325px;
+
+  & .thumbnail {
+    margin: 12px 12px 0px 0px;
+    position: relative;
+    width: 100%;
+  }
+
+  & .info_container {
+    padding: 10px 0px;
+    display: flex;
+    width: 100%;
+    height: 94px;
+
+    & .info {
+      display: flex;
+      flex-grow: 1;
+      flex-direction: column;
+      justify-content: space-around;
+    }
+  }
+}

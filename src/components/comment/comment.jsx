@@ -37,7 +37,6 @@ const Comment = memo((props) => {
     }
 
     const commentText = {__html: props.topLevelComment.snippet.textDisplay};
-
     return (
         <li ref={props.lastCommentRef ? props.lastCommentRef : null} className={styles.comment_container}>
             <a href={props.topLevelComment.snippet.authorChannelUrl} target="_blank" rel='noreferrer' className={styles.author_thumbnail}>

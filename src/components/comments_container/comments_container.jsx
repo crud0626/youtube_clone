@@ -31,32 +31,41 @@ const CommentsContainer = memo((props) => {
         observer.disconnect();
     }
 
-    return (
-        <>
-            <div className={styles.comments_top}>
-                <h3>{`댓글 ${Number(props.commentCount).toLocaleString("en")} 개`}</h3>
+    if (props.comments.length === 1 && props.comments[0] === null) {
+        return (
+            <div className={styles.non_comments}>
+                <p>댓글이 사용 중지되었습니다.</p>
             </div>
-            <ul className={styles.comments}>
-                {props.comments.map(({snippet : {topLevelComment}}, index) => {
-                    const componentKey = topLevelComment.id + index;
-                    const renderProp = {
-                        "key": componentKey,
-                        "topLevelComment" : topLevelComment,
-                        "calcDiffDate" : props.calcDiffDate
-                    };
+        );
+    } else {
+        return (
+            <>
+                <div className={styles.comments_top}>
+                    <h3>{`댓글 ${Number(props.commentCount).toLocaleString("en")} 개`}</h3>
+                </div>
+                <ul className={styles.comments}>
+                    {props.comments.map((comment, index) => {
+                        const topLevelComment = comment.snippet.topLevelComment;
+                        const componentKey = topLevelComment.id + index;
+                        const renderProp = {
+                            "key": componentKey,
+                            "topLevelComment" : topLevelComment,
+                            "calcDiffDate" : props.calcDiffDate
+                        };
 
-                    if (index === props.comments.length - 1) {
-                        renderProp.lastCommentRef = lastCommentRef;
-                        renderProp.setObserve = setObserve;
-                    }
+                        if (index === props.comments.length - 1) {
+                            renderProp.lastCommentRef = lastCommentRef;
+                            renderProp.setObserve = setObserve;
+                        }
 
-                    return <Comment {...renderProp} />;
-                })}
+                        return <Comment {...renderProp} />;
+                    })}
 
-                {loading && <Spinner />}
-            </ul>
-        </>
-    );
+                    {loading && <Spinner />}
+                </ul>
+            </>
+        );
+    }
 });
 
 export default CommentsContainer;
