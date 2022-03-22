@@ -29,6 +29,7 @@ const App = (props) => {
     useEffect(() => {
       if (!users.uid) {
         const userData = authService.checkUser();
+        console.log(userData);
         if (userData) {
           const data = {
             "uid" : userData.uid,
@@ -151,6 +152,11 @@ const App = (props) => {
       return props.calc.convertVideoDuration(time);
     }
 
+    const ratingVideo = async (rating, videoId) => {
+      const token = await authService.getToken(users.uid);
+      return await props.youtube.ratingVideo(rating, videoId, token);
+    }
+
     return (
         <>
         <Header
@@ -175,6 +181,10 @@ const App = (props) => {
                     clickedVideo={clickedVideo}
                     convertVideoDuration={convertVideoDuration}
                     getMoreVideos={getMoreVideos}
+                    // test
+                    youtube={props.youtube}
+                    ratingVideo={ratingVideo}
+                    // 
                     />
                 }
             />

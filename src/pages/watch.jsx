@@ -16,6 +16,10 @@ const Watch = memo((props) => {
                 convertCount={props.convertCount}
                 calcDiffDate={props.calcDiffDate}
                 getMoreComments={props.getMoreComments}
+                // 
+                youtube={props.youtube}
+                // 
+                ratingVideo={props.ratingVideo}
             />
             <PlaylistContainer 
                 videos={props.videos}

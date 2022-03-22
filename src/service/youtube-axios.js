@@ -1,11 +1,15 @@
 import axios from "axios";
 
 const decode = require('unescape');
+
 export default class YoutubeAxios {
     constructor() {
       this.youtube = axios.create({
         // baseURL: "https://crud0626-serverless-youtube.netlify.app/youtube/v3",
-        baseURL: "https://eloquent-yalow-62a51f.netlify.app/youtube/v3"
+        baseURL: process.env.REACT_APP_TEST_URL
+      })
+      this.contentYoutube = axios.create({
+        baseURL: "https://content-youtube.googleapis.com/youtube/v3",
       })
     }
 
@@ -149,5 +153,29 @@ export default class YoutubeAxios {
       };
 
       return result;
+    }
+
+    async ratingVideo(rating, videoId, token) {
+      return await this.contentYoutube.post("videos/rate", "", {
+        params: {
+          rating: rating,
+          id: videoId,
+          key: process.env.REACT_APP_YOUTUBE_API_KEY
+        },
+        headers: {
+          "Authorization": `Bearer ${token}`
+        }
+      })
+      .then(() => true)
+      .catch(error => {
+        const message = error.response.data.error.errors[0].message;
+        if (message === "Invalid Credentials") {
+          // refreshToken을 통한 accessToken 재발급 요청 함수 호출.
+        } else {
+          alert(`에러가 발생했습니다 : ${message}`);
+          console.log(`에러가 발생했습니다 : ${message}`);
+          return false;
+        }
+      });
     }
 }
