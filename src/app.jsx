@@ -29,7 +29,6 @@ const App = (props) => {
     useEffect(() => {
       if (!users.uid) {
         const userData = authService.checkUser();
-        console.log(userData);
         if (userData) {
           const data = {
             "uid" : userData.uid,
@@ -59,10 +58,14 @@ const App = (props) => {
       }
     
     const searchVideos = (query) => {
+        setVideoNextToken("");
+
         props.youtube
         .getSearchVideos(query)
         .then(response => {
-            setVideoNextToken(response.nextPageToken);
+            if(response.nextPageToken) {
+              setVideoNextToken(response.nextPageToken);
+            }
             setVideos(response.items);
             setCurrentVid({});
             setIsSearched(true);
@@ -123,7 +126,9 @@ const App = (props) => {
     }
 
     const moveToMain = () => {
+      const dummyVideos = new Array(24).fill("");
       setIsVideoLoading(true);
+      setVideos(dummyVideos);
 
       return props.youtube
       .getMostPopular()
@@ -183,13 +188,12 @@ const App = (props) => {
                     calcDiffDate={calcDiffDate}
                     getMoreComments={getMoreComments}
                     videos={videos}
+                    videoNextToken={videoNextToken}
                     clickedVideo={clickedVideo}
                     convertVideoDuration={convertVideoDuration}
                     getMoreVideos={getMoreVideos}
-                    // test
                     youtube={props.youtube}
                     ratingVideo={ratingVideo}
-                    // 
                     />
                 }
             />
@@ -198,6 +202,7 @@ const App = (props) => {
                 element={
                 <Home 
                     videos={videos}
+                    videoNextToken={videoNextToken}
                     clickedVideo={clickedVideo}
                     convertCount={convertCount}
                     calcDiffDate={calcDiffDate}
@@ -212,6 +217,7 @@ const App = (props) => {
               element={
                 <Results 
                   videos={videos}
+                  videoNextToken={videoNextToken}
                   clickedVideo={clickedVideo}
                   convertCount={convertCount}
                   calcDiffDate={calcDiffDate}

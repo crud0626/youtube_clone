@@ -6,6 +6,7 @@ const Home = memo((props) => {
     return (
         <PlaylistContainer 
             videos={props.videos}
+            videoNextToken={props.videoNextToken}
             clickedVideo={props.clickedVideo}
             selected={props.selected}
             convertCount={props.convertCount}

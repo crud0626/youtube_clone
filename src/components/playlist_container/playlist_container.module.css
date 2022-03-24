@@ -11,6 +11,10 @@
   justify-content: space-evenly;
 }
 
+.noMoreVideos {
+  text-align: center;
+}
+
 @media screen and (max-width: 1080px) {
   .container {
     padding: 0px;

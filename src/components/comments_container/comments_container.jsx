@@ -60,7 +60,6 @@ const CommentsContainer = memo((props) => {
 
                         return <Comment {...renderProp} />;
                     })}
-
                     {loading && <Spinner />}
                 </ul>
             </>

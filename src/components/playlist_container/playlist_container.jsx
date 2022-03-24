@@ -22,7 +22,9 @@ const PlaylistContainer = memo((props) => {
             if (entries[0].isIntersecting) catchObserver()
         }, options);
 
-        observer.observe(lastVideoRef.current);
+        if(props.videos.length > 23 && props.videoNextToken !== "") {
+            observer.observe(lastVideoRef.current);
+        }
     }
 
     const catchObserver = () => {
@@ -60,9 +62,15 @@ const PlaylistContainer = memo((props) => {
                     }})
                 }
                 {
-                    !loading && skeletonCount.map(() => <VideoSkeleton key={nanoid()} />)
+                    !loading && props.videos.length > 23 && skeletonCount.map(() => <VideoSkeleton key={nanoid()} />)
                 }
             </ul>
+            {
+                props.videoNextToken === "" &&
+                <div className={styles.noMoreVideos}>
+                    <p>결과가 더 이상 없습니다.</p>
+                </div>
+            }
             {loading && <Spinner />}
         </div>
     );

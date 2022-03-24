@@ -16,13 +16,12 @@ const Watch = memo((props) => {
                 convertCount={props.convertCount}
                 calcDiffDate={props.calcDiffDate}
                 getMoreComments={props.getMoreComments}
-                // 
                 youtube={props.youtube}
-                // 
                 ratingVideo={props.ratingVideo}
             />
             <PlaylistContainer 
                 videos={props.videos}
+                videoNextToken={props.videoNextToken}
                 clickedVideo={props.clickedVideo}
                 selected={props.selected}
                 convertCount={props.convertCount}
