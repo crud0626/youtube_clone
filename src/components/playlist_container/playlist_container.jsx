@@ -3,6 +3,7 @@ import PlayList from '../playlist/playlist';
 import Spinner from '../spinner/spinner';
 import VideoSkeleton from '../video_skeleton/video_skeleton';
 import styles from './playlist_container.module.css';
+import { nanoid } from 'nanoid';
 
 const PlaylistContainer = memo((props) => {
     const [loading, setLoading] = useState(false);
@@ -38,11 +39,10 @@ const PlaylistContainer = memo((props) => {
             <ul className={`${styles.container} ${videoLayout}`}>
                 {props.videos.map((video, index) => {
                     if (props.videoLoading && video.undefined === undefined) {
-                        return <VideoSkeleton key={index} />;
+                        return <VideoSkeleton key={nanoid()} />;
                     } else {
-                        const componentKey = video.id + index;
                         const renderProps = {
-                                "key" : componentKey,
+                                "key" : nanoid(),
                                 "video" : video,
                                 "clickedVideo" : props.clickedVideo,
                                 "selected" : props.selected,
@@ -60,7 +60,7 @@ const PlaylistContainer = memo((props) => {
                     }})
                 }
                 {
-                    !loading && skeletonCount.map((item, index) => <VideoSkeleton key={index} />)
+                    !loading && skeletonCount.map(() => <VideoSkeleton key={nanoid()} />)
                 }
             </ul>
             {loading && <Spinner />}

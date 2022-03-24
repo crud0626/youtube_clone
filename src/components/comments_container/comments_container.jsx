@@ -2,6 +2,7 @@ import React, { memo, useRef, useState } from 'react';
 import Comment from '../comment/comment';
 import Spinner from '../spinner/spinner';
 import styles from './comments_container.module.css';
+import { nanoid } from 'nanoid';
 
 const CommentsContainer = memo((props) => {
     const [loading, setLoading] = useState(false);
@@ -46,9 +47,8 @@ const CommentsContainer = memo((props) => {
                 <ul className={styles.comments}>
                     {props.comments.map((comment, index) => {
                         const topLevelComment = comment.snippet.topLevelComment;
-                        const componentKey = topLevelComment.id + index;
                         const renderProp = {
-                            "key": componentKey,
+                            "key": nanoid(),
                             "topLevelComment" : topLevelComment,
                             "calcDiffDate" : props.calcDiffDate
                         };
