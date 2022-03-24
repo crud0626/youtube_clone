@@ -154,7 +154,12 @@ const App = (props) => {
 
     const ratingVideo = async (rating, videoId) => {
       const token = await authService.getToken(users.uid);
-      return await props.youtube.ratingVideo(rating, videoId, token);
+      return await props.youtube.ratingVideo(rating, videoId, token)
+      .then(result => {
+        if (!result) {
+          onLogIn();
+        }
+      })
     }
 
     return (

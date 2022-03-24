@@ -170,11 +170,11 @@ export default class YoutubeAxios {
       .catch(error => {
         const message = error.response.data.error.errors[0].message;
         if (message === "Invalid Credentials") {
-          alert("토큰이 만료되었습니다.");
-        } else {
-          alert(`에러가 발생했습니다 : ${message}`);
-          console.log(`에러가 발생했습니다 : ${message}`);
+          alert("토큰이 만료되어 로그인을 재시도합니다.");
           return false;
+        } else {
+          console.log(`에러가 발생했습니다 : ${message}`);
+          alert(`에러가 발생했습니다 : ${message}`);
         }
       });
     }
