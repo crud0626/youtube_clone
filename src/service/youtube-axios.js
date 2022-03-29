@@ -170,32 +170,11 @@ export default class YoutubeAxios {
       });
     }
 
-    async getRating(videoId) {
-      // uid 받아와야함.
-      const token = JSON.parse(localStorage.getItem("feyTp5XYKJU5yhvxuOSootZRtTx1"));
+    async getRating(videoId, uid) {
+      const tokens = JSON.parse(localStorage.getItem(uid));
       return await axios.get("https://www.googleapis.com/youtube/v3/videos/getRating", {
-        params: {
-          "id": videoId
-        },
-        headers: {
-          "Authorization": `Bearer ${token.accessToken}`
-        }
-      })
-      .then((response) => {
-        if (response.data.items[0]) {
-          return response.data.items[0].rating;
-        }
-        return null;
-      })
-      // 401에러 핸들링 예정
-      // .catch(error => {
-      //   const message = error.response.data.error.errors[0].message;
-      //   if (message === "Invalid Credentials") {
-      //     alert("토큰이 만료되어 로그인을 재시도합니다.");
-      //   } else {
-      //     alert(`에러가 발생했습니다 : ${message}`);
-      //     throw new Error(`에러가 발생했습니다 : ${message}`);
-      //   }
-      // });
+        params: {"id": videoId},
+        headers: {"Authorization": `Bearer ${tokens.accessToken}`}
+      });
     }
 }
