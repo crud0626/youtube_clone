@@ -142,7 +142,7 @@ const App = (props) => {
             setIsVideoLoading(false);
           });
       })
-      .catch((error) => console.log(error))
+      .catch((err) => console.log(`에러가 발생했습니다 : ${err.message}`));
     }
 
     const convertCount = (num) => {
@@ -155,16 +155,6 @@ const App = (props) => {
 
     const convertVideoDuration = (time) => {
       return props.calc.convertVideoDuration(time);
-    }
-
-    const ratingVideo = async (rating, videoId) => {
-      const token = await authService.getToken(users.uid);
-      return await props.youtube.ratingVideo(rating, videoId, token)
-      .then(result => {
-        if (!result) {
-          onLogIn();
-        }
-      })
     }
 
     return (
@@ -182,18 +172,19 @@ const App = (props) => {
                 path='/watch'
                 element={
                     <Watch 
+                    user={users}
                     currentVid={currentVid} 
                     comments={comments}
+                    videos={videos}
+                    videoNextToken={videoNextToken}
                     convertCount={convertCount}
                     calcDiffDate={calcDiffDate}
                     getMoreComments={getMoreComments}
-                    videos={videos}
-                    videoNextToken={videoNextToken}
                     clickedVideo={clickedVideo}
                     convertVideoDuration={convertVideoDuration}
                     getMoreVideos={getMoreVideos}
                     youtube={props.youtube}
-                    ratingVideo={ratingVideo}
+                    onLogIn={onLogIn}
                     />
                 }
             />

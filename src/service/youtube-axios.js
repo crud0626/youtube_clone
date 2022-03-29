@@ -1,4 +1,5 @@
 import axios from "axios";
+import { __SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED } from "react-dom";
 
 const decode = require('unescape');
 
@@ -155,7 +156,8 @@ export default class YoutubeAxios {
       return result;
     }
 
-    async ratingVideo(rating, videoId, token) {
+    async ratingVideo(rating, videoId, uid) {
+      const tokens = JSON.parse(localStorage.getItem(uid));
       return await this.contentYoutube.post("videos/rate", "", {
         params: {
           rating: rating,
@@ -163,19 +165,37 @@ export default class YoutubeAxios {
           key: process.env.REACT_APP_YOUTUBE_API_KEY
         },
         headers: {
-          "Authorization": `Bearer ${token}`
-        }
-      })
-      .then(() => true)
-      .catch(error => {
-        const message = error.response.data.error.errors[0].message;
-        if (message === "Invalid Credentials") {
-          alert("토큰이 만료되어 로그인을 재시도합니다.");
-          return false;
-        } else {
-          console.log(`에러가 발생했습니다 : ${message}`);
-          alert(`에러가 발생했습니다 : ${message}`);
+          "Authorization": `Bearer ${tokens.accessToken}`
         }
       });
+    }
+
+    async getRating(videoId) {
+      // uid 받아와야함.
+      const token = JSON.parse(localStorage.getItem("feyTp5XYKJU5yhvxuOSootZRtTx1"));
+      return await axios.get("https://www.googleapis.com/youtube/v3/videos/getRating", {
+        params: {
+          "id": videoId
+        },
+        headers: {
+          "Authorization": `Bearer ${token.accessToken}`
+        }
+      })
+      .then((response) => {
+        if (response.data.items[0]) {
+          return response.data.items[0].rating;
+        }
+        return null;
+      })
+      // 401에러 핸들링 예정
+      // .catch(error => {
+      //   const message = error.response.data.error.errors[0].message;
+      //   if (message === "Invalid Credentials") {
+      //     alert("토큰이 만료되어 로그인을 재시도합니다.");
+      //   } else {
+      //     alert(`에러가 발생했습니다 : ${message}`);
+      //     throw new Error(`에러가 발생했습니다 : ${message}`);
+      //   }
+      // });
     }
 }

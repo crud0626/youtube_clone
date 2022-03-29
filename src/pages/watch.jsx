@@ -11,6 +11,7 @@ const Watch = memo((props) => {
     return (
         <>
             <VideoSection
+                user={props.user}
                 currentVid={props.currentVid} 
                 comments={props.comments}
                 convertCount={props.convertCount}
@@ -18,6 +19,7 @@ const Watch = memo((props) => {
                 getMoreComments={props.getMoreComments}
                 youtube={props.youtube}
                 ratingVideo={props.ratingVideo}
+                onLogIn={props.onLogIn}
             />
             <PlaylistContainer 
                 videos={props.videos}

@@ -21,21 +21,21 @@ Demo Link : [![Netlify Status](https://api.netlify.com/api/v1/badges/21afc7b3-a6
 - unescape-js 라이브러리를 사용하여 댓글, 영상 설명에 관련된 데이터들의 디코딩 이슈 해결
 - 미디어 쿼리를 적용하여 반응형 웹사이트로 제작
 - PureComponent 적용하여 각 컴포넌트별 리렌더링을 최소화
-- Netlify의 serverless functions를 이용한 오픈소스로 redirect server를 통해 API와 통신하여 요청시 API key가 노출되는 문제 해결
+- Netlify의 serverless functions를 이용한 redirect server를 통해 API와 통신하여 요청시 API key가 노출되는 문제 해결
 - Netlify를 통해 배포 자동화.
 
-## 구현된 기능
+## 구현한 유튜브 기능
 
 - 비디오 관련
-  <br>조회수, 해당 채널관련 정보, 제목, 재생시간, 업로드일자, 채널 설명 접고 펴는 기능.
+  <br>조회수, 해당 채널관련 정보, 제목, 재생시간, 업로드일자, 채널의 설명 토글
 
 - 댓글
-  <br>작성일자, 작성자 링크, 썸네일, 댓글 총 개수, 플립, 일정 줄 이상의 댓글에만 접고 펴는 기능.
+  <br>작성일자, 작성자 링크, 썸네일, 댓글 총 개수, 플립, 일정 줄 이상의 댓글에만 토글 적용
 
 - 검색기능
 
 - 로그인 기능
-  <br>댓글과 좋아요 및 싫어요 상호작용에 관련된 부분도 추가 수정 예정.
+  <br>OAuth2 인증을 통해 좋아요 및 싫어요 반응 구현
 
 ## 개인적으로 수정 및 추가한 사항
 
@@ -46,11 +46,11 @@ Demo Link : [![Netlify Status](https://api.netlify.com/api/v1/badges/21afc7b3-a6
 5. 댓글과 비디오에 대해 Intersection Observer API를 활용하여 Infinite Scrolling 적용
 6. Firebase auth를 이용하여 구글 소셜 로그인 기능 적용
 7. React router를 적용하여 검색시 또는 비디오 클릭시에 라우팅되며 query 값으로 검색어, 비디오의 ID가 URI에 함께 노출되도록 구현하였다.
+8. OAuth2 인증을 통해 좋아요 및 싫어요 동작 구현
+9. 메인 페이지에 스켈레톤 UI적용
 
 ## 수정 예정
 
-- [ ] JS-XSS 라이브러리 적용 (불가피하게 HTML을 직접 삽입하는 방식에 의한 보안 이슈 방지 차원)
 - [ ] 가상키보드 적용
 - [ ] nav 추가
-- [ ] 스켈레톤 UI 적용
 - [ ] Redux 적용
