@@ -44,6 +44,8 @@ const VideoSection = memo((props) => {
     }, []);
 
     useEffect(() => {
+        setLike(false);
+        setDisLike(false);
         if(props.user.uid) {
             getCurrentRate();
         }
