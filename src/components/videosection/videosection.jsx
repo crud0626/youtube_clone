@@ -51,7 +51,20 @@ const VideoSection = memo((props) => {
         }
     }, [props.currentVid, accessToken]);
 
+    const checkExpires = () => {
+        if (Date.now() > expires) {
+            alert("토큰이 만료되어 로그인을 재시도합니다.");
+            props.onLogIn();
+            return false;
+        }
+        return true;
+    }
+
     const getCurrentRate = async () => {
+        if (!checkExpires()) {
+            return;
+        }
+
         return await props.youtube.getRating(props.currentVid.id, props.user.uid)
         .then((response) => {
             if (response.data.items[0]) {
@@ -82,6 +95,10 @@ const VideoSection = memo((props) => {
     }
 
     const sendRating = async (event) => {
+        if (!checkExpires()) {
+            return;
+        }
+
         const rating = event.currentTarget.dataset.func;
         await props.youtube.ratingVideo(rating, props.currentVid.id, props.user.uid)
         .then(() => {
