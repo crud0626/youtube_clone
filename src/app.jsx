@@ -5,11 +5,11 @@ import { Route, Routes, useNavigate } from 'react-router-dom';
 import Header from './components/header/header';
 import Home from './pages/home';
 import Watch from './pages/watch';
-import AuthService from './service/auth';
+import AuthService from './service/auth'; //
 import Results from "./pages/results";
 import { unstable_batchedUpdates } from "react-dom";
 
-const authService = new AuthService();
+const authService = new AuthService(); //
 
 const App = (props) => {
     const [videos, setVideos] = useState([]);
@@ -19,7 +19,7 @@ const App = (props) => {
     const [videoNextToken, setVideoNextToken] = useState();
     const [commentNextToken, setCommentNextToken] = useState("");
     const [searchQuery, setSearchQuery] = useState("");
-    const [users, setUsers] = useState({});
+    const [users, setUsers] = useState({}); //
     const [isVideoLoading, setIsVideoLoading] = useState(false);
 
     const navigate = useNavigate();
@@ -28,33 +28,26 @@ const App = (props) => {
 
     useEffect(() => {
       if (!users.uid) {
-        const userData = authService.checkUser();
-        if (userData) {
-          const data = {
-            "uid" : userData.uid,
-            "name": userData.displayName,
-            "url" : userData.photoURL
-          };
-          setUsers(data);
-        }
+        const userData = authService.checkUser(); //
+        if (userData) {setUsers(userData)};
       }
-    });
+    }, [users.uid]);
     
     const onLogIn = () => {
-        authService.login()
-        .then(result => {
-          const data = {
-            "uid" : result.user.uid,
-            "name": result.user.displayName,
-            "url" : result.user.photoURL
-          };
-          setUsers(data);
-        })
-      }
+      authService.login() //
+      .then(result => {
+        const data = {
+          "uid" : result.user.uid,
+          "name": result.user.displayName,
+          "url" : result.user.photoURL
+        };
+        setUsers(data); //
+      })
+    }
 
     const onLogOut = () => {
-        authService.logOut()
-        .then(() => {setUsers({})});
+        authService.logOut() //
+        .then(() => {setUsers({})}); //
       }
     
     const searchVideos = (query) => {
@@ -102,9 +95,6 @@ const App = (props) => {
       }
 
     const clickedVideo = async (video) => {
-      // 
-        console.log(video);
-        // 
         await props.youtube
         .getCurrentVidInfo(video)
         .then(response => {
@@ -128,35 +118,30 @@ const App = (props) => {
       })
     }
 
-    // 임시
     const getPopularVideos = () => {
       return props.youtube.getMostPopular()
       .then((response) => {
-        setVideos(response.items);
-        setVideoNextToken(response.nextPageToken);
+          setVideos(response.items);
+          setVideoNextToken(response.nextPageToken);
       })
-    }
+      .catch((err) => console.log(`에러가 발생했습니다 : ${err.message}`));
+  }
 
-    // 이거 위에랑 퓨전
-    const moveToMain = () => {
-      const dummyVideos = new Array(24).fill("");
-      setIsVideoLoading(true);
-      setVideos(dummyVideos);
+  const moveToMain = () => {
+    const dummyVideos = new Array(24).fill("");
+    setIsVideoLoading(true);
+    setVideos(dummyVideos);
 
-      return props.youtube
-      .getMostPopular()
-      .then(response => {
-          unstable_batchedUpdates(() => {
-            setVideos(response.items);
-            setVideoNextToken(response.nextPageToken);
+    return getPopularVideos()
+    .then(() => {
+        unstable_batchedUpdates(() => {
             setCurrentVid({});
             setIsSearched(false);
             setSearchQuery("");
             setIsVideoLoading(false);
-          });
-      })
-      .catch((err) => console.log(`에러가 발생했습니다 : ${err.message}`));
-    }
+        });
+    })
+  }
 
     const convertCount = (num) => {
       return props.calc.convertCount(num);
@@ -177,7 +162,7 @@ const App = (props) => {
           onSearch = {searchVideos}
           onLogIn = {onLogIn}
           onLogOut = {onLogOut}
-          userInfo = {users}
+          user = {users}
         />
         <section>
           <Routes>
