@@ -5,61 +5,64 @@ import { Route, Routes, useNavigate } from 'react-router-dom';
 import Header from './components/header/header';
 import Home from './pages/home';
 import Watch from './pages/watch';
-import AuthService from './service/auth'; //
 import Results from "./pages/results";
 import { unstable_batchedUpdates } from "react-dom";
 
-const authService = new AuthService(); //
-
 const App = (props) => {
-    const [videos, setVideos] = useState([]);
-    const [currentVid, setCurrentVid] = useState({});
-    const [comments, setComments] = useState([]);
-    const [isSearched, setIsSearched] = useState(false);
-    const [videoNextToken, setVideoNextToken] = useState();
-    const [commentNextToken, setCommentNextToken] = useState("");
-    const [searchQuery, setSearchQuery] = useState("");
-    const [users, setUsers] = useState({}); //
-    const [isVideoLoading, setIsVideoLoading] = useState(false);
+  const [videos, setVideos] = useState({
+    items: [],
+    nextToken: ""
+  });
+  const [currentVid, setCurrentVid] = useState({});
+  const [comments, setComments] = useState({
+    items: [],
+    nextToken: ""
+  });
+  const [isSearched, setIsSearched] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [user, setUser] = useState({});
+  const [isVideoLoading, setIsVideoLoading] = useState(false);
 
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
     useEffect(() => moveToMain(), []);
 
     useEffect(() => {
-      if (!users.uid) {
-        const userData = authService.checkUser(); //
-        if (userData) {setUsers(userData)};
+      if (!user.uid) {
+        const userData = props.authService.checkUser();
+        if (userData) {setUser(userData)};
       }
-    }, [users.uid]);
+    });
     
     const onLogIn = () => {
-      authService.login() //
-      .then(result => {
-        const data = {
-          "uid" : result.user.uid,
-          "name": result.user.displayName,
-          "url" : result.user.photoURL
-        };
-        setUsers(data); //
+      props.authService.login()
+      .then(response => {
+        if (response) {setUser(response)};
       })
     }
 
     const onLogOut = () => {
-        authService.logOut() //
-        .then(() => {setUsers({})}); //
+        props.authService.logOut()
+        .then((response) => {
+          if (response) {
+            alert("로그아웃 되었습니다.");
+            setUser({});
+          }
+        });
       }
     
     const searchVideos = (query) => {
-        setVideoNextToken("");
+        setVideos({
+          items: [], nextToken: ""
+        });
 
         props.youtube
         .getSearchVideos(query)
         .then(response => {
-            if(response.nextPageToken) {
-              setVideoNextToken(response.nextPageToken);
-            }
-            setVideos(response.items);
+            setVideos({
+              items: response.items,
+              nextToken: response.nextPageToken ? response.nextPageToken : ""
+            });
             setCurrentVid({});
             setIsSearched(true);
             setSearchQuery(query);
@@ -73,22 +76,29 @@ const App = (props) => {
         
         if (isSearched) {
           return props.youtube
-          .getSearchVideos(searchQuery, videoNextToken)
+          .getSearchVideos(searchQuery, videos.nextToken)
           .then(response => unstable_batchedUpdates(() => {
-            const data = [...videos];
+
+            const data = [...videos.items];
             data.push(...response.items);
-            setVideos(data);
-            setVideoNextToken(response.nextPageToken);
+
+            setVideos({
+              items: data,
+              nextToken: response.nextPageToken
+            });
+
             setIsVideoLoading(false);
             }))
         } else {
           return props.youtube
-          .getMostPopular(videoNextToken)
+          .getMostPopular(videos.nextToken)
           .then(response => unstable_batchedUpdates(() => {
-            const data = [...videos];
+            const data = [...videos.items];
             data.push(...response.items);
-            setVideos(data);
-            setVideoNextToken(response.nextPageToken);
+            setVideos({
+              items: data,
+              nextToken: response.nextPageToken
+            });
             setIsVideoLoading(false);
           }));
         }
@@ -99,46 +109,59 @@ const App = (props) => {
         .getCurrentVidInfo(video)
         .then(response => {
             setCurrentVid(response.info);
-            setComments(response.comments.items);
-            setCommentNextToken(response.comments.nextPageToken);
+
+            setComments({
+              items: response.comments.items,
+              nextToken: response.comments.nextPageToken
+            });
         })
         .catch((error) => console.log(error));
 
         navigate(`/watch?v=${video.id}`);
-      }
+      };
 
     const getMoreComments = () => {
       return props.youtube
-      .getComment(currentVid.id, commentNextToken)
+      .getComment(currentVid.id, comments.nextToken)
       .then(response => {
-        const data = [...comments];
+        const data = [...comments.items];
         data.push(...response.items);
-        setComments(data);
-        setCommentNextToken(response.nextPageToken);
+
+        setComments({
+          items: data,
+          nextToken: response.nextPageToken
+        });
       })
     }
 
     const getPopularVideos = () => {
       return props.youtube.getMostPopular()
       .then((response) => {
-          setVideos(response.items);
-          setVideoNextToken(response.nextPageToken);
+          setVideos({
+            items: response.items,
+            nextToken: response.nextPageToken
+          });
       })
       .catch((err) => console.log(`에러가 발생했습니다 : ${err.message}`));
   }
 
   const moveToMain = () => {
     const dummyVideos = new Array(24).fill("");
-    setIsVideoLoading(true);
-    setVideos(dummyVideos);
+    unstable_batchedUpdates(() => {
+      setVideos({
+        items: dummyVideos,
+        nextToken: ""
+      });
+      setIsVideoLoading(true);
+    });
 
     return getPopularVideos()
     .then(() => {
         unstable_batchedUpdates(() => {
-            setCurrentVid({});
-            setIsSearched(false);
-            setSearchQuery("");
-            setIsVideoLoading(false);
+          setCurrentVid({});
+          setIsSearched(false);
+          setSearchQuery("");
+          setIsVideoLoading(false);
         });
     })
   }
@@ -162,7 +185,7 @@ const App = (props) => {
           onSearch = {searchVideos}
           onLogIn = {onLogIn}
           onLogOut = {onLogOut}
-          user = {users}
+          user = {user}
         />
         <section>
           <Routes>
@@ -170,11 +193,11 @@ const App = (props) => {
                 path='/watch'
                 element={
                     <Watch 
-                    user={users}
+                    user={user}
                     currentVid={currentVid} 
-                    comments={comments}
-                    videos={videos}
-                    videoNextToken={videoNextToken}
+                    comments={comments.items}
+                    videos={videos.items}
+                    videoNextToken={videos.nextToken}
                     convertCount={convertCount}
                     calcDiffDate={calcDiffDate}
                     getMoreComments={getMoreComments}
@@ -191,8 +214,8 @@ const App = (props) => {
                 path='/'
                 element={
                 <Home 
-                    videos={videos}
-                    videoNextToken={videoNextToken}
+                    videos={videos.items}
+                    videoNextToken={videos.nextToken}
                     clickedVideo={clickedVideo}
                     convertCount={convertCount}
                     calcDiffDate={calcDiffDate}
@@ -206,8 +229,8 @@ const App = (props) => {
               path='/results'
               element={
                 <Results 
-                  videos={videos}
-                  videoNextToken={videoNextToken}
+                  videos={videos.items}
+                  videoNextToken={videos.nextToken}
                   clickedVideo={clickedVideo}
                   convertCount={convertCount}
                   calcDiffDate={calcDiffDate}

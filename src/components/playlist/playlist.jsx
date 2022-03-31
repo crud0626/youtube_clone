@@ -6,8 +6,8 @@ const Playlist = memo((props) => {
         if (props.lastVideoRef) props.setObserve();
     }, []);
 
-    const sendVideoId = () => props.clickedVideo(props.video);
-
+    const sendVideoId = () => {props.clickedVideo(props.video)};
+    
     const sendCounter = num => props.convertCount(num);
 
     const sendDuration = () => props.convertVideoDuration(props.video.contentDetails.duration);

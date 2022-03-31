@@ -12,8 +12,8 @@ const Watch = memo((props) => {
             navigate("/");
             return;
         }
-        
-        if (window.location.search.includes("?v=")) {
+    
+        if (window.location.search.includes("?v=") && !props.currentVid.id) {
             const id = (function() {
                 let videoID = window.location.search.split("?v=")[1];
                 if (videoID.length > 11) {
@@ -23,12 +23,10 @@ const Watch = memo((props) => {
                 return videoID;
             })();
 
-            props.getPopularVideos();
             props.youtube.getOneVideoInfo(id)
             .then(data => {
                 props.clickedVideo(data);
-            })
-
+            });
             return;
         }
     }, []);
