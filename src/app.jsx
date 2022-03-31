@@ -102,6 +102,9 @@ const App = (props) => {
       }
 
     const clickedVideo = async (video) => {
+      // 
+        console.log(video);
+        // 
         await props.youtube
         .getCurrentVidInfo(video)
         .then(response => {
@@ -125,6 +128,16 @@ const App = (props) => {
       })
     }
 
+    // 임시
+    const getPopularVideos = () => {
+      return props.youtube.getMostPopular()
+      .then((response) => {
+        setVideos(response.items);
+        setVideoNextToken(response.nextPageToken);
+      })
+    }
+
+    // 이거 위에랑 퓨전
     const moveToMain = () => {
       const dummyVideos = new Array(24).fill("");
       setIsVideoLoading(true);
@@ -185,6 +198,7 @@ const App = (props) => {
                     getMoreVideos={getMoreVideos}
                     youtube={props.youtube}
                     onLogIn={onLogIn}
+                    getPopularVideos={getPopularVideos}
                     />
                 }
             />

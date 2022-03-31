@@ -16,17 +16,9 @@ export default class AuthService {
             "expires": Date.now() + (response._tokenResponse.oauthExpireIn * 1000),
         };
         
-        this.saveTokens(response.user.uid, tokens);
+        window.localStorage.setItem(response.user.uid, JSON.stringify(tokens));
+
         return response;
-    }
-
-    saveTokens(uid, tokens) {
-        localStorage.setItem(uid, JSON.stringify(tokens));
-    }
-
-    getToken(uid) {
-        const tokens = JSON.parse(localStorage.getItem(uid));
-        return tokens.accessToken;
     }
 
     logOut() {
