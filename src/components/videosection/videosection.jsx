@@ -8,7 +8,15 @@ const VideoSection = memo((props) => {
     const [textOver, setTextOver] = useState(false);
     const [like, setLike] = useState(false);
     const [disLike, setDisLike] = useState(false);
-    const {accessToken, expires} = JSON.parse(localStorage.getItem(props.user.uid));
+    let [accessToken, expires] = [null, null];
+
+    const getTokens = () => {
+        if (props.user.uid) {
+            const tokens = JSON.parse(localStorage.getItem(props.user.uid));
+            accessToken = tokens.accessToken;
+            expires = tokens.expires;
+        }
+    }
 
     const displayVideoDate = () => {
       const date = new Date(props.currentVid.snippet.publishedAt);
@@ -47,9 +55,10 @@ const VideoSection = memo((props) => {
         setLike(false);
         setDisLike(false);
         if(props.user.uid) {
+            getTokens();
             getCurrentRate();
         }
-    }, [props.currentVid, accessToken]);
+    }, [props.currentVid, props.user.uid, accessToken]);
 
     const checkExpires = () => {
         if (Date.now() > expires) {
