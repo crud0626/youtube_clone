@@ -28,10 +28,16 @@ export default class AuthService {
             return data;
         })
         .catch(err => {
-            if (err.code === "auth/popup-closed-by-user") {
-                alert("로그인 중 팝업이 닫혔습니다. 다시 시도해 주세요");
-            } else {
-                console.log(`다음과 같은 이유로 로그인이 실패하였습니다. ${err.code}`);
+            switch (err.code) {
+                case "auth/popup-closed-by-user":
+                    alert("로그인 중 팝업이 닫혔습니다. 다시 시도해 주세요");
+                    break;
+                case "auth/popup-blocked":
+                    alert("팝업이 차단되었습니다. 해제 후 다시 시도해 주세요.");
+                    break;
+                default:
+                    alert(`다음과 같은 이유로 로그인이 실패하였습니다. ${err.code}`);
+                    console.log(err.code);
             }
         });
     }
