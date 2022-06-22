@@ -6,7 +6,8 @@ const decode = require('unescape');
 export default class YoutubeAxios {
     constructor() {
       this.youtube = axios.create({
-        baseURL: "https://crud0626-serverless-youtube.netlify.app/youtube/v3",
+        // baseURL: "https://crud0626-serverless-youtube.netlify.app/youtube/v3",
+        baseURL: process.env.REACT_APP_TEST_URL,
       })
       this.contentYoutube = axios.create({
         baseURL: "https://content-youtube.googleapis.com/youtube/v3",
@@ -170,6 +171,7 @@ export default class YoutubeAxios {
 
     async ratingVideo(rating, videoId, uid) {
       const tokens = JSON.parse(localStorage.getItem(uid));
+      // return await this.youtube.post("content/videos/rate", "", {
       return await this.contentYoutube.post("videos/rate", "", {
         params: {
           rating: rating,
@@ -184,6 +186,7 @@ export default class YoutubeAxios {
 
     async getRating(videoId, uid) {
       const tokens = JSON.parse(localStorage.getItem(uid));
+      // return await this.youtube.get("videos/getRating", {
       return await axios.get("https://www.googleapis.com/youtube/v3/videos/getRating", {
         params: {"id": videoId},
         headers: {"Authorization": `Bearer ${tokens.accessToken}`}
