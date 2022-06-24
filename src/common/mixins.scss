@@ -1,0 +1,24 @@
+@mixin separateLine {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+    padding-bottom: 8px;
+    margin-bottom: 16px;
+}
+
+@mixin btnWithHoverTitle {
+    position: relative;
+
+    &:hover::after {
+      content: attr(title);
+      position: absolute;
+      width: max-content;
+      top: 100%;
+      left: 0;
+      padding: 7px 5px;
+      font-size: 12px;
+      color: white;
+      border-radius: 5px;
+      background-color: rgba(0, 0, 0, 0.6);
+      cursor: auto;
+      z-index: 1;
+    }
+}

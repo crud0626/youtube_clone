@@ -203,7 +203,6 @@ const VideoSection = memo((props) => {
                     </div>
                 </div>
             </div>
-            <div className='separateLine'></div>
             <div className={styles.channel_info_container}>
                 <a className={styles.channel_info_left} href={`https://www.youtube.com/channel/${currentVid.snippet.channelId}`} target="_blank" rel="noreferrer" >
                     <img src={currentVid.channel.snippet.thumbnails.default.url} alt="channelImage" />
@@ -226,7 +225,6 @@ const VideoSection = memo((props) => {
                 </div>
                 
             </div>
-            <div className='separateLine'></div>
             <CommentsContainer 
                 commentCount={props.currentVid.statistics.commentCount}
                 comments={props.comments}
