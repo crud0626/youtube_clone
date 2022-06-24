@@ -1,5 +1,5 @@
 import React, { memo, useEffect } from 'react';
-import styles from "./playlist.module.css";
+import styles from "./playlist.module.scss";
 
 const Playlist = memo((props) => {
     useEffect(() => {

@@ -1,6 +1,6 @@
 import React, { memo, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import styles from './header.module.css';
+import styles from './header.module.scss';
 
 const Header = memo((props) => {
     const navigate = useNavigate();

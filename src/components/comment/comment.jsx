@@ -1,5 +1,5 @@
 import React, { memo, useEffect, useRef, useState } from 'react';
-import styles from './comment.module.css';
+import styles from './comment.module.scss';
 
 const Comment = memo((props) => {
     const spanRef = useRef();

@@ -1,7 +1,7 @@
 import React, { memo, useRef, useState } from 'react';
 import Comment from '../comment/comment';
 import Spinner from '../spinner/spinner';
-import styles from './comments_container.module.css';
+import styles from './comments_container.module.scss';
 import { nanoid } from 'nanoid';
 
 const CommentsContainer = memo((props) => {

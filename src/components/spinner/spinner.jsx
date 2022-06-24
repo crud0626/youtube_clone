@@ -1,5 +1,5 @@
 import React, { memo } from 'react';
-import styles from './spinner.module.css';
+import styles from './spinner.module.scss';
 
 const Spinner = memo((props) => {
     return (

@@ -1,7 +1,7 @@
 import React from 'react';
 import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
-import styles from './video_skeleton.module.css';
+import styles from './video_skeleton.module.scss';
 
 const VideoSkeleton = ({index}) => {
     return(
