@@ -1,5 +1,5 @@
 import React, { memo } from 'react';
-import PlaylistContainer from '~/components/playlist_container/playlist_container';
+import PlaylistContainer from '../components/playlist_container/playlist_container';
 
 
 const Home = memo((props) => {

@@ -1,6 +1,6 @@
 import React, { memo, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import PlaylistContainer from '~/components/playlist_container/playlist_container';
+import PlaylistContainer from '../components/playlist_container/playlist_container';
 
 const Results = memo((props) => {
     const navigate = useNavigate();

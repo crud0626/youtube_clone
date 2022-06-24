@@ -1,7 +1,7 @@
 import React, { memo, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import PlaylistContainer from '~/components/playlist_container/playlist_container';
-import VideoSection from '~/components/videosection/videosection';
+import PlaylistContainer from '../components/playlist_container/playlist_container';
+import VideoSection from '../components/videosection/videosection';
 
 const Watch = memo((props) => {
     const navigate = useNavigate();
