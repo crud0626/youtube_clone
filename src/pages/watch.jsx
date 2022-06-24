@@ -55,7 +55,7 @@ const Watch = memo((props) => {
                     videos={props.videos}
                     videoNextToken={props.videoNextToken}
                     clickedVideo={props.clickedVideo}
-                    selected={props.selected}
+                    selected={props.currentVid.id}
                     convertCount={props.convertCount}
                     calcDiffDate={props.calcDiffDate}
                     convertVideoDuration={props.convertVideoDuration}

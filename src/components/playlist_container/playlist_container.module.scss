@@ -5,6 +5,11 @@
   list-style: none;
 }
 
+// test
+.selectedVideo {
+  flex-direction: column;
+}
+
 .notSelectedVideo {
   display: flex;
   flex-wrap: wrap;

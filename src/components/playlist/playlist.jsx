@@ -20,6 +20,8 @@ const Playlist = memo((props) => {
 
     const videoLayout= props.selected ? styles.selectedVideo : styles.notSelectedVideo;
 
+    // console.log(props.selected);
+
     return (
         <li ref={props.lastVideoRef ? props.lastVideoRef : null} className={`${styles.container} ${videoLayout}`} onClick={sendVideoId}>
             <div className={styles.thumbnail_container}>
