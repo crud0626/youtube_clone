@@ -143,10 +143,10 @@ const VideoSection = memo((props) => {
     const currentVid = props.currentVid;
 
     return (
-        <div className={styles.videosection_container}>
-            <div className={styles.videoplayer_container}>
+        <div className={styles.container}>
+            <div className={styles.player_container}>
                 <iframe 
-                    className={styles.videoplayer}
+                    className={styles.player}
                     id="ytplayer" 
                     type="text/html" 
                     title='videoplayer'
@@ -204,11 +204,11 @@ const VideoSection = memo((props) => {
                 </div>
             </div>
             <div className='separateLine'></div>
-            <div className={styles.author_info_container}>
-                <a className={styles.author_info_left} href={`https://www.youtube.com/channel/${currentVid.snippet.channelId}`} target="_blank" rel="noreferrer" >
+            <div className={styles.channel_info_container}>
+                <a className={styles.channel_info_left} href={`https://www.youtube.com/channel/${currentVid.snippet.channelId}`} target="_blank" rel="noreferrer" >
                     <img src={currentVid.channel.snippet.thumbnails.default.url} alt="channelImage" />
                 </a>
-                <div className={styles.author_info_right}>
+                <div className={styles.channel_info_right}>
                     <a 
                         href={`https://www.youtube.com/channel/${currentVid.snippet.channelId}`} 
                         target="_blank" rel="noreferrer"
@@ -220,7 +220,7 @@ const VideoSection = memo((props) => {
                     <span>{`구독자 ${convertShortCount(currentVid.channel.statistics.subscriberCount)}명`}</span>
                     <div className={styles.desc_container}>
                         <pre id='expander' ref={descRef} className={`${styles.video_desc} shortcut`}>{currentVid.snippet.description}</pre>
-                        {textOver && <button className={styles.desc_btn} onClick={onDescButton}>더보기</button>}
+                        {textOver && <button className={styles.toggle_btn} onClick={onDescButton}>더보기</button>}
                     </div>
                     
                 </div>

@@ -37,12 +37,13 @@ const Comment = memo((props) => {
     }
 
     const commentText = {__html: props.topLevelComment.snippet.textDisplay};
+    
     return (
-        <li ref={props.lastCommentRef ? props.lastCommentRef : null} className={styles.comment_container}>
-            <a href={props.topLevelComment.snippet.authorChannelUrl} target="_blank" rel='noreferrer' className={styles.author_thumbnail}>
+        <li ref={props.lastCommentRef ? props.lastCommentRef : null} className={styles.container}>
+            <a href={props.topLevelComment.snippet.authorChannelUrl} target="_blank" rel='noreferrer' className={styles.thumbnail}>
                 <img src={props.topLevelComment.snippet.authorProfileImageUrl} alt="author thumbnail" />
             </a>
-            <div className={styles.comment_info}>
+            <div className={styles.info_container}>
                 <div className={styles.info_top}>
                     <a href={props.topLevelComment.snippet.authorChannelUrl} target="_blank" rel='noreferrer' className={styles.author_name}>{props.topLevelComment.snippet.authorDisplayName}</a>
                     <span className={styles.comment_date}>{`${getDiffDate()} 전`}</span>

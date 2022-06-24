@@ -1,11 +1,11 @@
-@value grayLight from '../../common/colors.scss';
+@use "../../common/colors";
 
-.videosection_container {
+.container {
   flex: 1 1 65%;
   padding-right: 8px;
 }
 
-.videoplayer_container {
+.player_container {
   position: relative;
   width: 100%;
   padding-bottom: 56.25%;
@@ -14,7 +14,7 @@
   max-width: 1280px;
   max-height: 720px;
 
-  & > .videoplayer {
+  & > .player {
     position: absolute;
     width: 100%;
     height: 100%;
@@ -26,16 +26,16 @@
   height: 40px;
   justify-content: space-between;
   align-items: center;
-  color: grayLight;
+  color: colors.$grayLight;
   font-size: 0.9rem;
 
-  & > .video_info_right {
+  & .video_info_right {
     display: flex;
     height: 100%;
     align-items: center;
     color: black;
 
-    & > .video_info_item {
+    & .video_info_item {
       display: flex;
       align-items: center;
       height: 100%;
@@ -52,10 +52,10 @@
   }
 }
 
-.author_info_container {
+.channel_info_container {
   display: flex;
 
-  & > .author_info_left {
+  & .channel_info_left {
     width: 48px;
     height: 48px;
 
@@ -66,7 +66,7 @@
     }
   }
 
-  & > .author_info_right {
+  & .channel_info_right {
     padding-left: 16px;
 
     & > a {
@@ -79,7 +79,7 @@
       display: block;
       margin-top: 2px;
       font-size: 0.8rem;
-      color: grayLight;
+      color: colors.$grayLight;
     }
   }
 }
@@ -87,7 +87,7 @@
 .desc_container {
   padding-bottom: 20px;
 
-  & > .video_desc {
+  & .video_desc {
     display: -webkit-box;
     -webkit-box-orient: vertical;
     max-width: 656px;
@@ -96,11 +96,11 @@
     overflow: hidden;
   }
 
-  & > .desc_btn {
+  & .toggle_btn {
     margin-top: 8px;
     padding: 0;
     border: none;
-    color: grayLight;
+    color: colors.$grayLight;
     background-color: transparent;
     font-size: 12px;
     cursor: pointer;
@@ -109,7 +109,7 @@
 
 /* buttons */
 
-.btns[title] {
+.btns {
   position: relative;
 
   &:hover::after {

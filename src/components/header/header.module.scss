@@ -1,12 +1,12 @@
-@value linkColor, blackBoder, grayLight from '../../common/colors.scss';
+@use "../../common/colors";
 
 header {
   height: 56px;
-  border-bottom: blackBoder;
+  border-bottom: colors.$blackBoder;
   background-color: white;
 }
 
-.header_container {
+.container {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -21,10 +21,10 @@ header {
   justify-content: flex-start;
   align-items: center;
   cursor: pointer;
-  & img {
+  & > img {
     width: 30px;
   }
-  & h1 {
+  & > h1 {
     margin: 0;
     padding-left: 2px;
     font-size: 24px;
@@ -55,15 +55,15 @@ header {
   }
 }
 
-.searchbar {
+.search_bar {
   flex: 1 1 100%;
   display: flex;
   align-items: center;
   position: relative;
   height: 100%;
-  border: blackBoder;
+  border: colors.$blackBoder;
   border-radius: 3px 0 0 3px;
-  & .input_form {
+  & .search_form {
     flex: 1 1 100%;
     height: 100%;
     & input {
@@ -83,23 +83,23 @@ header {
 
 .input_icons_container {
   display: flex;
-}
 
-.input_icon {
-  margin: 1px 10px;
-  padding: 0;
-  background: transparent;
-  border: none;
-  font-size: 19px;
-  color: grayLight;
-  opacity: 0.6;
-  &:last-child {
-    margin-left: 0;
-    width: 20px;
-    height: 20px;
-  }
-  &:hover {
-    opacity: 0.8;
+  & .input_icon {
+    margin: 1px 10px;
+    padding: 0;
+    background: transparent;
+    border: none;
+    font-size: 19px;
+    color: colors.$grayLight;
+    opacity: 0.6;
+    &:last-child {
+      margin-left: 0;
+      width: 20px;
+      height: 20px;
+    }
+    &:hover {
+      opacity: 0.8;
+    }
   }
 }
 
@@ -130,7 +130,7 @@ header {
   font-size: 1.2rem;
 }
 
-.btns[title] {
+.btns {
   position: relative;
 
   &:hover::after {
@@ -155,7 +155,7 @@ header {
   justify-content: flex-end;
   align-items: center;
 
-  & > .right_btns {
+  & .right_btns {
     display: flex;
     align-items: center;
     padding: 8px;
@@ -164,15 +164,15 @@ header {
     cursor: pointer;
   }
 
-  & > .login_btn {
+  & .login_btn {
     justify-content: space-evenly;
     width: 99.5px;
     margin-left: 8px;
     padding: 5px 11px;
-    border: 1px solid linkColor;
+    border: 1px solid colors.$linkColor;
     border-radius: 3px;
-    color: linkColor;
-    fill: linkColor;
+    color: colors.$linkColor;
+    fill: colors.$linkColor;
     font-size: 14px;
   }
 }
@@ -198,7 +198,7 @@ header {
   position: absolute;
   /* header랑 사이즈 맞춰서 sizes에 묶어놓기. */
   top: 56px;
-  border: blackBoder;
+  border: colors.$blackBoder;
   border-radius: 2px;
   background: white;
   visibility: hidden;
@@ -209,11 +209,10 @@ header {
   display: flex;
   align-items: center;
   padding: 16px;
-  border-bottom: blackBoder;
+  border-bottom: colors.$blackBoder;
 
   & > img {
     margin-right: 16px;
-    /* icon 사이즈 묶기 */
     width: 40px;
     height: 40px;
     border-radius: 50%;

@@ -48,15 +48,15 @@ const Header = memo((props) => {
 
     return (
         <header>
-            <div className={styles.header_container}>
+            <div className={styles.container}>
                 <div className={styles.left} onClick={clickedLogo}>
                     <img src="./images/logo.png" alt="mainlogo"/>
                     <h1>YouTube</h1>
                 </div>
                 <div className={styles.center}>
                     <div className={styles.searchbar_container}>
-                        <div className={styles.searchbar}>
-                            <form className={styles.input_form} onSubmit={onSearch}>
+                        <div className={styles.search_bar}>
+                            <form className={styles.search_form} onSubmit={onSearch}>
                                 <input ref={inputRef} placeholder='검색' type="text" onKeyUp={handleInput}/>
                             </form>
                             <div className={styles.input_icons_container}>

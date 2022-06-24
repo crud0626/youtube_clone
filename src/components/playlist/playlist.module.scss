@@ -1,20 +1,20 @@
-@value grayLight from '../../common/colors.scss';
+@use "../../common/colors";
 
-.playlist {
+.container {
   display: flex;
   margin: 0px 10px 10px 10px;
   cursor: pointer;
 
-  & > .thumbnail_container {
+  & .thumbnail_container {
     position: relative;
 
-    & > .thumbnail {
+    & .thumbnail {
       width: 100%;
       height: 100%;
       object-fit: cover;
     }
 
-    & > .video_duration {
+    & .duration {
       position: absolute;
       right: 5px;
       bottom: 8px;
@@ -26,7 +26,7 @@
     }
   }
 
-  & > .video_info_container {
+  & .info_container {
     width: 100%;
     height: 100%;
     padding: 10px 0;
@@ -34,7 +34,7 @@
     flex-direction: column;
     justify-content: space-between;
 
-    & > .title {
+    & .title {
       display: -webkit-box;
       margin: 0 0 6px 0;
       font-size: 1rem;
@@ -45,11 +45,11 @@
       -webkit-box-orient: vertical;
     }
 
-    & > .video_info {
+    & .info {
       font-size: 0.9rem;
-      color: grayLight;
+      color: colors.$grayLight;
 
-      & > .info_counter {
+      & .sub_info {
         font-size: 0.8rem;
       }
     }
@@ -57,11 +57,11 @@
 }
 
 .selectedVideo {
-  & > .video_info_container {
+  & .video_info_container {
     padding: 0 0 0 10px;
   }
 
-  & > .thumbnail_container {
+  & .thumbnail_container {
     & > img {
       width: 168px;
       height: 100%;
@@ -78,7 +78,7 @@
     width: 100%;
   }
 
-  & > .thumbnail_container {
+  & .thumbnail_container {
     width: 100%;
   }
 }

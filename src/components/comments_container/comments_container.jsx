@@ -34,14 +34,14 @@ const CommentsContainer = memo((props) => {
 
     if (props.comments.length === 1 && props.comments[0] === null) {
         return (
-            <div className={styles.non_comments}>
+            <div className={styles.no_comments}>
                 <p>댓글이 사용 중지되었습니다.</p>
             </div>
         );
     } else {
         return (
             <>
-                <div className={styles.comments_top}>
+                <div className={styles.info}>
                     <h3>{`댓글 ${Number(props.commentCount).toLocaleString("en")} 개`}</h3>
                 </div>
                 <ul className={styles.comments}>

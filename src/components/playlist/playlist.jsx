@@ -21,21 +21,19 @@ const Playlist = memo((props) => {
     const videoLayout= props.selected ? styles.selectedVideo : styles.notSelectedVideo;
 
     return (
-        <li ref={props.lastVideoRef ? props.lastVideoRef : null} className={`${styles.playlist} ${videoLayout}`} onClick={sendVideoId}>
+        <li ref={props.lastVideoRef ? props.lastVideoRef : null} className={`${styles.container} ${videoLayout}`} onClick={sendVideoId}>
             <div className={styles.thumbnail_container}>
                 <img className={styles.thumbnail} src={props.video.snippet.thumbnails.medium.url} alt="video thumbnail" />
-                <div className={styles.video_duration}>
+                <div className={styles.duration}>
                     <span>{sendDuration()}</span>
                 </div>
             </div>
-            <div className={styles.video_info_container}>
+            <div className={styles.info_container}>
                 <h3 className={styles.title}>{props.video.snippet.title}</h3>
-                <div className={styles.video_info}>
+                <div className={styles.info}>
                     <span className={styles.channelTitle}>{props.video.snippet.channelTitle}</span>
-                    <div className={styles.info_counter}>
-                        <span>{`조회수 ${sendCounter(props.video.statistics.viewCount)}회`}</span>
-                        <span>{" • "}</span>
-                        <span>{`${getDiffDate()} 전`}</span>
+                    <div className={styles.sub_info}>
+                        <span>{`조회수 ${sendCounter(props.video.statistics.viewCount)}회 • ${getDiffDate()} 전`}</span>
                     </div>
                 </div>
             </div>

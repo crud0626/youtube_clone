@@ -1,10 +1,10 @@
-@value linkColor, grayLight from '../../common/colors.scss';
+@use "../../common/colors";
 
-.comment_container {
+.container {
   display: flex;
   margin: 0 0 16px 0;
 
-  & > .author_thumbnail {
+  & .thumbnail {
     flex-shrink: 0;
     width: 40px;
     height: 40px;
@@ -18,35 +18,37 @@
   }
 
   & a {
-    color: linkColor;
+    color: colors.$linkColor;
     text-decoration: none;
   }
 }
 
-.info_top {
-  display: flex;
-  align-items: center;
-  margin-bottom: 3px;
-
-  & > .author_name {
-    margin: 0;
-    font-size: 0.9rem;
-    color: black;
+.info_container {
+  & .info_top {
+    display: flex;
+    align-items: center;
+    margin-bottom: 3px;
+  
+    & > .author_name {
+      margin: 0;
+      font-size: 0.9rem;
+      color: black;
+    }
+  
+    & > .comment_date {
+      padding-left: 5px;
+      color: colors.$grayLight;
+      font-size: 0.7rem;
+    }
   }
-
-  & > .comment_date {
-    padding-left: 5px;
-    color: grayLight;
-    font-size: 0.7rem;
-  }
-}
-
-.info_bottom {
-  font-size: 14px;
-
-  & > .span_container {
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
+  
+  & .info_bottom {
+    font-size: 14px;
+  
+    & > .span_container {
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
   }
 }
