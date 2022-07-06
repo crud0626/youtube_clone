@@ -3,9 +3,9 @@ import "./App.scss";
 import React, { useEffect, useState } from 'react';
 import { Route, Routes, useNavigate } from 'react-router-dom';
 import Header from './components/header/header';
-import Home from './pages/home';
-import Watch from './pages/watch';
-import Results from "./pages/results";
+import Home from './pages/Home';
+import Watch from './pages/Watch';
+import Results from "./pages/Results";
 import { unstable_batchedUpdates } from "react-dom";
 
 const App = (props) => {
@@ -32,7 +32,7 @@ const App = (props) => {
         const userData = props.authService.checkUser();
         if (userData) {setUser(userData)};
       }
-    });
+    }, []);
     
     const onLogIn = () => {
       props.authService.login()
@@ -50,26 +50,27 @@ const App = (props) => {
           }
         });
       }
-    
+  
+      // 수정 필요
     const searchVideos = (query) => {
-        setVideos({
-          items: [], nextToken: ""
-        });
+      setVideos({
+        items: [], nextToken: ""
+      });
 
-        props.youtube
-        .getSearchVideos(query)
-        .then(response => {
-            setVideos({
-              items: response.items,
-              nextToken: response.nextPageToken ? response.nextPageToken : ""
-            });
-            setCurrentVid({});
-            setIsSearched(true);
-            setSearchQuery(query);
-        });
+      props.youtube
+      .getSearchVideos(query)
+      .then(response => {
+          setVideos({
+            items: response.items,
+            nextToken: response.nextPageToken ? response.nextPageToken : ""
+          });
+          setCurrentVid({});
+          setIsSearched(true);
+          setSearchQuery(query);
+      });
 
-        navigate(`results?search_query=${query}`);
-      }
+      navigate(`results?search_query=${query}`);
+    };
 
     const getMoreVideos = () => {
         setIsVideoLoading(true);
@@ -229,6 +230,7 @@ const App = (props) => {
               path='/results'
               element={
                 <Results 
+                  onSearch={searchVideos}
                   videos={videos.items}
                   videoNextToken={videos.nextToken}
                   clickedVideo={clickedVideo}
@@ -236,7 +238,6 @@ const App = (props) => {
                   calcDiffDate={calcDiffDate}
                   convertVideoDuration={convertVideoDuration}
                   getMoreVideos={getMoreVideos}
-                  onSearch={searchVideos}
                 />
               }
             />

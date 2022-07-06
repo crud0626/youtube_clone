@@ -1,7 +1,7 @@
 import React, { memo, useEffect, useRef, useState } from 'react';
 import { unstable_batchedUpdates } from 'react-dom';
-import CommentsContainer from '../comments_container/comments_container';
-import styles from './videosection.module.scss';
+import CommentsContainer from '../Comments_container/Comments_container';
+import styles from '../../styles/videosection.module.scss';
 
 const VideoSection = memo((props) => {
     const descRef = useRef();

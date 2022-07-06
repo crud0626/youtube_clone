@@ -1,10 +1,10 @@
 import YoutubeAxios from './service/youtube-axios';
-import Calculator from './service/calculator';
+import Calculator from './utils/calculator';
 
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.scss';
-import App from './app';
+import App from './App';
 import { BrowserRouter } from 'react-router-dom';
 import AuthService from './service/auth';
 

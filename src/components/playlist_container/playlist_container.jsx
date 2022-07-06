@@ -1,8 +1,8 @@
 import React, { memo, useRef, useState } from 'react';
-import PlayList from '../playlist/playlist';
-import Spinner from '../spinner/spinner';
-import VideoSkeleton from '../video_skeleton/video_skeleton';
-import styles from './playlist_container.module.scss';
+import styles from '../../styles/playlist_container.module.scss';
+import PlayList from '../Playlist/Playlist';
+import Spinner from '../Spinner/Spinner';
+import VideoSkeleton from '../Video_skeleton/Video_skeleton';
 import { nanoid } from 'nanoid';
 
 const PlaylistContainer = memo((props) => {

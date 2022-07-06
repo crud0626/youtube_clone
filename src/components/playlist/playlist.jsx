@@ -1,5 +1,5 @@
 import React, { memo, useEffect } from 'react';
-import styles from "./playlist.module.scss";
+import styles from "../../styles/playlist.module.scss";
 
 const Playlist = memo((props) => {
     useEffect(() => {
@@ -19,8 +19,6 @@ const Playlist = memo((props) => {
     }
 
     const videoLayout= props.selected ? styles.selectedVideo : styles.notSelectedVideo;
-
-    // console.log(props.selected);
 
     return (
         <li ref={props.lastVideoRef ? props.lastVideoRef : null} className={`${styles.container} ${videoLayout}`} onClick={sendVideoId}>

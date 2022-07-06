@@ -1,6 +1,8 @@
 import React, { memo, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import styles from './header.module.scss';
+import styles from '../../styles/header.module.scss';
+import logoIMG from './../../assets/logo.png';
+import keyboardIMG from './../../assets/keyboard.gif';
 
 const Header = memo((props) => {
     const navigate = useNavigate();
@@ -50,7 +52,7 @@ const Header = memo((props) => {
         <header>
             <div className={styles.container}>
                 <div className={styles.left} onClick={clickedLogo}>
-                    <img src="./images/logo.png" alt="mainlogo"/>
+                    <img src={logoIMG} alt="mainlogo"/>
                     <h1>YouTube</h1>
                 </div>
                 <div className={styles.center}>
@@ -61,7 +63,7 @@ const Header = memo((props) => {
                             </form>
                             <div className={styles.input_icons_container}>
                                 <button className={styles.input_icon} onClick={clickKeyboard}>
-                                    <img src="./images/keyboard.gif" alt="keyboardIcon" />
+                                    <img src={keyboardIMG} alt="keyboardIcon" />
                                 </button>
                                 <button id='input_eraser' className={`${styles.input_icon} input_hidden`} onClick={removeInputValue}>
                                     <svg width="20" height="20">

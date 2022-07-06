@@ -1,21 +1,9 @@
-import React, { memo } from 'react';
+import React from 'react';
 import PlaylistContainer from '../components/playlist_container/playlist_container';
 
 
-const Home = memo((props) => {
-    return (
-        <PlaylistContainer 
-            videos={props.videos}
-            videoNextToken={props.videoNextToken}
-            clickedVideo={props.clickedVideo}
-            selected={props.selected}
-            convertCount={props.convertCount}
-            calcDiffDate={props.calcDiffDate}
-            convertVideoDuration={props.convertVideoDuration}
-            getMoreVideos={props.getMoreVideos}
-            videoLoading={props.videoLoading}
-        />
-    );
-});
+const Home = (props) => (
+    <PlaylistContainer { ...props } />
+);
 
 export default Home;
