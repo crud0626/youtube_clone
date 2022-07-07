@@ -2,11 +2,10 @@ import "./App.scss";
 
 import React, { useEffect, useState } from 'react';
 import { Route, Routes, useNavigate } from 'react-router-dom';
-import Header from './components/header/header';
+import Header from './components/Header/Header';
 import Home from './pages/Home';
 import Watch from './pages/Watch';
 import Results from "./pages/Results";
-import { unstable_batchedUpdates } from "react-dom";
 
 const App = (props) => {
   const [videos, setVideos] = useState({
@@ -72,36 +71,28 @@ const App = (props) => {
       navigate(`results?search_query=${query}`);
     };
 
-    const getMoreVideos = () => {
+    const getMoreVideos = async () => {
         setIsVideoLoading(true);
-        
-        if (isSearched) {
-          return props.youtube
-          .getSearchVideos(searchQuery, videos.nextToken)
-          .then(response => unstable_batchedUpdates(() => {
 
-            const data = [...videos.items];
-            data.push(...response.items);
+        try {
+          const newVideos = [...videos.items];
+          let items, nextPageToken;
 
-            setVideos({
-              items: data,
-              nextToken: response.nextPageToken
-            });
+          isSearched
+          ? ({ items, nextPageToken } = await props.youtube.getSearchVideos(searchQuery, videos.nextToken))
+          : ({ items, nextPageToken } = await props.youtube.getMostPopular(videos.nextToken));
 
-            setIsVideoLoading(false);
-            }))
-        } else {
-          return props.youtube
-          .getMostPopular(videos.nextToken)
-          .then(response => unstable_batchedUpdates(() => {
-            const data = [...videos.items];
-            data.push(...response.items);
-            setVideos({
-              items: data,
-              nextToken: response.nextPageToken
-            });
-            setIsVideoLoading(false);
-          }));
+          newVideos.push(...items);
+    
+          setVideos({
+            items: newVideos,
+            nextToken: nextPageToken
+          });
+        } catch (error) {
+          alert("동영상을 불러오는 도중 에러가 발생했습니다.");
+          throw new Error(`에러가 발생했습니다. ${error}`);
+        } finally {
+          setIsVideoLoading(false);
         }
       }
 
@@ -148,23 +139,19 @@ const App = (props) => {
 
   const moveToMain = () => {
     const dummyVideos = new Array(24).fill("");
-    unstable_batchedUpdates(() => {
-      setVideos({
-        items: dummyVideos,
-        nextToken: ""
-      });
-      setIsVideoLoading(true);
+    setVideos({
+      items: dummyVideos,
+      nextToken: ""
     });
+    setIsVideoLoading(true);
 
     return getPopularVideos()
     .then(() => {
-        unstable_batchedUpdates(() => {
-          setCurrentVid({});
-          setIsSearched(false);
-          setSearchQuery("");
-          setIsVideoLoading(false);
-        });
-    })
+      setCurrentVid({});
+      setIsSearched(false);
+      setSearchQuery("");
+      setIsVideoLoading(false);
+    });
   }
 
     const convertCount = (num) => {

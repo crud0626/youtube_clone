@@ -1,5 +1,4 @@
 import React, { memo, useEffect, useRef, useState } from 'react';
-import { unstable_batchedUpdates } from 'react-dom';
 import CommentsContainer from '../Comments_container/Comments_container';
 import styles from '../../styles/videosection.module.scss';
 
@@ -118,10 +117,8 @@ const VideoSection = memo((props) => {
                     if (like) {setLike(false)};
                     break;
                 case "none":
-                    unstable_batchedUpdates(() => {
-                        setLike(false);
-                        setDisLike(false);
-                    });
+                    setLike(false);
+                    setDisLike(false);
                     break;
                 default:
                     console.log(`정의되지 않은 평가입니다. ${rating}`);

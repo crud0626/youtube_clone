@@ -1,5 +1,5 @@
 import React from 'react';
-import PlaylistContainer from '../components/playlist_container/playlist_container';
+import PlaylistContainer from '../components/Playlist_container/Playlist_container';
 
 
 const Home = (props) => (
