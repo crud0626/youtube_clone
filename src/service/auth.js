@@ -10,44 +10,48 @@ export default class AuthService {
     async login() {
         this.provider.addScope("https://www.googleapis.com/auth/youtube.force-ssl");
 
-        return await signInWithPopup(this.auth, this.provider)
-        .then(response => {
-            const tokens = {
-                "accessToken": response._tokenResponse.oauthAccessToken,
-                "expires": Date.now() + (response._tokenResponse.oauthExpireIn * 1000),
-            };
+        try {
+            const userData = await signInWithPopup(this.auth, this.provider)
+            .then(({_tokenResponse, user}) => {
+                const tokens = {
+                    "accessToken": _tokenResponse.oauthAccessToken,
+                    "expires": Date.now() + (_tokenResponse.oauthExpireIn * 1000),
+                };
+    
+                window.localStorage.setItem(user.uid, JSON.stringify(tokens));
+    
+                const data = {
+                    "uid" : user.uid,
+                    "name": user.displayName,
+                    "url" : user.photoURL
+                };
+    
+                return data;
+            });
 
-            window.localStorage.setItem(response.user.uid, JSON.stringify(tokens));
-
-            const data = {
-                "uid" : response.user.uid,
-                "name": response.user.displayName,
-                "url" : response.user.photoURL
-            };
-
-            return data;
-        })
-        .catch(err => {
-            switch (err.code) {
+            return userData;
+        } catch (error) {
+            switch (error.code) {
                 case "auth/popup-closed-by-user":
                     alert("로그인 중 팝업이 닫혔습니다. 다시 시도해 주세요");
-                    break;
+                    throw error;
                 case "auth/popup-blocked":
                     alert("팝업이 차단되었습니다. 해제 후 다시 시도해 주세요.");
-                    break;
+                    throw error;
                 default:
-                    alert(`다음과 같은 이유로 로그인이 실패하였습니다. ${err.code}`);
-                    console.log(err.code);
+                    alert(`다음과 같은 이유로 로그인이 실패하였습니다. ${error.code}`);
+                    throw error;
             }
-        });
+        }
     }
 
     async logOut() {
-        return await signOut(this.auth)
-        .then(() => true)
-        .catch(err => {
-            alert(`다음과 같은 이유로 로그아웃에 실패하였습니다. ${err.code}`);
-        })
+        try {
+            return await signOut(this.auth).then(() => true);
+        } catch (error) {
+            alert(`다음과 같은 이유로 로그아웃에 실패하였습니다. ${error.code}`);
+            throw error;
+        }
     }
 
     checkUser() {

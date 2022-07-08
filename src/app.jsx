@@ -15,7 +15,7 @@ const App = (props) => {
   const [currentVid, setCurrentVid] = useState({});
   const [comments, setComments] = useState({
     items: [],
-    nextToken: ""
+    nextToken: "" 
   });
   const [isSearched, setIsSearched] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
@@ -29,46 +29,54 @@ const App = (props) => {
     useEffect(() => {
       if (!user.uid) {
         const userData = props.authService.checkUser();
-        if (userData) {setUser(userData)};
+
+        if (userData) {
+          setUser(userData)
+        };
       }
     }, []);
     
-    const onLogIn = () => {
-      props.authService.login()
-      .then(response => {
-        if (response) {setUser(response)};
-      })
+    const onLogIn = async () => {
+      try {
+        await props.authService.login()
+        .then(data => setUser(data));
+      } catch (error) {
+        throw new Error(`로그인 도중 에러가 발생했습니다. ${error.code}`);
+      }
     }
 
-    const onLogOut = () => {
-        props.authService.logOut()
-        .then((response) => {
-          if (response) {
+    const onLogOut = async () => {
+      try {
+        await props.authService.logOut()
+        .then((res) => {
+          if(res) {
             alert("로그아웃 되었습니다.");
             setUser({});
           }
-        });
+        })
+      } catch (error) {
+        throw new Error(`로그아웃 도중 에러가 발생했습니다. ${error.message}`);
       }
+    }
   
-      // 수정 필요
-    const searchVideos = (query) => {
-      setVideos({
-        items: [], nextToken: ""
-      });
+    const searchVideos = async (query) => {
+      setVideos({ items: [], nextToken: "" });
+      setIsVideoLoading(true);
 
-      props.youtube
-      .getSearchVideos(query)
-      .then(response => {
-          setVideos({
-            items: response.items,
-            nextToken: response.nextPageToken ? response.nextPageToken : ""
-          });
-          setCurrentVid({});
-          setIsSearched(true);
-          setSearchQuery(query);
-      });
-
-      navigate(`results?search_query=${query}`);
+        await props.youtube.searchVideo(query)
+        .then(({ items, nextPageToken }) => {
+            setVideos({
+              items,
+              nextToken: nextPageToken ? nextPageToken : ""
+            });
+            setCurrentVid({});
+            setIsSearched(true);
+            setSearchQuery(query);
+        })
+        .finally(() => {
+          setIsVideoLoading(false);
+          navigate(`results?search_query=${query}`);
+        });
     };
 
     const getMoreVideos = async () => {
@@ -79,7 +87,7 @@ const App = (props) => {
           let items, nextPageToken;
 
           isSearched
-          ? ({ items, nextPageToken } = await props.youtube.getSearchVideos(searchQuery, videos.nextToken))
+          ? ({ items, nextPageToken } = await props.youtube.searchVideo(searchQuery, videos.nextToken))
           : ({ items, nextPageToken } = await props.youtube.getMostPopular(videos.nextToken));
 
           newVideos.push(...items);
@@ -170,7 +178,7 @@ const App = (props) => {
         <>
         <Header
           moveToMain = {moveToMain} 
-          onSearch = {searchVideos}
+          searchVideos = {searchVideos}
           onLogIn = {onLogIn}
           onLogOut = {onLogOut}
           user = {user}
@@ -209,7 +217,7 @@ const App = (props) => {
                     calcDiffDate={calcDiffDate}
                     convertVideoDuration={convertVideoDuration}
                     getMoreVideos={getMoreVideos}
-                    videoLoading={isVideoLoading}
+                    isVideoLoading={isVideoLoading}
                 />
                 }
             />

@@ -14,180 +14,186 @@ export default class YoutubeAxios {
       });
     }
 
-    async getMostPopular(token) {
-      const params = {
-        part: 'snippet,contentDetails,statistics',
-        chart: 'mostPopular',
-        maxResults: 24,
-        fields : 'items(id,snippet,contentDetails,statistics),nextPageToken',
-      }
+    async getMostPopular(token = null) {
+      try {
+        const params = {
+          part: 'snippet,contentDetails,statistics',
+          chart: 'mostPopular',
+          maxResults: 24,
+          fields : 'items(id,snippet,contentDetails,statistics),nextPageToken',
+        }
 
-      if (token) {
-        params.pageToken = token;
-      };
-      
-      const response = await this.youtube.get('videos', { params });
-      const result = response.data;
-
-      result.items.map(item => {
+        if (token) params.pageToken = token;
+        
+        const { data } = await this.youtube.get('videos', { params });
+        data.items.map(item => {
           item.snippet.title = decode(item.snippet.title, 'all');
           item.snippet.description = decode(item.snippet.description, 'all');
 
           const keys = Object.keys(item.statistics);
           keys.map(key => item.statistics[key] = +item.statistics[key]);
           return item;
-      })
-      return result;
-    }
+        });
 
-    async getOneVideoInfo(videoId) {
-      const params = {
-        part: "snippet,contentDetails,statistics",
-        id: videoId,
-        fields: "items(id,snippet,contentDetails,statistics)"
+        return data;
+      } catch (error) {
+        alert("비디오를 불러오는 도중 에러가 발생했습니다.");
+        throw error;
       }
-
-      const response = await this.youtube.get('videos', { params });
-      const result = response.data.items[0];
-
-      return result;
     }
 
-    async getSearchVideos(query, token) {
-      const params = {
+    async searchVideo(query, token = null) {
+      try {
+        const params = {
           part: 'snippet',
           maxResults: 24,
           q: query,
           type: 'video',
           fields : 'items(id,snippet),nextPageToken',
-      };
+        };
 
-      if (token) {
-          params.pageToken = token;
-      };
+        if (token) params.pageToken = token;
 
-      const response = await this.youtube.get('search', {params: params})
-      .then((res) => res)
-      .catch(function(error) {
-        alert(`검색 도중 에러가 발생했습니다 : ${error.response.data.error.errors[0].reason}`);
-      })
+        const resData = await this.youtube.get('search', {params: params})
+        .then(({ data: { items, nextPageToken } }) => {
+          items.map(item => {
+            item.id = item.id.videoId;
+            item.snippet.title = decode(item.snippet.title, 'all');
+            item.snippet.description = decode(item.snippet.description, 'all');
+            return item;
+          });
+          return { items, nextPageToken };
+        });
 
-      const items = JSON.parse(JSON.stringify(response.data.items));
-
-      items.map(item => {
-          item.id = item.id.videoId;
-          item.snippet.title = decode(item.snippet.title, 'all');
-          item.snippet.description = decode(item.snippet.description, 'all');
-          return item;
-      })
-
-      const itemsWithInfo = await this.getVideosInfo(items);
-      const result = {items: itemsWithInfo, nextPageToken: response.data.nextPageToken};
-      
-      return result;
+        resData.items = await this.getVideoInfo(resData.items);
+        
+        return resData;
+      } catch ({ response }) {
+        if(response.status === 403 && response.data.error.message.match(/exceeded/)) {
+          alert("할당량이 초과되어 금일은 이용이 불가합니다.");
+          throw new Error(`할당량이 초과 되었습니다.`);
+        }
+        alert("검색 도중 에러가 발생했습니다.");
+        throw new Error(`통신 도중 에러가 발생했습니다. ${response.data.error.message}`);
+      }
     }
 
-    async getVideosInfo(items) {
-      const IDs = [];
-      items.forEach(item => {
-          IDs.push(item.id);
-      })
+    async getVideoInfo(items) {
+      try {
+        const itemsID = items.map(({ id }) => id).join(",");
 
-      const Infos = await this.youtube.get('videos', {
-        params: {
-          part: 'contentDetails,statistics',
-          id: IDs.join(','),
-          fields: 'items(contentDetails,statistics)'
-        }
-      });
-
-      for(let i = 0; i < items.length; i++) {
-        Object.assign(items[i], Infos.data.items[i]);
+        const { data } = await this.youtube.get('videos', {
+          params: {
+            part: 'contentDetails,statistics',
+            id: itemsID,
+            fields: 'items(contentDetails,statistics)'
+          }
+        });
+  
+        items.map((item, index) => (Object.assign(item, data.items[index])));
+  
+        return items;
+      } catch (error) {
+        throw error;
       }
-
-      return items;
     }
 
-    async getComment(currentId, token) {
-      const params = {
-        part: 'snippet',
-        maxResults: 20,
-        order: 'relevance',
-        videoId: currentId,
-        fields: 'items,nextPageToken'
-      }
-
-      if (token) params.pageToken = token;
-
-      return await this.youtube.get('commentThreads', {params: params})
-      .then((response) => {
-        const result = response.data;
-        result.items.map(item => {
-          const snippet = item.snippet.topLevelComment.snippet;
-          snippet.authorDisplayName = decode(snippet.authorDisplayName, 'all');
-          snippet.textDisplay = decode(snippet.textDisplay, 'all');
-          return item;
-        })
-        return result;
-      })
-      .catch(function(error) {
-        const reason = error.response.data.error.errors[0].reason;
-        if (reason === "commentsDisabled") {
-          return {"items": [null], "nextPageToken": null};
-        } else {
-          alert(`에러가 발생했습니다 : ${reason}`);
-          return {"items": [null], "nextPageToken": null};
+    async getComment(currentId, token = null) {
+      try {
+        const params = {
+          part: 'snippet',
+          maxResults: 20,
+          order: 'relevance',
+          videoId: currentId,
+          fields: 'items,nextPageToken'
         }
-      });
+  
+        if (token) params.pageToken = token;
+  
+        const resData = await this.youtube.get('commentThreads', {params: params})
+        .then(({data: { items, nextPageToken }}) => {
+          items.map(item => {
+            const snippet = item.snippet.topLevelComment.snippet;
+            snippet.authorDisplayName = decode(snippet.authorDisplayName, 'all');
+            snippet.textDisplay = decode(snippet.textDisplay, 'all');
+            return item;
+          })
+          return { items, nextPageToken };
+        });
+
+        return resData;
+      } catch (error) {
+        throw error;
+      }
     }
 
     async getChannelInfo(id) {
-      const response = await this.youtube.get('channels', {
-        params: {
+      try {
+        const params = {
           part: 'snippet,statistics',
           id: id,
           fields: 'items(snippet(thumbnails),statistics(subscriberCount))'
-        }
-      })
-      
-      const result = response.data.items[0];
-      result.statistics.subscriberCount = +result.statistics.subscriberCount;
+        };
 
-      return result;
+        const resData = await this.youtube.get('channels', { params })
+        .then(({ data: { items }}) => {
+          items.map(item => +item.statistics.subscriberCount);
+          return items;
+        });
+
+        return resData;
+      } catch (error) {
+        throw error;
+      }
     }
 
     async getCurrentVidInfo(video) {
-      const channel = await this.getChannelInfo(video.snippet.channelId);
-      video.channel = channel;
-      const comments = await this.getComment(video.id);
-
-      const result = {
-          info: video,
-          comments: comments
-      };
-
-      return result;
+      try {
+        const channel = await this.getChannelInfo(video.snippet.channelId);
+        video.channel = channel[0];
+        const comments = await this.getComment(video.id);
+  
+        const result = {
+            info: video,
+            comments: comments
+        };
+  
+        return result;
+      } catch (error) {
+        alert("비디오 정보를 불러오는 도중 에러가 발생했습니다.");
+        throw new Error(`에러가 발생했습니다. ${error.message}`);
+      }
     }
 
     async ratingVideo(rating, videoId, uid) {
-      const tokens = JSON.parse(localStorage.getItem(uid));
-      return await this.contentYoutube.post("videos/rate", "", {
-        params: {
-          rating: rating,
-          id: videoId,
-          key: process.env.REACT_APP_YOUTUBE_API_KEY
-        },
-        headers: {
-          "Authorization": `Bearer ${tokens.accessToken}`
-        }
-      });
+      try {
+        const tokens = JSON.parse(localStorage.getItem(uid));
+        return await this.contentYoutube.post("videos/rate", "", {
+          params: {
+            rating: rating,
+            id: videoId,
+            key: process.env.REACT_APP_YOUTUBE_API_KEY
+          },
+          headers: {
+            "Authorization": `Bearer ${tokens.accessToken}`
+          }
+        });
+      } catch (error) {
+        alert("에러가 발생했습니다.");
+        throw new Error(`에러가 발생했습니다. ${error.message}`);
+      }
     }
 
     async getRating(videoId, uid) {
-      const tokens = JSON.parse(localStorage.getItem(uid));
-      return await this.youtube.get("videos/getRating", {
-        params: {"id": videoId},
-        headers: {"Authorization": `Bearer ${tokens.accessToken}`}
-      });
+      try {
+        const tokens = JSON.parse(localStorage.getItem(uid));
+        return await this.youtube.get("videos/getRating", {
+          params: {"id": videoId},
+          headers: {"Authorization": `Bearer ${tokens.accessToken}`}
+        });
+      } catch (error) {
+        alert("에러가 발생했습니다.");
+        throw new Error(`에러가 발생했습니다. ${error.message}`);
+      }
     }
 }
