@@ -2,7 +2,7 @@ import YoutubeAxios from './service/youtube-axios';
 import Calculator from './utils/calculator';
 
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client'
 import './index.scss';
 import App from './App';
 import { BrowserRouter } from 'react-router-dom';
@@ -12,7 +12,8 @@ const youtubeAxios = new YoutubeAxios();
 const calc = new Calculator();
 const authService = new AuthService();
 
-ReactDOM.render(
+const root = createRoot(document.getElementById('root'));
+root.render(
   <React.StrictMode>
     <BrowserRouter>
       <App 
@@ -21,6 +22,5 @@ ReactDOM.render(
         authService = {authService}
       />
     </BrowserRouter>
-  </React.StrictMode>,
-  document.getElementById('root')
+  </React.StrictMode>
 );

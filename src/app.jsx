@@ -24,17 +24,22 @@ const App = (props) => {
 
   const navigate = useNavigate();
 
-    useEffect(() => moveToMain(), []);
+  useEffect(() => {
+    async function fetchData() {
+      moveToMain();
+    }
+    fetchData();
+  }, []);
 
-    useEffect(() => {
-      if (!user.uid) {
-        const userData = props.authService.checkUser();
+  useEffect(() => {
+    if (!user.uid) {
+      const userData = props.authService.checkUser();
 
-        if (userData) {
-          setUser(userData)
-        };
-      }
-    }, []);
+      if (userData) {
+        setUser(userData)
+      };
+    }
+  }, []);
     
     const onLogIn = async () => {
       try {
@@ -60,7 +65,9 @@ const App = (props) => {
     }
   
     const searchVideos = async (query) => {
-      setVideos({ items: [], nextToken: "" });
+      setVideos({
+        items: [], nextToken: ""
+      });
       setIsVideoLoading(true);
 
         await props.youtube.searchVideo(query)
@@ -72,10 +79,10 @@ const App = (props) => {
             setCurrentVid({});
             setIsSearched(true);
             setSearchQuery(query);
+            navigate(`results?search_query=${query}`);
         })
         .finally(() => {
           setIsVideoLoading(false);
-          navigate(`results?search_query=${query}`);
         });
     };
 
@@ -145,7 +152,7 @@ const App = (props) => {
       .catch((err) => console.log(`에러가 발생했습니다 : ${err.message}`));
   }
 
-  const moveToMain = () => {
+  const moveToMain = async () => {
     const dummyVideos = new Array(24).fill("");
     setVideos({
       items: dummyVideos,
@@ -153,11 +160,13 @@ const App = (props) => {
     });
     setIsVideoLoading(true);
 
-    return getPopularVideos()
+    await getPopularVideos()
     .then(() => {
       setCurrentVid({});
       setIsSearched(false);
       setSearchQuery("");
+    })
+    .finally(() => {
       setIsVideoLoading(false);
     });
   }
@@ -184,59 +193,61 @@ const App = (props) => {
           user = {user}
         />
         <section>
-          <Routes>
-            <Route 
-                path='/watch'
+          {/* <BrowserRouter> */}
+            <Routes>
+              <Route 
+                  path='/watch'
+                  element={
+                      <Watch 
+                      user={user}
+                      currentVid={currentVid} 
+                      comments={comments.items}
+                      videos={videos.items}
+                      videoNextToken={videos.nextToken}
+                      convertCount={convertCount}
+                      calcDiffDate={calcDiffDate}
+                      getMoreComments={getMoreComments}
+                      clickedVideo={clickedVideo}
+                      convertVideoDuration={convertVideoDuration}
+                      getMoreVideos={getMoreVideos}
+                      youtube={props.youtube}
+                      onLogIn={onLogIn}
+                      getPopularVideos={getPopularVideos}
+                      />
+                  }
+              />
+              <Route 
+                  path='/'
+                  element={
+                  <Home 
+                      videos={videos.items}
+                      videoNextToken={videos.nextToken}
+                      clickedVideo={clickedVideo}
+                      convertCount={convertCount}
+                      calcDiffDate={calcDiffDate}
+                      convertVideoDuration={convertVideoDuration}
+                      getMoreVideos={getMoreVideos}
+                      isVideoLoading={isVideoLoading}
+                  />
+                  }
+              />
+              <Route 
+                path='/results'
                 element={
-                    <Watch 
-                    user={user}
-                    currentVid={currentVid} 
-                    comments={comments.items}
+                  <Results 
+                    onSearch={searchVideos}
                     videos={videos.items}
                     videoNextToken={videos.nextToken}
-                    convertCount={convertCount}
-                    calcDiffDate={calcDiffDate}
-                    getMoreComments={getMoreComments}
-                    clickedVideo={clickedVideo}
-                    convertVideoDuration={convertVideoDuration}
-                    getMoreVideos={getMoreVideos}
-                    youtube={props.youtube}
-                    onLogIn={onLogIn}
-                    getPopularVideos={getPopularVideos}
-                    />
-                }
-            />
-            <Route 
-                path='/'
-                element={
-                <Home 
-                    videos={videos.items}
-                    videoNextToken={videos.nextToken}
                     clickedVideo={clickedVideo}
                     convertCount={convertCount}
                     calcDiffDate={calcDiffDate}
                     convertVideoDuration={convertVideoDuration}
                     getMoreVideos={getMoreVideos}
-                    isVideoLoading={isVideoLoading}
-                />
+                  />
                 }
-            />
-            <Route 
-              path='/results'
-              element={
-                <Results 
-                  onSearch={searchVideos}
-                  videos={videos.items}
-                  videoNextToken={videos.nextToken}
-                  clickedVideo={clickedVideo}
-                  convertCount={convertCount}
-                  calcDiffDate={calcDiffDate}
-                  convertVideoDuration={convertVideoDuration}
-                  getMoreVideos={getMoreVideos}
-                />
-              }
-            />
-          </Routes>
+              />
+            </Routes>
+          {/* </BrowserRouter> */}
         </section>
         </>
     );
