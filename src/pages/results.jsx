@@ -1,28 +1,16 @@
-import React, { useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
-import PlaylistContainer from '../components/Playlist_container/Playlist_container';
+import React from 'react';
+import { useLocation } from 'react-router-dom';
+import Playlist from 'components/Playlist/Playlist';
+import useScrollUp from 'hooks/useScrollUp';
+import useBackHome from 'hooks/useBackHome';
 
-const Results = ({ onSearch, ...props}) => {
-    const navigate = useNavigate();
+const Results = ({ ...props}) => {
     const { pathname, search } = useLocation();
-    
-    useEffect(() => window.scrollTo(0, 0), [pathname, search]);
-
-    useEffect(() => {
-        if (!window.location.search) {
-            navigate("/");
-            return;
-        }
-        
-        if (window.location.search.includes("?search_query=")) {
-            const query = window.location.search.split("?search_query=")[1];
-            onSearch(decodeURIComponent(query));
-            return;
-        }
-    }, []);
+    useScrollUp([pathname, search]);
+    useBackHome();
 
     return (
-        <PlaylistContainer { ...props } />
+        <Playlist { ...props } />
     );
 };
 

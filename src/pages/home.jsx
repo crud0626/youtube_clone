@@ -1,9 +1,11 @@
 import React from 'react';
-import PlaylistContainer from '../components/Playlist_container/Playlist_container';
+import Playlist from 'components/Playlist/Playlist';
 
-
-const Home = (props) => (
-    <PlaylistContainer { ...props } />
-);
+const Home = (props) => {
+    return(
+        <Playlist { ...props } />
+    );
+    
+};
 
 export default Home;
