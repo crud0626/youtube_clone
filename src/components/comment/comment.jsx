@@ -1,5 +1,8 @@
 import React, { memo, useEffect, useRef, useState } from 'react';
+
 import styles from '../../styles/comment.module.scss';
+import defaultThubmnail from 'assets/default_thubmnail.gif';
+import { handleThumbnailError } from 'utils/utils';
 
 const Comment = memo((props) => {
     const spanRef = useRef();
@@ -41,7 +44,11 @@ const Comment = memo((props) => {
     return (
         <li ref={props.lastCommentRef ? props.lastCommentRef : null} className={styles.container}>
             <a href={props.topLevelComment.snippet.authorChannelUrl} target="_blank" rel='noreferrer' className={styles.thumbnail}>
-                <img src={props.topLevelComment.snippet.authorProfileImageUrl} alt="author thumbnail" />
+                <img 
+                    src={props.topLevelComment.snippet.authorProfileImageUrl} 
+                    onError={({ currentTarget }) => handleThumbnailError(currentTarget, defaultThubmnail)} 
+                    alt="author thumbnail" 
+                />
             </a>
             <div className={styles.info_container}>
                 <div className={styles.info_top}>

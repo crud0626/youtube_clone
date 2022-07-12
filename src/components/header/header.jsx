@@ -1,10 +1,12 @@
 import React, { memo, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from '../../styles/header.module.scss';
-import logoIMG from './../../assets/logo.png';
-import keyboardIMG from './../../assets/keyboard.gif';
+import logoIMG from 'assets/logo.png';
+import keyboardIMG from 'assets/keyboard.gif';
+import defaultThubmnail from 'assets/default_thubmnail.gif';
+import { handleThumbnailError } from 'utils/utils';
 
-const Header = memo((props) => {
+const Header = memo(({moveToMain, searchVideos, onLogIn, onLogOut, user}) => {
     const navigate = useNavigate();
     const inputRef = useRef();
     const eraser = document.querySelector("button#input_eraser");
@@ -22,7 +24,7 @@ const Header = memo((props) => {
     const onSearch = (event) => {
         event.preventDefault();
         if (inputRef.current.value.search(/\S/g) === 0) {
-            props.onSearch(inputRef.current.value);
+            searchVideos(inputRef.current.value);
         }
     }
 
@@ -45,7 +47,7 @@ const Header = memo((props) => {
 
     const clickedLogo = async () => {
         navigate("/");
-        await props.moveToMain();
+        await moveToMain();
     }
 
     return (
@@ -101,32 +103,36 @@ const Header = memo((props) => {
                         </svg>
                     </button>
                     {
-                        props.user.uid &&
+                        user.uid &&
                         <>
                             <button className={styles.thumbnail_container} onClick={handleModal}>
-                                <img src={props.user.url} alt="thumbnail" />
+                                <img 
+                                    src={user.url}
+                                    onError={({ currentTarget }) => handleThumbnailError(currentTarget, defaultThubmnail)} 
+                                    alt="thumbnail" 
+                                />
                             </button>
                             <div id='userModal' className={styles.userModal_container}>
                                 <div className={styles.modal_top}>
-                                    <img src={props.user.url} alt="thumbnail" />
-                                    <span>{props.user.name}</span>
+                                    <img src={user.url} alt="thumbnail" />
+                                    <span>{user.name}</span>
                                 </div>
                                 <div className={styles.modal_bottom}>
-                                    <div className={styles.modal_content}>
+                                    <div className={styles.modal_content} onClick={onLogOut}>
                                         <div className={styles.modal_icons}>
                                             <svg viewBox="0 0 24 24">
                                                 <path d='M20,3v18H8v-1h11V4H8V3H20z M11.1,15.1l0.7,0.7l4.4-4.4l-4.4-4.4l-0.7,0.7l3.1,3.1H3v1h11.3L11.1,15.1z'></path>
                                             </svg>
                                         </div>
-                                        <span onClick={props.onLogOut}>로그아웃</span>
+                                        <span>로그아웃</span>
                                     </div>
                                 </div>
                             </div>
                         </>
                     }
                     {
-                        !props.user.uid &&
-                        <button className={`${styles.right_btns} ${styles.login_btn} g-signin2`} data-onsuccess="onSignIn" onClick={props.onLogIn}>
+                        !user.uid &&
+                        <button className={`${styles.right_btns} ${styles.login_btn} g-signin2`} data-onsuccess="onSignIn" onClick={onLogIn}>
                             <svg width="24" height="24">
                                 <path d='M12,2C6.48,2,2,6.48,2,12c0,5.52,4.48,10,10,10s10-4.48,10-10C22,6.48,17.52,2,12,2z M12,3c4.96,0,9,4.04,9,9 c0,1.42-0.34,2.76-0.93,3.96c-1.53-1.72-3.98-2.89-7.38-3.03C14.57,12.6,16,10.97,16,9c0-2.21-1.79-4-4-4C9.79,5,8,6.79,8,9 c0,1.97,1.43,3.6,3.31,3.93c-3.4,0.14-5.85,1.31-7.38,3.03C3.34,14.76,3,13.42,3,12C3,7.04,7.04,3,12,3z M9,9c0-1.65,1.35-3,3-3 s3,1.35,3,3c0,1.65-1.35,3-3,3S9,10.65,9,9z M12,21c-3.16,0-5.94-1.64-7.55-4.12C6.01,14.93,8.61,13.9,12,13.9 c3.39,0,5.99,1.03,7.55,2.98C17.94,19.36,15.16,21,12,21z'></path>
                             </svg>
