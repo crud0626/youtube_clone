@@ -30,3 +30,4 @@ yarn-error.log*
 test.*
 src/service/youtube-fetch.js
 /.netlify
+.vscode/

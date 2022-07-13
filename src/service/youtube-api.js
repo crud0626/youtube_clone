@@ -2,7 +2,7 @@ import axios from "axios";
 
 const decode = require('unescape');
 
-export default class YoutubeAxios {
+export default class YoutubeAPI {
     constructor() {
       this.youtube = axios.create({
         // baseURL: "https://crud0626-serverless-youtube.netlify.app/youtube/v3",

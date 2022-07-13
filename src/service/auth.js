@@ -34,23 +34,23 @@ export default class AuthService {
             switch (error.code) {
                 case "auth/popup-closed-by-user":
                     alert("로그인 중 팝업이 닫혔습니다. 다시 시도해 주세요");
-                    throw error;
+                    break;
                 case "auth/popup-blocked":
                     alert("팝업이 차단되었습니다. 해제 후 다시 시도해 주세요.");
-                    throw error;
+                    break;
                 default:
                     alert(`다음과 같은 이유로 로그인이 실패하였습니다. ${error.code}`);
-                    throw error;
+                    throw new Error(`로그인 중 에러가 발생했습니다. ${error.code}`);
             }
         }
     }
 
     async logOut() {
         try {
-            return await signOut(this.auth).then(() => true);
+            await signOut(this.auth);
         } catch (error) {
-            alert(`다음과 같은 이유로 로그아웃에 실패하였습니다. ${error.code}`);
-            throw error;
+            alert("로그아웃 도중 에러가 발생했습니다.");
+            throw new Error(`로그아웃 중 에러가 발생했습니다. ${error.code}`);
         }
     }
 

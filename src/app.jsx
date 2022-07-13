@@ -1,218 +1,149 @@
-import "./App.scss";
-
 import React, { useEffect, useState } from 'react';
 import { Route, Routes, useNavigate } from 'react-router-dom';
+import "./App.scss";
 import Header from './components/Header/Header';
 import Home from './pages/Home';
 import Watch from './pages/Watch';
 import Results from "./pages/Results";
 
-const App = (props) => {
+const App = ({ youtubeAPI, calculator, authService }) => {
   const [videos, setVideos] = useState({
     items: [],
-    nextToken: ""
+    nextPageToken: ""
   });
-  const [currentVid, setCurrentVid] = useState({});
+  const [selectedVideo, setSelectedVideo] = useState({});
   const [comments, setComments] = useState({
     items: [],
-    nextToken: "" 
+    nextPageToken: "" 
   });
   const [isSearched, setIsSearched] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
-  const [user, setUser] = useState({});
+  const [userData, setUserData] = useState({});
   const [isVideoLoading, setIsVideoLoading] = useState(false);
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    async function fetchData() {
-      moveToMain();
+    if (!userData.uid) {
+      const resData = authService.checkUser();
+      if (resData) setUserData(resData);
     }
-    fetchData();
+
+    initVideo();
   }, []);
 
-  useEffect(() => {
-    if (!user.uid) {
-      const userData = props.authService.checkUser();
-
-      if (userData) {
-        setUser(userData)
-      };
-    }
-  }, []);
-    
-    const onLogIn = async () => {
-      try {
-        await props.authService.login()
-        .then(data => setUser(data));
-      } catch (error) {
-        throw new Error(`로그인 도중 에러가 발생했습니다. ${error.code}`);
-      }
-    }
-
-    const onLogOut = async () => {
-      try {
-        await props.authService.logOut()
-        .then((res) => {
-          if(res) {
-            alert("로그아웃 되었습니다.");
-            setUser({});
-          }
-        })
-      } catch (error) {
-        throw new Error(`로그아웃 도중 에러가 발생했습니다. ${error.message}`);
-      }
-    }
-  
-    const searchVideos = async (query) => {
-      setVideos({
-        items: [], nextToken: ""
-      });
-      setIsVideoLoading(true);
-
-        await props.youtube.searchVideo(query)
-        .then(({ items, nextPageToken }) => {
-            setVideos({
-              items,
-              nextToken: nextPageToken ? nextPageToken : ""
-            });
-            setCurrentVid({});
-            setIsSearched(true);
-            setSearchQuery(query);
-            navigate(`results?search_query=${query}`);
-        })
-        .finally(() => {
-          setIsVideoLoading(false);
-        });
-    };
-
-    const getMoreVideos = async () => {
-        setIsVideoLoading(true);
-
-        try {
-          const newVideos = [...videos.items];
-          let items, nextPageToken;
-
-          isSearched
-          ? ({ items, nextPageToken } = await props.youtube.searchVideo(searchQuery, videos.nextToken))
-          : ({ items, nextPageToken } = await props.youtube.getMostPopular(videos.nextToken));
-
-          newVideos.push(...items);
-    
-          setVideos({
-            items: newVideos,
-            nextToken: nextPageToken
-          });
-        } catch (error) {
-          alert("동영상을 불러오는 도중 에러가 발생했습니다.");
-          throw new Error(`에러가 발생했습니다. ${error}`);
-        } finally {
-          setIsVideoLoading(false);
-        }
-      }
-
-    const clickedVideo = async (video) => {
-        await props.youtube
-        .getCurrentVidInfo(video)
-        .then(response => {
-            setCurrentVid(response.info);
-
-            setComments({
-              items: response.comments.items,
-              nextToken: response.comments.nextPageToken
-            });
-        })
-        .catch((error) => console.log(error));
-
-        navigate(`/watch?v=${video.id}`);
-      };
-
-    const getMoreComments = () => {
-      return props.youtube
-      .getComment(currentVid.id, comments.nextToken)
-      .then(response => {
-        const data = [...comments.items];
-        data.push(...response.items);
-
-        setComments({
-          items: data,
-          nextToken: response.nextPageToken
-        });
-      })
-    }
-
-    const getPopularVideos = () => {
-      return props.youtube.getMostPopular()
-      .then((response) => {
-          setVideos({
-            items: response.items,
-            nextToken: response.nextPageToken
-          });
-      })
-      .catch((err) => console.log(`에러가 발생했습니다 : ${err.message}`));
+  const onLogIn = async () => {
+    await authService.login()
+    .then(data => setUserData(data));
   }
 
-  const moveToMain = async () => {
-    const dummyVideos = new Array(24).fill("");
-    setVideos({
-      items: dummyVideos,
-      nextToken: ""
+  const onLogOut = async () => {
+    await authService.logOut()
+    .then(() => {
+      setUserData({});
+      alert("로그아웃 되었습니다.");
     });
+  }
+  
+  const onSearchVideo = async (query) => {
     setIsVideoLoading(true);
 
-    await getPopularVideos()
-    .then(() => {
-      setCurrentVid({});
-      setIsSearched(false);
-      setSearchQuery("");
+    await youtubeAPI.searchVideo(query)
+    .then(({ items, nextPageToken }) => {
+      setVideos({
+        items,
+        nextPageToken: nextPageToken ? nextPageToken : ""
+      });
+      setSelectedVideo({});
+      setIsSearched(true);
+      setSearchQuery(query);
+      navigate(`results?search_query=${query}`);
     })
     .finally(() => {
       setIsVideoLoading(false);
     });
+  };
+
+  const getMoreVideo = async () => {
+    setIsVideoLoading(true);
+
+    const videoData = [...videos.items];
+
+    isSearched
+    ? await youtubeAPI.searchVideo(searchQuery, videos.nextPageToken) 
+    : await youtubeAPI.getMostPopular(videos.nextPageToken)
+    .then(({ items, nextPageToken }) => {
+      videoData.push(...items);
+      setVideos({ items: videoData, nextPageToken });
+    })
+    .finally(() => setIsVideoLoading(false));
   }
 
-    const convertCount = (num) => {
-      return props.calc.convertCount(num);
-    }
-    
-    const calcDiffDate = (diffMinutes) => {
-      return props.calc.getDiffTime(diffMinutes);
-    }
+  const onClickVideo = async (video) => {
+    await youtubeAPI.getCurrentVidInfo(video)
+    .then(({ info, comments }) => {
+      setSelectedVideo(info);
+      setComments({
+        items: comments.items,
+        nextPageToken: comments.nextPageToken
+      });
+      navigate(`/watch?v=${video.id}`);
+    });
+  };
 
-    const convertVideoDuration = (time) => {
-      return props.calc.convertVideoDuration(time);
-    }
+  const getMoreComment = async () => {
+    await youtubeAPI.getComment(selectedVideo.id, comments.nextPageToken)
+    .then(({ items, nextPageToken }) => {
+      const data = [...comments.items];
+      data.push(...items);
+
+      setComments({ items: data, nextPageToken });
+    });
+  }
+
+  const initVideo = async () => {
+    const dummyVideos = new Array(24).fill("");
+    setVideos({
+      items: dummyVideos,
+      nextPageToken: ""
+    });
+    setIsVideoLoading(true);
+
+    await youtubeAPI.getMostPopular()
+    .then(({ items, nextPageToken }) => {
+      setVideos({ items, nextPageToken });
+      setSelectedVideo({});
+      setIsSearched(false);
+      setSearchQuery("");
+    })
+    .finally(() => setIsVideoLoading(false));
+  }
 
     return (
         <>
         <Header
-          moveToMain = {moveToMain} 
-          searchVideos = {searchVideos}
-          onLogIn = {onLogIn}
-          onLogOut = {onLogOut}
-          user = {user}
+          initVideo={initVideo} 
+          onSearchVideo={onSearchVideo}
+          onLogIn={onLogIn}
+          onLogOut={onLogOut}
+          userData={userData}
         />
         <section>
-          {/* <BrowserRouter> */}
             <Routes>
               <Route 
                   path='/watch'
                   element={
                       <Watch 
-                      user={user}
-                      currentVid={currentVid} 
-                      comments={comments.items}
-                      videos={videos.items}
-                      videoNextToken={videos.nextToken}
-                      convertCount={convertCount}
-                      calcDiffDate={calcDiffDate}
-                      getMoreComments={getMoreComments}
-                      clickedVideo={clickedVideo}
-                      convertVideoDuration={convertVideoDuration}
-                      getMoreVideos={getMoreVideos}
-                      youtube={props.youtube}
-                      onLogIn={onLogIn}
-                      getPopularVideos={getPopularVideos}
+                        userData={userData}
+                        selectedVideo={selectedVideo} 
+                        comments={comments}
+                        videos={videos} 
+                        calculator={calculator}
+                        getMoreComment={getMoreComment}
+                        onClickVideo={onClickVideo}
+                        getMoreVideo={getMoreVideo}
+                        youtube={youtubeAPI}
+                        onLogIn={onLogIn}
                       />
                   }
               />
@@ -220,13 +151,10 @@ const App = (props) => {
                   path='/'
                   element={
                   <Home 
-                      videos={videos.items}
-                      videoNextToken={videos.nextToken}
-                      clickedVideo={clickedVideo}
-                      convertCount={convertCount}
-                      calcDiffDate={calcDiffDate}
-                      convertVideoDuration={convertVideoDuration}
-                      getMoreVideos={getMoreVideos}
+                      videos={videos}
+                      onClickVideo={onClickVideo}
+                      calculator={calculator}
+                      getMoreVideo={getMoreVideo}
                       isVideoLoading={isVideoLoading}
                   />
                   }
@@ -235,19 +163,14 @@ const App = (props) => {
                 path='/results'
                 element={
                   <Results 
-                    onSearch={searchVideos}
-                    videos={videos.items}
-                    videoNextToken={videos.nextToken}
-                    clickedVideo={clickedVideo}
-                    convertCount={convertCount}
-                    calcDiffDate={calcDiffDate}
-                    convertVideoDuration={convertVideoDuration}
-                    getMoreVideos={getMoreVideos}
+                    videos={videos}
+                    onClickVideo={onClickVideo}
+                    calculator={calculator}
+                    getMoreVideo={getMoreVideo}
                   />
                 }
               />
             </Routes>
-          {/* </BrowserRouter> */}
         </section>
         </>
     );

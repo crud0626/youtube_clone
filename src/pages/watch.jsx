@@ -7,33 +7,28 @@ import useBackHome from 'hooks/useBackHome';
 
 
 const Watch = (props) => {
-    const {pathname, search} = useLocation();
+    const { pathname, search } = useLocation();
     useScrollUp([pathname, search]);
     useBackHome();
     
     return (
-        props.currentVid.id && 
+        props.selectedVideo.id && 
         <>
             <VideoSection
-                user={props.user}
-                currentVid={props.currentVid} 
+                userData={props.userData}
+                selectedVideo={props.selectedVideo} 
                 comments={props.comments}
-                convertCount={props.convertCount}
-                calcDiffDate={props.calcDiffDate}
-                getMoreComments={props.getMoreComments}
+                convertCount={props.calculator.convertCount}
+                getDiffTime={props.calculator.getDiffTime}
+                getMoreComment={props.getMoreComment}
                 youtube={props.youtube}
-                ratingVideo={props.ratingVideo}
                 onLogIn={props.onLogIn}
             />
             <Playlist 
                 videos={props.videos}
-                videoNextToken={props.videoNextToken}
-                clickedVideo={props.clickedVideo}
-                selected={props.currentVid.id}
-                convertCount={props.convertCount}
-                calcDiffDate={props.calcDiffDate}
-                convertVideoDuration={props.convertVideoDuration}
-                getMoreVideos={props.getMoreVideos}
+                onClickVideo={props.onClickVideo}
+                calculator={props.calculator}
+                getMoreVideo={props.getMoreVideo}
             />
         </>
     );
