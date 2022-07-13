@@ -6,8 +6,9 @@ import keyboardIMG from 'assets/keyboard.gif';
 import defaultThubmnail from 'assets/default_thubmnail.gif';
 import { handleThumbnailError } from 'utils/utils';
 import { CLOSE_MARK, SEARCH_MARK, VOICE_MARK, ADD_VIDEO_MARK, GRID_MARK, BELL_MARK, EXIT_MARK, USER_MARK } from 'constants/iconPath';
+import Icon from '../Icon/Icon';
 
-const Header = memo(({moveToMain, searchVideos, onLogIn, onLogOut, user}) => {
+const Header = memo(({ initVideo, onSearchVideo, onLogIn, onLogOut, userData }) => {
     const navigate = useNavigate();
     const inputRef = useRef();
     const eraser = document.querySelector("button#input_eraser");
@@ -25,7 +26,7 @@ const Header = memo(({moveToMain, searchVideos, onLogIn, onLogOut, user}) => {
     const onSearch = (event) => {
         event.preventDefault();
         if (inputRef.current.value.search(/\S/g) === 0) {
-            searchVideos(inputRef.current.value);
+            onSearchVideo(inputRef.current.value);
         }
     }
 
@@ -48,7 +49,7 @@ const Header = memo(({moveToMain, searchVideos, onLogIn, onLogOut, user}) => {
 
     const clickedLogo = async () => {
         navigate("/");
-        await moveToMain();
+        await initVideo();
     }
 
     return (
@@ -69,61 +70,51 @@ const Header = memo(({moveToMain, searchVideos, onLogIn, onLogOut, user}) => {
                                     <img src={keyboardIMG} alt="keyboardIcon" />
                                 </button>
                                 <button id='input_eraser' className={`${styles.input_icon} input_hidden`} onClick={removeInputValue}>
-                                    <svg width="20" height="20">
-                                        <path d={CLOSE_MARK}></path>
-                                    </svg>
+                                    <Icon def={CLOSE_MARK} />
                                 </button>
                             </div>
                         </div>
                         <button className={`${styles.search_icon} ${styles.btns}`} onClick={onSearch} title='검색'>
-                            <svg width="24" height="24">
-                                <path d={SEARCH_MARK}></path>
-                            </svg>
+                            <Icon def={SEARCH_MARK} />
                         </button>
                     </div>
                     <button className={`${styles.voiceBtn} ${styles.btns}`} title='음성으로 검색'>
-                        <svg width="24" height="24">
-                            <path d={VOICE_MARK}></path>
-                        </svg>
+                        <Icon def={VOICE_MARK} />
                     </button>
                 </div>
                 <div className={styles.right}>
                     <button className={`${styles.right_btns} ${styles.btns}`} title='만들기'>
-                        <svg width="24" height="24">
-                            <path d={ADD_VIDEO_MARK}></path>
-                        </svg>
+                        <Icon def={ADD_VIDEO_MARK} />
                     </button>
                     <button className={`${styles.right_btns} ${styles.btns}`} title='YouTube 앱'>
-                        <svg width="24" height="24">
-                            <path d={GRID_MARK}></path>
-                        </svg>
+                        <Icon def={GRID_MARK} />
                     </button>
                     <button className={`${styles.right_btns} ${styles.btns}`} title='알림'>
-                        <svg width="24" height="24">
-                            <path d={BELL_MARK}></path>
-                        </svg>
+                        <Icon def={BELL_MARK}/>
                     </button>
                     {
-                        user.uid &&
+                        userData.uid &&
                         <>
                             <button className={styles.thumbnail_container} onClick={handleModal}>
                                 <img 
-                                    src={user.url}
+                                    src={userData.url}
                                     onError={({ currentTarget }) => handleThumbnailError(currentTarget, defaultThubmnail)} 
                                     alt="thumbnail" 
                                 />
                             </button>
                             <div id='userModal' className={styles.userModal_container}>
                                 <div className={styles.modal_top}>
-                                    <img src={user.url} alt="thumbnail" />
-                                    <span>{user.name}</span>
+                                    <img 
+                                        src={userData.url} 
+                                        onError={({ currentTarget }) => handleThumbnailError(currentTarget, defaultThubmnail)}
+                                        alt="thumbnail" 
+                                    />
+                                    <span>{userData.name}</span>
                                 </div>
                                 <div className={styles.modal_bottom}>
                                     <div className={styles.modal_content} onClick={onLogOut}>
                                         <div className={styles.modal_icons}>
-                                            <svg viewBox="0 0 24 24">
-                                                <path d={EXIT_MARK}></path>
-                                            </svg>
+                                            <Icon def={EXIT_MARK}/>
                                         </div>
                                         <span>로그아웃</span>
                                     </div>
@@ -132,11 +123,9 @@ const Header = memo(({moveToMain, searchVideos, onLogIn, onLogOut, user}) => {
                         </>
                     }
                     {
-                        !user.uid &&
+                        !userData.uid &&
                         <button className={`${styles.right_btns} ${styles.login_btn} g-signin2`} data-onsuccess="onSignIn" onClick={onLogIn}>
-                            <svg width="24" height="24">
-                                <path d={USER_MARK}></path>
-                            </svg>
+                            <Icon def={USER_MARK} />
                             <span>로그인</span>
                         </button>
                     }

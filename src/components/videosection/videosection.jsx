@@ -1,65 +1,62 @@
-import React, { memo, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import CommentsContainer from '../Comments_container/Comments_container';
 import styles from '../../styles/videosection.module.scss';
 import defaultThubmnail from 'assets/default_thubmnail.gif';
 import { handleThumbnailError } from 'utils/utils';
-import { EMPTY_LIKE_MARK, FILL_LIKE_MARK, EMPTY_DISLIKE_MARK, FILL_DISLIKE_MARK, SAHRE_MARK, SAVE_MARK } from 'constants/iconPath';
+import { EMPTY_LIKE_MARK, FILL_LIKE_MARK, EMPTY_DISLIKE_MARK, FILL_DISLIKE_MARK, SHARE_MARK, SAVE_MARK } from 'constants/iconPath';
+import Icon from '../Icon/Icon';
 
-const VideoSection = memo((props) => {
+const VideoSection = (props) => {
     const descRef = useRef();
-    const [textOver, setTextOver] = useState(false);
-    const [like, setLike] = useState(false);
-    const [disLike, setDisLike] = useState(false);
+    const toggleRef = useRef();
+    const [isTextOver, setIsTextOver] = useState(false);
+    const [rating, setRating] = useState({
+        like: false,
+        disLike: false
+    });
 
-    const getTokens = () => {
-        if (props.user.uid) {
-            return JSON.parse(localStorage.getItem(props.user.uid));
+    // 이름 변경
+    const getToken = () => {
+        if (props.userData.uid) {
+            return JSON.parse(localStorage.getItem(props.userData.uid));
         }
     }
 
     const displayVideoDate = () => {
-      const date = new Date(props.currentVid.snippet.publishedAt);
+      const date = new Date(props.selectedVideo.snippet.publishedAt);
       return `${date.getFullYear()}. ${date.getMonth() + 1}. ${date.getDate()}.`;
     }
 
-    const convertShortCount = (count) => {
-      return props.convertCount(count);
-    };
-    
-    const onDescButton = (event) => {
-      const target = event.target.previousSibling;
+    // 이름변경, ref로 통일
+    const onClickToggle = () => {
+        const desc = descRef.current;
+        const toggle = toggleRef.current;
 
-      if (target.matches("#expander")) {
-        target.classList.remove("expander");
-        target.classList.add("shortcut");
-        target.id = "shortcut";
-        event.target.innerText = "더보기";
+        if (desc.className.includes("expander")) {
+            desc.classList.remove("expander");
+            desc.classList.add("shortcut");
+            toggle.innerText = "더보기";
+            return;
+        }
+
+        desc.classList.remove("shortcut");
+        desc.classList.add("expander");
+        toggle.innerText = "간략히";
         return;
-      }
-
-      target.classList.remove("shortcut");
-      target.classList.add("expander");
-      target.id = "expander";
-      event.target.innerText = "간략히";
-      return;
     };
 
     useEffect(() => {
       if (descRef.current.clientHeight < descRef.current.scrollHeight) {
-        setTextOver(true);
+        setIsTextOver(true);
       }
     }, []);
 
     useEffect(() => {
-        setLike(false);
-        setDisLike(false);
-        if(props.user.uid) {
-            getCurrentRate();
-        }
-    }, [props.currentVid, props.user.uid]);
+        if (props.userData.uid) getCurrentRate();
+    }, [props.selectedVideo, props.userData.uid]);
 
     const checkExpires = () => {
-        const { expires } = getTokens();
+        const { expires } = getToken();
         if (Date.now() > expires) {
             alert("토큰이 만료되어 로그인을 재시도합니다.");
             props.onLogIn();
@@ -69,20 +66,24 @@ const VideoSection = memo((props) => {
     }
 
     const getCurrentRate = async () => {
-        if (!checkExpires()) {
-            return;
-        }
+        if (!checkExpires()) return;
 
-        return await props.youtube.getRating(props.currentVid.id, props.user.uid)
+        await props.youtube.getRating(props.selectedVideo.id, props.userData.uid)
         .then((response) => {
             if (response.data.items[0]) {
                 const data = response.data.items[0].rating;
                 switch(data) {
                     case "like":
-                        setLike(true);
+                        setRating({
+                            ...rating,
+                            like: true
+                        });
                         break;
                     case "dislike":
-                        setDisLike(true);
+                        setRating({
+                            ...rating,
+                            disLike: true
+                        });
                         break;
                     default:
                         break;
@@ -91,56 +92,50 @@ const VideoSection = memo((props) => {
             return;
         })
         .catch(error => {
-            const message = error.response.data.error.errors[0].message;
-            if (message === "Invalid Credentials") {
-            alert("토큰이 만료되어 로그인을 재시도합니다.");
-            props.onLogIn();
-            } else {
-            alert(`에러가 발생했습니다 : ${message}`);
-            throw new Error(`에러가 발생했습니다 : ${message}`);
-            }
+            console.log(error);
+            // 여기서 핸들링 필요, error의 내용이 Invalid Credentials 일 때
+            // props.onLogIn(); // 여기서 핸들링 필요
         });
     }
 
     const sendRating = async (event) => {
-        if (!checkExpires()) {
-            return;
-        }
+        if (!checkExpires()) return;
 
         const rating = event.currentTarget.dataset.func;
-        await props.youtube.ratingVideo(rating, props.currentVid.id, props.user.uid)
+        // props에 없는데?
+        await props.youtube.ratingVideo(rating, props.selectedVideo.id, props.userData.uid)
         .then(() => {
+            let like = false, disLike = false;
+
             switch(rating) {
                 case "like":
-                    setLike(true);
-                    if (disLike) {setDisLike(false)};
+                    like = true;
+                    // setRating({
+                    //     like: true,
+                    //     disLike: false
+                    // });
                     break;
                 case "dislike":
-                    setDisLike(true);
-                    if (like) {setLike(false)};
+                    disLike = true;
+                    // setRating({
+                    //     like: false,
+                    //     disLike: true
+                    // });
                     break;
                 case "none":
-                    setLike(false);
-                    setDisLike(false);
                     break;
                 default:
-                    console.log(`정의되지 않은 평가입니다. ${rating}`);
-                    break;
+                    throw new Error(`정의되지 않은 평가입니다. ${rating}`);
             }
+            setRating({ like, disLike });
         })
-        .catch(err => {
-          const message = err.response.data.error.errors[0].message;
-          if (message === "Invalid Credentials") {
-            alert("토큰이 만료되어 로그인을 재시도합니다.");
-            props.onLogIn();
-          } else {
-            alert(`에러가 발생했습니다 : ${message}`);
-            throw new Error(`에러가 발생했습니다 : ${message}`);
-          }
+        .catch(error => {
+            // 
+            // props.onLogIn();
         });
     };
 
-    const currentVid = props.currentVid;
+    const selectedVideo = props.selectedVideo;
 
     return (
         <div className={styles.container}>
@@ -151,51 +146,43 @@ const VideoSection = memo((props) => {
                     type="text/html" 
                     title='videoplayer'
                     width="720" height="405"
-                    src={`https://www.youtube.com/embed/${currentVid.id}`}
+                    src={`https://www.youtube.com/embed/${selectedVideo.id}`}
                     frameBorder="0" 
                     allowFullScreen
                 ></iframe>
             </div>
             <div className={styles.video_info_container}>
-                <h3 className={styles.video_title}>{currentVid.snippet.title}</h3>
+                <h3 className={styles.video_title}>{selectedVideo.snippet.title}</h3>
                 <div className={styles.video_info}>
                     <div className={styles.video_info_left}>
-                        <span>{`${Number(props.currentVid.statistics.viewCount).toLocaleString("en")}회`}</span>
+                        <span>{`${Number(props.selectedVideo.statistics.viewCount).toLocaleString("en")}회`}</span>
                         <span>{" • "}</span>
                         <span>{displayVideoDate()}</span>
                     </div>
                     <div className={styles.video_info_right}>
-                        <div className={`${styles.video_info_item} ${styles.btns}`} title='이 동영상이 마음에 듭니다.' data-func={like ? "none" : "like"} onClick={sendRating}>
+                        <div className={`${styles.video_info_item} ${styles.btns}`} title='이 동영상이 마음에 듭니다.' data-func={rating.like ? "none" : "like"} onClick={sendRating}>
                             <button>
-                                <svg width="24" height="24">
-                                    {!like && <path d={EMPTY_LIKE_MARK}></path>}
-                                    {like && <path d={FILL_LIKE_MARK}></path>}
-                                </svg>
+                                {!rating.like && <Icon def={EMPTY_LIKE_MARK} />}
+                                {rating.like && <Icon def={FILL_LIKE_MARK} />}
                             </button>
-                            <span>{convertShortCount(currentVid.statistics.likeCount)}</span>
+                            <span>{props.convertCount(selectedVideo.statistics.likeCount)}</span>
                         </div>
-                        <div className={`${styles.video_info_item} ${styles.btns}`} title='이 동영상이 마음에 들지 않습니다.' data-func={disLike ? "none" : "dislike"} onClick={sendRating}>
+                        <div className={`${styles.video_info_item} ${styles.btns}`} title='이 동영상이 마음에 들지 않습니다.' data-func={rating.disLike ? "none" : "dislike"} onClick={sendRating}>
                             <button>
-                                <svg width="24" height="24">
-                                    {disLike && <path d={FILL_DISLIKE_MARK}></path>}
-                                    {!disLike && <path d={EMPTY_DISLIKE_MARK}></path>}
-                                </svg>
+                                {rating.disLike && <Icon def={FILL_DISLIKE_MARK} />}
+                                {!rating.disLike && <Icon def={EMPTY_DISLIKE_MARK} />}
                             </button>
                             <span>싫어요</span>
                         </div>
                         <div className={`${styles.video_info_item} ${styles.btns}`} title='공유'>
                             <button>
-                                <svg width="24" height="24">
-                                    <path d={SAHRE_MARK}></path>
-                                </svg>
+                                <Icon def={SHARE_MARK} />
                             </button>
                             <span>공유</span>
                         </div>
                         <div className={`${styles.video_info_item} ${styles.btns}`} title='저장'>
                             <button>
-                                <svg width="24" height="24">
-                                    <path d={SAVE_MARK}></path>
-                                </svg>
+                                <Icon def={SAVE_MARK}/>
                             </button>
                             <span>저장</span>
                         </div>
@@ -204,40 +191,39 @@ const VideoSection = memo((props) => {
                 </div>
             </div>
             <div className={styles.channel_info_container}>
-                <a className={styles.channel_info_left} href={`https://www.youtube.com/channel/${currentVid.snippet.channelId}`} target="_blank" rel="noreferrer" >
+                <a className={styles.channel_info_left} href={`https://www.youtube.com/channel/${selectedVideo.snippet.channelId}`} target="_blank" rel="noreferrer" >
                     <img 
-                        src={currentVid.channel.snippet.thumbnails.default.url} 
+                        src={selectedVideo.channel.snippet.thumbnails.default.url} 
                         onError={({ currentTarget }) => handleThumbnailError(currentTarget, defaultThubmnail)}
                         alt="channelImage" 
                     />
                 </a>
                 <div className={styles.channel_info_right}>
                     <a 
-                        href={`https://www.youtube.com/channel/${currentVid.snippet.channelId}`} 
+                        href={`https://www.youtube.com/channel/${selectedVideo.snippet.channelId}`} 
                         target="_blank" rel="noreferrer"
                         className={styles.channel}
-                        title={currentVid.snippet.channelTitle}
+                        title={selectedVideo.snippet.channelTitle}
                     >
-                        {currentVid.snippet.channelTitle}
+                        {selectedVideo.snippet.channelTitle}
                     </a>
-                    <span>{`구독자 ${convertShortCount(currentVid.channel.statistics.subscriberCount)}명`}</span>
+                    <span>{`구독자 ${props.convertCount(selectedVideo.channel.statistics.subscriberCount)}명`}</span>
                     <div className={styles.desc_container}>
-                        <pre id='expander' ref={descRef} className={`${styles.video_desc} shortcut`}>{currentVid.snippet.description}</pre>
-                        {textOver && <button className={styles.toggle_btn} onClick={onDescButton}>더보기</button>}
+                        <pre ref={descRef} className={`${styles.video_desc} shortcut`}>{selectedVideo.snippet.description}</pre>
+                        {isTextOver && <button ref={toggleRef} className={styles.toggle_btn} onClick={onClickToggle}>더보기</button>}
                     </div>
                     
                 </div>
                 
             </div>
             <CommentsContainer 
-                commentCount={props.currentVid.statistics.commentCount}
+                commentCount={props.selectedVideo.statistics.commentCount}
                 comments={props.comments}
-                calcDiffDate={props.calcDiffDate}
-                getMoreComments={props.getMoreComments}
-                changeDefaultThumbnail={props.changeDefaultThumbnail}
+                getDiffTime={props.getDiffTime}
+                getMoreComment={props.getMoreComment}
             />
         </div>
     );
-});
+};
 
 export default VideoSection;
