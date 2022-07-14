@@ -1,45 +1,56 @@
-import React, { memo, useEffect } from 'react';
-import styles from "../../styles/playlist.module.scss";
+import React, { useState } from 'react';
+import styles from '../../styles/playlist.module.scss';
+import VideoBox from '../VideoBox/VideoBox';
+import Spinner from '../Spinner/Spinner';
+import VideoSkeleton from '../Video_skeleton/Video_skeleton';
+import useObserver from 'hooks/useObserver';
+import { nanoid } from 'nanoid';
 
-const Playlist = memo((props) => {
-    useEffect(() => {
-        if (props.lastVideoRef) props.setObserve();
-    }, []);
-
-    const sendVideoId = () => {props.clickedVideo(props.video)};
+const Playlist = (props) => {
+    const [isLoading, setIsLoading] = useState(false);
+    const skeletonCount = new Array(8).fill({undefined});
     
-    const sendCounter = num => props.convertCount(num);
-
-    const sendDuration = () => props.convertVideoDuration(props.video.contentDetails.duration);
-
-    const getDiffDate = () => {
-        const now = Date.now();
-        const publishDate = Date.parse(props.video.snippet.publishedAt);
-        return props.calcDiffDate(parseInt((now - publishDate) / 60000));
+    const observerCallback = async () => {
+        setIsLoading(true);
+        await props.getMoreVideo()
+        .then(() => setIsLoading(false));
     }
-
-    const videoLayout= props.selected ? styles.selectedVideo : styles.notSelectedVideo;
+    const [lastVideoRef, setObserver] = useObserver(observerCallback);
 
     return (
-        <li ref={props.lastVideoRef ? props.lastVideoRef : null} className={`${styles.container} ${videoLayout}`} onClick={sendVideoId}>
-            <div className={styles.thumbnail_container}>
-                <img className={styles.thumbnail} src={props.video.snippet.thumbnails.medium.url} alt="video thumbnail" />
-                <div className={styles.duration}>
-                    <span>{sendDuration()}</span>
+        <div>
+            <ul className={`${styles.container} ${styles.notSelectedVideo}`}>
+                {props.videos.items.map((item, index) => {
+                    if (props.isVideoLoading && !item) {
+                        return <VideoSkeleton key={nanoid()} />;
+                    } else {
+                        const renderProps = {
+                                "key": nanoid(),
+                                "video": item,
+                                "onClickVideo": props.onClickVideo,
+                                "calculator": props.calculator
+                        };
+    
+                        if (!isLoading && index === props.videos.items.length-1) {
+                            renderProps.ref = lastVideoRef;
+                            renderProps.setObserver = setObserver;
+                        }
+    
+                        return <VideoBox { ...renderProps } />;
+                    }})
+                }
+                { props.isVideoLoading && skeletonCount.map(() => <VideoSkeleton key={nanoid()} />) }
+            </ul>
+            {
+                !props.videos.nextPageToken &&
+                <div className={styles.noMoreVideos}>
+                    <p>결과가 더 이상 없습니다.</p>
                 </div>
-            </div>
-            <div className={styles.info_container}>
-                <h3 className={styles.title}>{props.video.snippet.title}</h3>
-                <div className={styles.info}>
-                    <span className={styles.channelTitle}>{props.video.snippet.channelTitle}</span>
-                    <div className={styles.sub_info}>
-                        <span>{`조회수 ${sendCounter(props.video.statistics.viewCount)}회 • ${getDiffDate()} 전`}</span>
-                    </div>
-                </div>
-            </div>
-        </li>
+            }
+            {isLoading && <Spinner />}
+        </div>
     );
-});
+};
 
 export default Playlist;
 

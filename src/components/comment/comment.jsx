@@ -4,12 +4,12 @@ import useTextOver from 'hooks/useTextOver';
 import { handleThumbnailError, handleToggle } from 'utils/utils';
 import defaultThubmnail from 'assets/default_thubmnail.gif';
 
-const Comment = memo(({ commentData, getDiffTime, lastCommentRef, setObserve }) => {
+const Comment = memo(({ commentData, getDiffTime, lastCommentRef, setObserver }) => {
     const toggleRef = useRef();
     const [isTextOver, spanRef] = useTextOver();
 
     useEffect(() => {
-        if (lastCommentRef) setObserve();
+        if (lastCommentRef) setObserver();
     }, []);
 
     const getDiffDate = () => {

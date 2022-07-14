@@ -2,35 +2,18 @@ import React, { useRef, useState } from 'react';
 import Comment from 'components/Comment/Comment';
 import Spinner from 'components/Spinner/Spinner';
 import styles from 'styles/comments_container.module.scss';
+import useObserver from 'hooks/useObserver';
 import { nanoid } from 'nanoid';
 
 const CommentsContainer = ({ commentCount, comments, getDiffTime, getMoreComment }) => {
     const [isLoading, setIsLoading] = useState(false);
-    const lastCommentRef = useRef();
-    let observer = "";
 
-    const setObserve = () => {
-        const options = {
-            root: null,
-            rootMargin: '0px',
-            threshold: 0.1
-        }
-
-        observer = new IntersectionObserver((entries) => {
-            if (entries[0].isIntersecting) {
-                catchObserver();
-            }
-        }, options);
-
-        observer.observe(lastCommentRef.current);
-    }
-
-    const catchObserver = async () => {
-        observer.disconnect();
+    const observerCallback = async () => {
         setIsLoading(true);
         await getMoreComment()
         .then(() => setIsLoading(false));
     }
+    const [lastCommentRef, setObserver] = useObserver(observerCallback);
 
     const { items, nextPageToken } = comments;
 
@@ -56,7 +39,7 @@ const CommentsContainer = ({ commentCount, comments, getDiffTime, getMoreComment
 
                         if (!isLoading && index === items.length - 1 && nextPageToken) {
                             renderProp.lastCommentRef = lastCommentRef;
-                            renderProp.setObserve = setObserve;
+                            renderProp.setObserver = setObserver;
                         }
 
                         return <Comment {...renderProp} />;
