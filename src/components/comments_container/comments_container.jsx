@@ -1,11 +1,11 @@
-import React, { memo, useRef, useState } from 'react';
-import Comment from '../Comment/Comment';
-import Spinner from '../Spinner/Spinner';
-import styles from '../../styles/comments_container.module.scss';
+import React, { useRef, useState } from 'react';
+import Comment from 'components/Comment/Comment';
+import Spinner from 'components/Spinner/Spinner';
+import styles from 'styles/comments_container.module.scss';
 import { nanoid } from 'nanoid';
 
-const CommentsContainer = memo((props) => {
-    const [loading, setLoading] = useState(false);
+const CommentsContainer = ({ commentCount, comments, getDiffTime, getMoreComment }) => {
+    const [isLoading, setIsLoading] = useState(false);
     const lastCommentRef = useRef();
     let observer = "";
 
@@ -13,26 +13,28 @@ const CommentsContainer = memo((props) => {
         const options = {
             root: null,
             rootMargin: '0px',
-            threshold: 1
+            threshold: 0.1
         }
 
         observer = new IntersectionObserver((entries) => {
             if (entries[0].isIntersecting) {
                 catchObserver();
             }
-        }, options)
+        }, options);
 
         observer.observe(lastCommentRef.current);
     }
 
-    const catchObserver = () => {
-        setLoading(true);
-        props.getMoreComments()
-        .then(() => setLoading(false));
+    const catchObserver = async () => {
         observer.disconnect();
+        setIsLoading(true);
+        await getMoreComment()
+        .then(() => setIsLoading(false));
     }
 
-    if (props.comments.length === 1 && props.comments[0] === null) {
+    const { items, nextPageToken } = comments;
+
+    if (items.length === 1 && items[0] === null) {
         return (
             <div className={styles.no_comments}>
                 <p>댓글이 사용 중지되었습니다.</p>
@@ -42,29 +44,28 @@ const CommentsContainer = memo((props) => {
         return (
             <>
                 <div className={styles.info}>
-                    <h3>{`댓글 ${Number(props.commentCount).toLocaleString("en")} 개`}</h3>
+                    <h3>{`댓글 ${Number(commentCount).toLocaleString("en")} 개`}</h3>
                 </div>
                 <ul className={styles.comments}>
-                    {props.comments.map((comment, index) => {
-                        const topLevelComment = comment.snippet.topLevelComment;
+                    {items.map((item, index) => {
                         const renderProp = {
                             "key": nanoid(),
-                            "topLevelComment" : topLevelComment,
-                            "calcDiffDate" : props.calcDiffDate
+                            "commentData" : item.snippet.topLevelComment,
+                            "getDiffTime" : getDiffTime
                         };
 
-                        if (index === props.comments.length - 1) {
+                        if (!isLoading && index === items.length - 1 && nextPageToken) {
                             renderProp.lastCommentRef = lastCommentRef;
                             renderProp.setObserve = setObserve;
                         }
 
                         return <Comment {...renderProp} />;
                     })}
-                    {loading && <Spinner />}
+                    {isLoading && nextPageToken && <Spinner />}
                 </ul>
             </>
         );
     }
-});
+};
 
 export default CommentsContainer;
