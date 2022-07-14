@@ -5,21 +5,16 @@ import styles from 'styles/videosection.module.scss';
 import { handleThumbnailError } from 'utils/utils';
 import { EMPTY_LIKE_MARK, FILL_LIKE_MARK, EMPTY_DISLIKE_MARK, FILL_DISLIKE_MARK, SHARE_MARK, SAVE_MARK } from 'constants/iconPath';
 import defaultThubmnail from 'assets/default_thubmnail.gif';
+import useTextOver from 'hooks/useTextOver';
+
 
 const VideoSection = ({ userData, comments, selectedVideo, calculator, getMoreComment, youtube, onLogIn }) => {
-    const descRef = useRef();
     const toggleRef = useRef();
-    const [isTextOver, setIsTextOver] = useState(false);
+    const [isTextOver, descRef] = useTextOver();
     const [rating, setRating] = useState({
         like: false,
         disLike: false
     });
-
-    useEffect(() => {
-        if (descRef.current.clientHeight < descRef.current.scrollHeight) {
-            setIsTextOver(true);
-        }
-    }, []);
   
     useEffect(() => {
         if (userData.uid) getCurrentRate();
@@ -30,11 +25,11 @@ const VideoSection = ({ userData, comments, selectedVideo, calculator, getMoreCo
         return `${date.getFullYear()}. ${date.getMonth() + 1}. ${date.getDate()}.`;
     }
 
-    const onClickToggle = () => {
+    const handleToggle = () => {
         const desc = descRef.current;
         const toggle = toggleRef.current;
 
-        if (desc.className.includes("expander")) {
+        if (desc.matches(".expander")) {
             desc.classList.remove("expander");
             desc.classList.add("shortcut");
             toggle.innerText = "더보기";
@@ -194,7 +189,7 @@ const VideoSection = ({ userData, comments, selectedVideo, calculator, getMoreCo
                     <span>{`구독자 ${calculator.convertCount(channel.statistics.subscriberCount)}명`}</span>
                     <div className={styles.desc_container}>
                         <pre ref={descRef} className={`${styles.video_desc} shortcut`}>{snippet.description}</pre>
-                        {isTextOver && <button ref={toggleRef} className={styles.toggle_btn} onClick={onClickToggle}>더보기</button>}
+                        {isTextOver && <button ref={toggleRef} className={styles.toggle_btn} onClick={handleToggle}>더보기</button>}
                     </div>
                     
                 </div>
