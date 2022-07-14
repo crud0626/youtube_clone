@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import CommentsContainer from 'components/Comments_container/Comments_container';
 import Icon from 'components/Icon/Icon';
 import styles from 'styles/videosection.module.scss';
-import { handleThumbnailError } from 'utils/utils';
+import { handleThumbnailError, handleToggle } from 'utils/utils';
 import { EMPTY_LIKE_MARK, FILL_LIKE_MARK, EMPTY_DISLIKE_MARK, FILL_DISLIKE_MARK, SHARE_MARK, SAVE_MARK } from 'constants/iconPath';
 import defaultThubmnail from 'assets/default_thubmnail.gif';
 import useTextOver from 'hooks/useTextOver';
@@ -24,23 +24,6 @@ const VideoSection = ({ userData, comments, selectedVideo, calculator, getMoreCo
         const date = new Date(selectedVideo.snippet.publishedAt);
         return `${date.getFullYear()}. ${date.getMonth() + 1}. ${date.getDate()}.`;
     }
-
-    const handleToggle = () => {
-        const desc = descRef.current;
-        const toggle = toggleRef.current;
-
-        if (desc.matches(".expander")) {
-            desc.classList.remove("expander");
-            desc.classList.add("shortcut");
-            toggle.innerText = "더보기";
-            return;
-        }
-
-        desc.classList.remove("shortcut");
-        desc.classList.add("expander");
-        toggle.innerText = "간략히";
-        return;
-    };
 
     const getToken = () => {
         if (userData.uid) {
@@ -189,7 +172,10 @@ const VideoSection = ({ userData, comments, selectedVideo, calculator, getMoreCo
                     <span>{`구독자 ${calculator.convertCount(channel.statistics.subscriberCount)}명`}</span>
                     <div className={styles.desc_container}>
                         <pre ref={descRef} className={`${styles.video_desc} shortcut`}>{snippet.description}</pre>
-                        {isTextOver && <button ref={toggleRef} className={styles.toggle_btn} onClick={handleToggle}>더보기</button>}
+                        {
+                            isTextOver && 
+                            <button ref={toggleRef} className={styles.toggle_btn} onClick={() => handleToggle(descRef.current, toggleRef.current)}>더보기</button>
+                        }
                     </div>
                     
                 </div>
