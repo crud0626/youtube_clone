@@ -1,26 +1,25 @@
 import React, { forwardRef, useEffect } from 'react';
-import styles from "../../styles/videobox.module.scss";
+import styles from 'styles/videobox.module.scss';
 
 const VideoBox = forwardRef(({ video, onClickVideo, calculator, setObserver }, ref) => {
     useEffect(() => {
         if (ref) setObserver();
     }, []);
 
-    const {convertCount, convertVideoDuration, getDiffTime} = calculator;
-    const {contentDetails, snippet, statistics} = video;
-
     const getDiffDate = () => {
         const now = Date.now();
-        const publishDate = Date.parse(snippet.publishedAt);
-        return getDiffTime(parseInt((now - publishDate) / 60000));
+        const publishDate = Date.parse(video.snippet.publishedAt);
+        return calculator.getDiffTime(parseInt((now - publishDate) / 60000));
     }
 
+    const { contentDetails, snippet, statistics } = video;
+
     return (
-        <li ref={ref ? ref : null} className={`${styles.container} ${styles.notSelectedVideo}`} onClick={() => onClickVideo(video)}>
+        <li ref={ref || null} className={`${styles.container} ${styles.notSelectedVideo}`} onClick={() => onClickVideo(video)}>
             <div className={styles.thumbnail_container}>
                 <img className={styles.thumbnail} src={snippet.thumbnails.medium.url} alt="video thumbnail" />
                 <div className={styles.duration}>
-                    <span>{convertVideoDuration(contentDetails.duration)}</span>
+                    <span>{calculator.convertVideoDuration(contentDetails.duration)}</span>
                 </div>
             </div>
             <div className={styles.info_container}>
@@ -28,7 +27,7 @@ const VideoBox = forwardRef(({ video, onClickVideo, calculator, setObserver }, r
                 <div className={styles.info}>
                     <span className={styles.channelTitle}>{snippet.channelTitle}</span>
                     <div className={styles.sub_info}>
-                        <span>{`조회수 ${convertCount(statistics.viewCount)}회 • ${getDiffDate()} 전`}</span>
+                        <span>{`조회수 ${calculator.convertCount(statistics.viewCount)}회 • ${getDiffDate()} 전`}</span>
                     </div>
                 </div>
             </div>
