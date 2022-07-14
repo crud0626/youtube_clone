@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from 'axios';
 
 const decode = require('unescape');
 
@@ -123,7 +123,12 @@ export default class YoutubeAPI {
 
         return resData;
       } catch (error) {
-        throw error;
+        const reason = error.response.data.error.errors[0].reason;
+        if (reason.match("commentsDisabled")) {
+          return {items: null, nextPageToken: null};
+        } else {
+          throw error;
+        }
       }
     }
 

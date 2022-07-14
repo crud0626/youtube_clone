@@ -17,7 +17,7 @@ const CommentsContainer = ({ commentCount, comments, getDiffTime, getMoreComment
 
     const { items, nextPageToken } = comments;
 
-    if (items.length === 1 && items[0] === null) {
+    if (!items) {
         return (
             <div className={styles.no_comments}>
                 <p>댓글이 사용 중지되었습니다.</p>
