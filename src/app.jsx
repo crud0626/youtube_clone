@@ -34,7 +34,8 @@ const App = ({ youtubeAPI, calculator, authService }) => {
 
   const onLogIn = async () => {
     await authService.login()
-    .then(data => setUserData(data));
+    .then(data => setUserData(data))
+    .catch(() => {return});
   }
 
   const onLogOut = async () => {

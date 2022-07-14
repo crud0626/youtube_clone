@@ -179,20 +179,45 @@ export default class YoutubeAPI {
           }
         });
       } catch (error) {
-        alert("에러가 발생했습니다.");
-        throw new Error(`에러가 발생했습니다. ${error.message}`);
+        const message = error.response.data.error.message;
+
+        switch(true) {
+          case message.includes("Invalid Credentials"):
+            alert("토큰이 만료되어 로그인을 재시도합니다.");
+            throw message;
+          case message.includes("Invalid value"):
+            alert("정의되지 않은 평가입니다.");
+            throw message;
+          default:
+            alert("평가 도중 에러가 발생했습니다.");
+            throw new Error(`에러가 발생했습니다. ${error.message}`);
+        }
       }
     }
 
     async getRating(videoId, uid) {
       try {
         const tokens = JSON.parse(localStorage.getItem(uid));
-        return await this.youtube.get("videos/getRating", {
+        const options = {
           params: {"id": videoId},
           headers: {"Authorization": `Bearer ${tokens.accessToken}`}
+        };
+
+        const resData = await this.youtube.get("videos/getRating", options)
+        .then(({ data }) => {
+          return data.items[0].rating;
         });
-      } catch (error) {
-        alert("에러가 발생했습니다.");
+
+        return resData;
+
+        } catch (error) {
+        const message = error.response.data.error.errors[0].message;
+        if (message === "Invalid Credentials") {
+          alert("토큰이 만료되어 로그인을 재시도합니다.");
+          throw error;
+        }
+        
+        alert("정보를 가져오는 도중 에러가 발생했습니다.");
         throw new Error(`에러가 발생했습니다. ${error.message}`);
       }
     }

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
 import Playlist from 'components/Playlist/Playlist';
-import VideoSection from 'components/Videosection/Videosection';
+import VideoSection from 'components/VideoSection/VideoSection';
 import useScrollUp from 'hooks/useScrollUp';
 import useBackHome from 'hooks/useBackHome';
 
@@ -16,10 +16,9 @@ const Watch = (props) => {
         <>
             <VideoSection
                 userData={props.userData}
-                selectedVideo={props.selectedVideo} 
                 comments={props.comments}
-                convertCount={props.calculator.convertCount}
-                getDiffTime={props.calculator.getDiffTime}
+                selectedVideo={props.selectedVideo} 
+                calculator={props.calculator}
                 getMoreComment={props.getMoreComment}
                 youtube={props.youtube}
                 onLogIn={props.onLogIn}
