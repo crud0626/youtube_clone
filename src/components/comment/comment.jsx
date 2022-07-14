@@ -1,38 +1,38 @@
 import React, { memo, useEffect, useRef } from 'react';
 import styles from 'styles/comment.module.scss';
-import defaultThubmnail from 'assets/default_thubmnail.gif';
-import { handleThumbnailError, handleToggle } from 'utils/utils';
 import useTextOver from 'hooks/useTextOver';
+import { handleThumbnailError, handleToggle } from 'utils/utils';
+import defaultThubmnail from 'assets/default_thubmnail.gif';
 
-const Comment = memo((props) => {
+const Comment = memo(({ commentData, getDiffTime, lastCommentRef, setObserve }) => {
     const toggleRef = useRef();
     const [isTextOver, spanRef] = useTextOver();
 
     useEffect(() => {
-        if (props.lastCommentRef) props.setObserve();
+        if (lastCommentRef) setObserve();
     }, []);
 
     const getDiffDate = () => {
-        let publishDate = props.topLevelComment.snippet.publishedAt;
-        publishDate = Date.parse(publishDate);
+        const publishDate = Date.parse(commentData.snippet.publishedAt);
         const now = Date.now();
-        return props.getDiffTime(parseInt((now - publishDate) / 60000));
+        return getDiffTime(parseInt((now - publishDate) / 60000));
     }
 
-    const commentText = {__html: props.topLevelComment.snippet.textDisplay};
+    const { snippet } = commentData;
+    const commentText = { __html: snippet.textDisplay };
     
     return (
-        <li ref={props.lastCommentRef ? props.lastCommentRef : null} className={styles.container}>
-            <a href={props.topLevelComment.snippet.authorChannelUrl} target="_blank" rel='noreferrer' className={styles.thumbnail}>
+        <li ref={lastCommentRef || null} className={styles.container}>
+            <a href={snippet.authorChannelUrl} target="_blank" rel='noreferrer' className={styles.thumbnail}>
                 <img 
-                    src={props.topLevelComment.snippet.authorProfileImageUrl} 
+                    src={snippet.authorProfileImageUrl} 
                     onError={({ currentTarget }) => handleThumbnailError(currentTarget, defaultThubmnail)} 
                     alt="author thumbnail" 
                 />
             </a>
             <div className={styles.info_container}>
                 <div className={styles.info_top}>
-                    <a href={props.topLevelComment.snippet.authorChannelUrl} target="_blank" rel='noreferrer' className={styles.author_name}>{props.topLevelComment.snippet.authorDisplayName}</a>
+                    <a href={snippet.authorChannelUrl} target="_blank" rel='noreferrer' className={styles.author_name}>{snippet.authorDisplayName}</a>
                     <span className={styles.comment_date}>{`${getDiffDate()} 전`}</span>
                 </div>
                 <div className={styles.info_bottom}>
@@ -41,7 +41,13 @@ const Comment = memo((props) => {
                     </div>
                     {
                         isTextOver && 
-                        <button ref={toggleRef} className="toggle" onClick={() => handleToggle(spanRef.current, toggleRef.current)}>자세히 보기</button>
+                        <button 
+                            ref={toggleRef} 
+                            className="toggle" 
+                            onClick={() => handleToggle(spanRef.current, toggleRef.current)}
+                        >
+                            자세히 보기
+                        </button>
                     }
                 </div>
             </div>
