@@ -53,17 +53,4 @@ export default class AuthService {
             throw new Error(`로그아웃 중 에러가 발생했습니다. ${error.code}`);
         }
     }
-
-    checkUser() {
-        const data = this.auth.currentUser;
-        if (data) {
-            const result = {
-                "uid" : data.uid,
-                "name": data.displayName,
-                "url" : data.photoURL
-            };
-            return result;
-        }
-        return data;
-    }
 }

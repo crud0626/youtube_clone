@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { Route, Routes, useNavigate } from 'react-router-dom';
-import 'App.scss';
 import Header from 'components/Header/Header';
 import Home from 'pages/Home';
 import Watch from 'pages/Watch';
 import Results from 'pages/Results';
+import { onAuthStateChanged } from 'firebase/auth';
 
 const App = ({ youtubeAPI, calculator, authService }) => {
   const [videos, setVideos] = useState({
@@ -24,10 +24,16 @@ const App = ({ youtubeAPI, calculator, authService }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!userData.uid) {
-      const resData = authService.checkUser();
-      if (resData) setUserData(resData);
-    }
+    onAuthStateChanged(authService.auth, (user) => {
+      if (user) {
+        const data = {
+          "uid" : user.uid,
+          "name": user.displayName,
+          "url" : user.photoURL
+        };
+        setUserData(data);
+      }
+    });
 
     initVideo();
   }, []);
