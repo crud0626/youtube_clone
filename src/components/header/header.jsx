@@ -1,21 +1,22 @@
 import React, { memo, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import styles from '../../styles/header.module.scss';
+import Icon from 'components/Icon/Icon';
+import styles from 'styles/header.module.scss';
 import logoIMG from 'assets/logo.png';
 import keyboardIMG from 'assets/keyboard.gif';
 import defaultThubmnail from 'assets/default_thubmnail.gif';
 import { handleThumbnailError } from 'utils/utils';
 import { CLOSE_MARK, SEARCH_MARK, VOICE_MARK, ADD_VIDEO_MARK, GRID_MARK, BELL_MARK, EXIT_MARK, USER_MARK } from 'constants/iconPath';
-import Icon from '../Icon/Icon';
 
 const Header = memo(({ initVideo, onSearchVideo, onLogIn, onLogOut, userData }) => {
     const navigate = useNavigate();
     const inputRef = useRef();
-    const eraser = document.querySelector("button#input_eraser");
+    const eraserRef = useRef();
+    const modalRef = useRef();
 
     const handleModal = () => {
-        const modal = document.querySelector("#userModal");
-        if (modal.style.visibility === "" || modal.style.visibility === 'hidden') {
+        const modal = modalRef.current;
+        if (!modal.style.visibility || modal.style.visibility === 'hidden') {
             modal.style.visibility = "visible";
             return;
         }
@@ -25,38 +26,35 @@ const Header = memo(({ initVideo, onSearchVideo, onLogIn, onLogOut, userData }) 
 
     const onSearch = (event) => {
         event.preventDefault();
-        if (inputRef.current.value.search(/\S/g) === 0) {
+        
+        if (inputRef.current.value.match(/\S/)) {
             onSearchVideo(inputRef.current.value);
         }
     }
 
     const handleInput = () => {
         if (inputRef.current.value.length === 0) {
-            eraser.classList.add("input_hidden");
-        } else {
-            eraser.classList.remove("input_hidden");
+            eraserRef.current.classList.add("input_hidden");
+            return;
         }
+        eraserRef.current.classList.remove("input_hidden");
     }
 
-    const removeInputValue = () => {
-        eraser.classList.add("input_hidden");
+    const eraseInputValue = () => {
+        eraserRef.current.classList.add("input_hidden");
         inputRef.current.value = "";
     }
 
-    const clickKeyboard = (e) => {
-        e.preventDefault();
-    }
-
-    const clickedLogo = async () => {
+    const onClickLogo = () => {
         navigate("/");
-        await initVideo();
+        initVideo();
     }
 
     return (
         <header>
             <div className={styles.container}>
-                <div className={styles.left} onClick={clickedLogo}>
-                    <img src={logoIMG} alt="mainlogo"/>
+                <div className={styles.left} onClick={onClickLogo}>
+                    <img src={logoIMG} draggable="false" alt="mainlogo"/>
                     <h1>YouTube</h1>
                 </div>
                 <div className={styles.center}>
@@ -66,10 +64,10 @@ const Header = memo(({ initVideo, onSearchVideo, onLogIn, onLogOut, userData }) 
                                 <input ref={inputRef} placeholder='검색' type="text" onKeyUp={handleInput}/>
                             </form>
                             <div className={styles.input_icons_container}>
-                                <button className={styles.input_icon} onClick={clickKeyboard}>
-                                    <img src={keyboardIMG} alt="keyboardIcon" />
+                                <button className={styles.input_icon} onClick={(e) => e.preventDefault()}>
+                                    <img src={keyboardIMG} draggable="false" alt="keyboardIcon" />
                                 </button>
-                                <button id='input_eraser' className={`${styles.input_icon} input_hidden`} onClick={removeInputValue}>
+                                <button ref={eraserRef} className={`${styles.input_icon} input_hidden`} onClick={eraseInputValue}>
                                     <Icon def={CLOSE_MARK} />
                                 </button>
                             </div>
@@ -99,10 +97,11 @@ const Header = memo(({ initVideo, onSearchVideo, onLogIn, onLogOut, userData }) 
                                 <img 
                                     src={userData.url}
                                     onError={({ currentTarget }) => handleThumbnailError(currentTarget, defaultThubmnail)} 
+                                    draggable="false"
                                     alt="thumbnail" 
                                 />
                             </button>
-                            <div id='userModal' className={styles.userModal_container}>
+                            <div ref={modalRef} className={styles.userModal_container}>
                                 <div className={styles.modal_top}>
                                     <img 
                                         src={userData.url} 
