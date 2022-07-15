@@ -7,6 +7,7 @@ import keyboardIMG from 'assets/keyboard.gif';
 import defaultThubmnail from 'assets/default_thubmnail.gif';
 import { handleThumbnailError } from 'utils/utils';
 import { CLOSE_MARK, SEARCH_MARK, VOICE_MARK, ADD_VIDEO_MARK, GRID_MARK, BELL_MARK, EXIT_MARK, USER_MARK } from 'constants/iconPath';
+import IconButton from 'components/IconButton/IconButton';
 
 const Header = memo(({ initVideo, onSearchVideo, onLogIn, onLogOut, userData }) => {
     const navigate = useNavigate();
@@ -67,29 +68,43 @@ const Header = memo(({ initVideo, onSearchVideo, onLogIn, onLogOut, userData }) 
                                 <button className={styles.input_icon} onClick={(e) => e.preventDefault()}>
                                     <img src={keyboardIMG} draggable="false" alt="keyboardIcon" />
                                 </button>
-                                <button ref={eraserRef} className={`${styles.input_icon} input_hidden`} onClick={eraseInputValue}>
-                                    <Icon def={CLOSE_MARK} />
-                                </button>
+                                <IconButton 
+                                    ref={eraserRef}
+                                    className={`${styles.input_icon} input_hidden`}
+                                    onClick={eraseInputValue}
+                                    def={CLOSE_MARK}
+                                />
                             </div>
                         </div>
-                        <button className={`${styles.search_icon} ${styles.btns}`} onClick={onSearch} title='검색'>
-                            <Icon def={SEARCH_MARK} />
-                        </button>
+                        <IconButton 
+                            className={`${styles.search_icon} ${styles.btns}`} 
+                            onClick={onSearch} 
+                            titleName="검색"
+                            def={SEARCH_MARK}
+                        />
                     </div>
-                    <button className={`${styles.voiceBtn} ${styles.btns}`} title='음성으로 검색'>
-                        <Icon def={VOICE_MARK} />
-                    </button>
+                    <IconButton 
+                        className={`${styles.voiceBtn} ${styles.btns}`} 
+                        titleName="음성으로 검색"
+                        def={VOICE_MARK}
+                    />
                 </div>
                 <div className={styles.right}>
-                    <button className={`${styles.right_btns} ${styles.btns}`} title='만들기'>
-                        <Icon def={ADD_VIDEO_MARK} />
-                    </button>
-                    <button className={`${styles.right_btns} ${styles.btns}`} title='YouTube 앱'>
-                        <Icon def={GRID_MARK} />
-                    </button>
-                    <button className={`${styles.right_btns} ${styles.btns}`} title='알림'>
-                        <Icon def={BELL_MARK}/>
-                    </button>
+                    <IconButton 
+                        className={`${styles.right_btns} ${styles.btns}`} 
+                        titleName="만들기"
+                        def={ADD_VIDEO_MARK}
+                    />
+                    <IconButton 
+                        className={`${styles.right_btns} ${styles.btns}`} 
+                        titleName="YouTube 앱"
+                        def={GRID_MARK}
+                    />
+                    <IconButton 
+                        className={`${styles.right_btns} ${styles.btns}`} 
+                        titleName="알림"
+                        def={BELL_MARK}
+                    />
                     {
                         userData.uid &&
                         <>
@@ -123,10 +138,13 @@ const Header = memo(({ initVideo, onSearchVideo, onLogIn, onLogOut, userData }) 
                     }
                     {
                         !userData.uid &&
-                        <button className={`${styles.right_btns} ${styles.login_btn} g-signin2`} data-onsuccess="onSignIn" onClick={onLogIn}>
-                            <Icon def={USER_MARK} />
-                            <span>로그인</span>
-                        </button>
+                        <IconButton 
+                            className={`${styles.right_btns} ${styles.login_btn}`} 
+                            titleName={"login button"}
+                            onClick={onLogIn}
+                            def={USER_MARK}
+                            text={"로그인"}
+                        />
                     }
                 </div>
             </div>

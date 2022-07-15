@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import CommentsContainer from 'components/Comments_container/Comments_container';
-import Icon from 'components/Icon/Icon';
+import IconButton from 'components/IconButton/IconButton';
 import styles from 'styles/videosection.module.scss';
 import { handleThumbnailError, handleToggle } from 'utils/utils';
 import { EMPTY_LIKE_MARK, FILL_LIKE_MARK, EMPTY_DISLIKE_MARK, FILL_DISLIKE_MARK, SHARE_MARK, SAVE_MARK } from 'constants/iconPath';
@@ -70,6 +70,7 @@ const VideoSection = ({ userData, comments, selectedVideo, calculator, getMoreCo
     const sendRating = async ({ currentTarget }) => {
         if (checkExpires()) {
             const rating = currentTarget.dataset.func;
+            console.log(currentTarget);
             await youtube.ratingVideo(rating, selectedVideo.id, userData.uid)
             .then(() => {
                 const newRating = { like: false, disLike: false };
@@ -122,39 +123,34 @@ const VideoSection = ({ userData, comments, selectedVideo, calculator, getMoreCo
                         <span>{displayVideoDate()}</span>
                     </div>
                     <div className={styles.video_info_right}>
-                        <div className={`${styles.video_info_item} ${styles.btns}`} title='이 동영상이 마음에 듭니다.' data-func={rating.like ? "none" : "like"} onClick={sendRating}>
-                            <button>
-                                {
-                                    rating.like 
-                                    ? <Icon def={FILL_LIKE_MARK} /> 
-                                    : <Icon def={EMPTY_LIKE_MARK} />
-                                }
-                            </button>
-                            <span>{calculator.convertCount(statistics.likeCount)}</span>
-                        </div>
-                        <div className={`${styles.video_info_item} ${styles.btns}`} title='이 동영상이 마음에 들지 않습니다.' data-func={rating.disLike ? "none" : "dislike"} onClick={sendRating}>
-                            <button>
-                                {
-                                    rating.disLike 
-                                    ? <Icon def={FILL_DISLIKE_MARK} /> 
-                                    : <Icon def={EMPTY_DISLIKE_MARK} />
-                                }
-                            </button>
-                            <span>싫어요</span>
-                        </div>
-                        <div className={`${styles.video_info_item} ${styles.btns}`} title='공유'>
-                            <button>
-                                <Icon def={SHARE_MARK} />
-                            </button>
-                            <span>공유</span>
-                        </div>
-                        <div className={`${styles.video_info_item} ${styles.btns}`} title='저장'>
-                            <button>
-                                <Icon def={SAVE_MARK}/>
-                            </button>
-                            <span>저장</span>
-                        </div>
-                        
+                        <IconButton 
+                            className={`${styles.video_info_item} ${styles.btns}`} 
+                            titleName="이 동영상이 마음에 듭니다."
+                            dataFunc={rating.like ? "none" : "like"} 
+                            onClick={sendRating}
+                            def={rating.like ? FILL_LIKE_MARK : EMPTY_LIKE_MARK}
+                            text={calculator.convertCount(statistics.likeCount)}
+                        />
+                        <IconButton 
+                            className={`${styles.video_info_item} ${styles.btns}`}
+                            titleName="이 동영상이 마음에 들지 않습니다."
+                            dataFunc={rating.disLike ? "none" : "dislike"} 
+                            onClick={sendRating}
+                            def={rating.disLike ? FILL_DISLIKE_MARK : EMPTY_DISLIKE_MARK}
+                            text="싫어요"
+                        />
+                        <IconButton 
+                            className={`${styles.video_info_item} ${styles.btns}`} 
+                            titleName="공유"
+                            def={SHARE_MARK}
+                            text="공유"
+                        />
+                        <IconButton 
+                            className={`${styles.video_info_item} ${styles.btns}`} 
+                            titleName="저장"
+                            def={SAVE_MARK} 
+                            text="저장"
+                        />
                     </div>
                 </div>
             </div>
@@ -186,7 +182,7 @@ const VideoSection = ({ userData, comments, selectedVideo, calculator, getMoreCo
                                 className={styles.toggle_btn} 
                                 onClick={() => handleToggle(descRef.current, toggleRef.current)}
                             >
-                                더보기
+                                <span>더보기</span>
                             </button>
                         }
                     </div>
