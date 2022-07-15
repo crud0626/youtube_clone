@@ -1,7 +1,7 @@
-import React, { memo } from 'react';
-import styles from '../../styles/spinner.module.scss';
+import React from 'react';
+import styles from 'styles/spinner.module.scss';
 
-const Spinner = memo(() => {
+const Spinner = () => {
     return (
         <div className={styles.container}>
             <div className={styles.spinner_rolling}>
@@ -12,6 +12,6 @@ const Spinner = memo(() => {
             </div>
         </div>
     );
-});
+};
 
 export default Spinner;

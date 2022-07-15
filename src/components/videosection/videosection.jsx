@@ -124,15 +124,21 @@ const VideoSection = ({ userData, comments, selectedVideo, calculator, getMoreCo
                     <div className={styles.video_info_right}>
                         <div className={`${styles.video_info_item} ${styles.btns}`} title='이 동영상이 마음에 듭니다.' data-func={rating.like ? "none" : "like"} onClick={sendRating}>
                             <button>
-                                {!rating.like && <Icon def={EMPTY_LIKE_MARK} />}
-                                {rating.like && <Icon def={FILL_LIKE_MARK} />}
+                                {
+                                    rating.like 
+                                    ? <Icon def={FILL_LIKE_MARK} /> 
+                                    : <Icon def={EMPTY_LIKE_MARK} />
+                                }
                             </button>
                             <span>{calculator.convertCount(statistics.likeCount)}</span>
                         </div>
                         <div className={`${styles.video_info_item} ${styles.btns}`} title='이 동영상이 마음에 들지 않습니다.' data-func={rating.disLike ? "none" : "dislike"} onClick={sendRating}>
                             <button>
-                                {rating.disLike && <Icon def={FILL_DISLIKE_MARK} />}
-                                {!rating.disLike && <Icon def={EMPTY_DISLIKE_MARK} />}
+                                {
+                                    rating.disLike 
+                                    ? <Icon def={FILL_DISLIKE_MARK} /> 
+                                    : <Icon def={EMPTY_DISLIKE_MARK} />
+                                }
                             </button>
                             <span>싫어요</span>
                         </div>
@@ -157,6 +163,7 @@ const VideoSection = ({ userData, comments, selectedVideo, calculator, getMoreCo
                     <img 
                         src={channel.snippet.thumbnails.default.url} 
                         onError={({ currentTarget }) => handleThumbnailError(currentTarget, defaultThubmnail)}
+                        draggable="false"
                         alt="channelImage" 
                     />
                 </a>
@@ -174,7 +181,13 @@ const VideoSection = ({ userData, comments, selectedVideo, calculator, getMoreCo
                         <pre ref={descRef} className={`${styles.video_desc} shortcut`}>{snippet.description}</pre>
                         {
                             isTextOver && 
-                            <button ref={toggleRef} className={styles.toggle_btn} onClick={() => handleToggle(descRef.current, toggleRef.current)}>더보기</button>
+                            <button 
+                                ref={toggleRef} 
+                                className={styles.toggle_btn} 
+                                onClick={() => handleToggle(descRef.current, toggleRef.current)}
+                            >
+                                더보기
+                            </button>
                         }
                     </div>
                     

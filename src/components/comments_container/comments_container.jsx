@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import Comment from 'components/Comment/Comment';
 import Spinner from 'components/Spinner/Spinner';
 import styles from 'styles/comments_container.module.scss';

@@ -17,7 +17,7 @@ const VideoBox = forwardRef(({ video, onClickVideo, calculator, setObserver }, r
     return (
         <li ref={ref || null} className={`${styles.container} ${styles.notSelectedVideo}`} onClick={() => onClickVideo(video)}>
             <div className={styles.thumbnail_container}>
-                <img className={styles.thumbnail} src={snippet.thumbnails.medium.url} alt="video thumbnail" />
+                <img className={styles.thumbnail} src={snippet.thumbnails.medium.url} draggable="false" alt="video thumbnail" />
                 <div className={styles.duration}>
                     <span>{calculator.convertVideoDuration(contentDetails.duration)}</span>
                 </div>

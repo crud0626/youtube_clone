@@ -26,7 +26,8 @@ const Comment = memo(({ commentData, getDiffTime, lastCommentRef, setObserver })
             <a href={snippet.authorChannelUrl} target="_blank" rel='noreferrer' className={styles.thumbnail}>
                 <img 
                     src={snippet.authorProfileImageUrl} 
-                    onError={({ currentTarget }) => handleThumbnailError(currentTarget, defaultThubmnail)} 
+                    onError={({ currentTarget }) => handleThumbnailError(currentTarget, defaultThubmnail)}
+                    draggable="false"
                     alt="author thumbnail" 
                 />
             </a>
