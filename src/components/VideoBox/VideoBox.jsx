@@ -1,5 +1,5 @@
 import React, { forwardRef, useEffect } from 'react';
-import styles from 'styles/videobox.module.scss';
+import styles from 'styles/videoBox.module.scss';
 
 const VideoBox = forwardRef(({ video, onClickVideo, calculator, setObserver }, ref) => {
     useEffect(() => {
@@ -9,7 +9,7 @@ const VideoBox = forwardRef(({ video, onClickVideo, calculator, setObserver }, r
     const { contentDetails, snippet, statistics } = video;
 
     return (
-        <li ref={ref || null} className={`${styles.container} ${styles.notSelectedVideo}`} onClick={() => onClickVideo(video)}>
+        <li ref={ref || null} className={styles.container} onClick={() => onClickVideo(video)}>
             <div className={styles.thumbnail_container}>
                 <img 
                     className={styles.thumbnail} 
