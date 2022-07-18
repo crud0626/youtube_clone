@@ -4,19 +4,13 @@ import useTextOver from 'hooks/useTextOver';
 import { handleThumbnailError, handleToggle } from 'utils/utils';
 import defaultThubmnail from 'assets/default_thubmnail.gif';
 
-const Comment = memo(({ commentData, getDiffTime, lastCommentRef, setObserver }) => {
+const Comment = memo(({ commentData, getTimeDiff, lastCommentRef, setObserver }) => {
     const toggleRef = useRef();
     const [isTextOver, spanRef] = useTextOver();
 
     useEffect(() => {
         if (lastCommentRef) setObserver();
     }, []);
-
-    const getDiffDate = () => {
-        const publishDate = Date.parse(commentData.snippet.publishedAt);
-        const now = Date.now();
-        return getDiffTime(parseInt((now - publishDate) / 60000));
-    }
 
     const { snippet } = commentData;
     const commentText = { __html: snippet.textDisplay };
@@ -34,7 +28,7 @@ const Comment = memo(({ commentData, getDiffTime, lastCommentRef, setObserver })
             <div className={styles.info_container}>
                 <div className={styles.info_top}>
                     <a href={snippet.authorChannelUrl} target="_blank" rel='noreferrer' className={styles.author_name}>{snippet.authorDisplayName}</a>
-                    <span className={styles.comment_date}>{`${getDiffDate()} 전`}</span>
+                    <span className={styles.comment_date}>{getTimeDiff(commentData.snippet.publishedAt)}</span>
                 </div>
                 <div className={styles.info_bottom}>
                     <div ref={spanRef} className={`${styles.span_container} shortcut`}>

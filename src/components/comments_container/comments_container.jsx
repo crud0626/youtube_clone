@@ -5,7 +5,7 @@ import styles from 'styles/comments_container.module.scss';
 import useObserver from 'hooks/useObserver';
 import { nanoid } from 'nanoid';
 
-const CommentsContainer = ({ commentCount, comments, getDiffTime, getMoreComment }) => {
+const CommentsContainer = ({ commentCount, comments, getTimeDiff, getMoreComment }) => {
     const [isLoading, setIsLoading] = useState(false);
 
     const observerCallback = async () => {
@@ -34,7 +34,7 @@ const CommentsContainer = ({ commentCount, comments, getDiffTime, getMoreComment
                         const renderProp = {
                             "key": nanoid(),
                             "commentData" : item.snippet.topLevelComment,
-                            "getDiffTime" : getDiffTime
+                            "getTimeDiff" : getTimeDiff
                         };
 
                         if (!isLoading && index === items.length - 1 && nextPageToken) {

@@ -193,7 +193,7 @@ const VideoSection = ({ userData, comments, selectedVideo, calculator, getMoreCo
             <CommentsContainer 
                 commentCount={statistics.commentCount}
                 comments={comments}
-                getDiffTime={calculator.getDiffTime}
+                getTimeDiff={calculator.getTimeDiff}
                 getMoreComment={getMoreComment}
             />
         </div>

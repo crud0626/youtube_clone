@@ -6,18 +6,17 @@ const VideoBox = forwardRef(({ video, onClickVideo, calculator, setObserver }, r
         if (ref) setObserver();
     }, []);
 
-    const getDiffDate = () => {
-        const now = Date.now();
-        const publishDate = Date.parse(video.snippet.publishedAt);
-        return calculator.getDiffTime(parseInt((now - publishDate) / 60000));
-    }
-
     const { contentDetails, snippet, statistics } = video;
 
     return (
         <li ref={ref || null} className={`${styles.container} ${styles.notSelectedVideo}`} onClick={() => onClickVideo(video)}>
             <div className={styles.thumbnail_container}>
-                <img className={styles.thumbnail} src={snippet.thumbnails.medium.url} draggable="false" alt="video thumbnail" />
+                <img 
+                    className={styles.thumbnail} 
+                    src={snippet.thumbnails.medium.url} 
+                    draggable="false" 
+                    alt="video thumbnail" 
+                />
                 <div className={styles.duration}>
                     <span>{calculator.convertVideoDuration(contentDetails.duration)}</span>
                 </div>
@@ -27,7 +26,8 @@ const VideoBox = forwardRef(({ video, onClickVideo, calculator, setObserver }, r
                 <div className={styles.info}>
                     <span className={styles.channelTitle}>{snippet.channelTitle}</span>
                     <div className={styles.sub_info}>
-                        <span>{`조회수 ${calculator.convertCount(statistics.viewCount)}회 • ${getDiffDate()} 전`}</span>
+                        <span>{`조회수 ${calculator.convertCount(statistics.viewCount)}회`}</span>
+                        <span>{calculator.getTimeDiff(video.snippet.publishedAt)}</span>
                     </div>
                 </div>
             </div>
