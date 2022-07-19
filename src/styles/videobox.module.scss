@@ -34,10 +34,22 @@
   & .info_container {
     width: 100%;
     height: 100%;
-    padding: 10px 0;
+    padding: 12px 0;
     display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+
+    & .info_left {
+      width: 36px;
+      height: 36px;
+      margin-right: 12px;
+      flex-shrink: 0;
+  
+      & > img {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        background-color: #eeeeee;
+      }
+    }
 
     // mixins
     & .title {

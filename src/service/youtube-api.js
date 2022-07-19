@@ -26,7 +26,10 @@ export default class YoutubeAPI {
         if (token) params.pageToken = token;
         
         const { data } = await this.youtube.get('videos', { params });
+        const videosId = [];
+        
         data.items.map(item => {
+          videosId.push(item.snippet.channelId);
           item.snippet.title = decode(item.snippet.title, 'all');
           item.snippet.description = decode(item.snippet.description, 'all');
 
@@ -34,6 +37,9 @@ export default class YoutubeAPI {
           keys.map(key => item.statistics[key] = +item.statistics[key]);
           return item;
         });
+
+        const channelInfos = await this.getChannelInfo(videosId);
+        data.items.map((item, index) => item.channel = channelInfos[index]);
 
         return data;
       } catch (error) {
@@ -66,6 +72,10 @@ export default class YoutubeAPI {
         });
 
         resData.items = await this.getVideoInfo(resData.items);
+
+        const videosId = resData.items.map(item => item.snippet.channelId);
+        const channelInfos = await this.getChannelInfo(videosId);
+        resData.items.map((item, index) => item.channel = channelInfos[index]);
         
         return resData;
       } catch ({ response }) {
@@ -132,11 +142,11 @@ export default class YoutubeAPI {
       }
     }
 
-    async getChannelInfo(id) {
+    async getChannelInfo(videosId) {
       try {
         const params = {
           part: 'snippet,statistics',
-          id: id,
+          id: videosId.join(","),
           fields: 'items(snippet(thumbnails),statistics(subscriberCount))'
         };
 
@@ -148,14 +158,12 @@ export default class YoutubeAPI {
 
         return resData;
       } catch (error) {
-        throw error;
+        throw new Error(`에러가 발생했습니다. ${error}`);
       }
     }
 
     async getCurrentVidInfo(video) {
       try {
-        const channel = await this.getChannelInfo(video.snippet.channelId);
-        video.channel = channel[0];
         const comments = await this.getComment(video.id);
   
         const result = {

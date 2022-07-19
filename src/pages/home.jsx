@@ -1,9 +1,9 @@
 import React from 'react';
-import Playlist from 'components/Playlist/Playlist';
+import GridVideoList from 'components/GridVideoList/GridVideoList';
 
 const Home = (props) => {
     return(
-        <Playlist { ...props } />
+        <GridVideoList { ...props } />
     );
     
 };

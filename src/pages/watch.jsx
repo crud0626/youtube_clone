@@ -1,6 +1,6 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
-import Playlist from 'components/Playlist/Playlist';
+import GridVideoList from 'components/GridVideoList/GridVideoList';
 import VideoSection from 'components/VideoSection/VideoSection';
 import useScrollUp from 'hooks/useScrollUp';
 import useBackHome from 'hooks/useBackHome';
@@ -23,7 +23,7 @@ const Watch = (props) => {
                 youtube={props.youtube}
                 onLogIn={props.onLogIn}
             />
-            <Playlist 
+            <GridVideoList 
                 videos={props.videos}
                 onClickVideo={props.onClickVideo}
                 calculator={props.calculator}
