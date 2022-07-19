@@ -1,6 +1,6 @@
 import { useRef } from 'react';
 
-const useObserver = (callbackFn) => {
+const useScrollObserver = (callbackFn) => {
     const targetRef = useRef();
     let observer;
 
@@ -28,4 +28,4 @@ const useObserver = (callbackFn) => {
     return [targetRef, setObserver];
 };
 
-export default useObserver;
+export default useScrollObserver;

@@ -3,7 +3,7 @@ import styles from 'styles/videoBox.module.scss';
 import { handleThumbnailError } from 'utils/utils';
 import defaultThubmnail from 'assets/default_thubmnail.gif';
 
-const VideoBox = forwardRef(({ video, onClickVideo, calculator, setObserver }, ref) => {
+const VideoBox = forwardRef(({ video, onClickVideo, calculator, setObserver, isThumbnail = true }, ref) => {
     useEffect(() => {
         if (ref) setObserver();
     }, []);
@@ -11,7 +11,7 @@ const VideoBox = forwardRef(({ video, onClickVideo, calculator, setObserver }, r
     const { channel, contentDetails, snippet, statistics } = video;
 
     return (
-        <li ref={ref || null} className={styles.container} onClick={() => onClickVideo(video)}>
+        <li ref={ref || null} className={`${styles.container} videoBox`} onClick={() => onClickVideo(video)}>
             <div className={styles.thumbnail_container}>
                 <img 
                     className={styles.thumbnail} 
@@ -24,14 +24,17 @@ const VideoBox = forwardRef(({ video, onClickVideo, calculator, setObserver }, r
                 </div>
             </div>
             <div className={styles.info_container}>
-                <a className={styles.info_left}>
-                    <img 
-                        src={channel?.snippet.thumbnails.default.url || "#"} 
-                        onError={({ currentTarget }) => handleThumbnailError(currentTarget, defaultThubmnail)}
-                        draggable="false"
-                        alt="channelImage" 
-                    />
-                </a>
+                {
+                    isThumbnail &&
+                    <a className={styles.info_left}>
+                        <img 
+                            src={channel?.snippet.thumbnails.default.url || "#"} 
+                            onError={({ currentTarget }) => handleThumbnailError(currentTarget, defaultThubmnail)}
+                            draggable="false"
+                            alt="channelImage" 
+                        />
+                    </a>
+                }
                 <div className={styles.info_right}>
                     <h3 className={styles.title}>{snippet.title}</h3>
                     <div className={styles.info}>
