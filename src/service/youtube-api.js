@@ -60,9 +60,11 @@ export default class YoutubeAPI {
 
         if (token) params.pageToken = token;
 
-        const resData = await this.youtube.get('search', {params: params})
+        const resData = await this.youtube.get('search', { params })
         .then(({ data: { items, nextPageToken } }) => {
-          items.map(item => {
+          if (items.length === 0) throw new Error("empty");
+
+          items.forEach(item => {
             item.id = item.id.videoId;
             item.snippet.title = decode(item.snippet.title, 'all');
             item.snippet.description = decode(item.snippet.description, 'all');
@@ -75,16 +77,18 @@ export default class YoutubeAPI {
 
         const videosId = resData.items.map(item => item.snippet.channelId);
         const channelInfos = await this.getChannelInfo(videosId);
-        resData.items.map((item, index) => item.channel = channelInfos[index]);
+        resData.items.forEach((item, index) => item.channel = channelInfos[index]);
         
         return resData;
-      } catch ({ response }) {
-        if(response.status === 403 && response.data.error.message.match(/exceeded/)) {
+      } catch (error) {
+        if (error.message === "empty") return { items: [], nextPageToken: null };
+
+        if (error.response.status === 403 && error.response.data.error.message.match(/exceeded/)) {
           alert("할당량이 초과되어 금일은 이용이 불가합니다.");
           throw new Error(`할당량이 초과 되었습니다.`);
         }
         alert("검색 도중 에러가 발생했습니다.");
-        throw new Error(`통신 도중 에러가 발생했습니다. ${response.data.error.message}`);
+        throw new Error(`통신 도중 에러가 발생했습니다. ${error.response.data.error.message}`);
       }
     }
 
