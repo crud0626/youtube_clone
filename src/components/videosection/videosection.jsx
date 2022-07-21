@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
-import CommentsContainer from 'components/Comments_container/Comments_container';
+import CommentsContainer from 'components/CommentsContainer/CommentsContainer';
 import IconButton from 'components/IconButton/IconButton';
-import styles from 'styles/videosection.module.scss';
+import styles from 'styles/videoSection.module.scss';
 import { handleThumbnailError, handleToggle } from 'utils/utils';
 import { EMPTY_LIKE_MARK, FILL_LIKE_MARK, EMPTY_DISLIKE_MARK, FILL_DISLIKE_MARK, SHARE_MARK, SAVE_MARK } from 'constants/iconPath';
 import defaultThubmnail from 'assets/default_thubmnail.gif';
@@ -70,7 +70,6 @@ const VideoSection = ({ userData, comments, selectedVideo, calculator, getMoreCo
     const sendRating = async ({ currentTarget }) => {
         if (checkExpires()) {
             const rating = currentTarget.dataset.func;
-            console.log(currentTarget);
             await youtube.ratingVideo(rating, selectedVideo.id, userData.uid)
             .then(() => {
                 const newRating = { like: false, disLike: false };
@@ -98,6 +97,11 @@ const VideoSection = ({ userData, comments, selectedVideo, calculator, getMoreCo
         }
     };
 
+    const convertToLink = (text) => {
+        const convertedText = text.replace(/\bhttps?:\/\/\S+\b/g, '<a href=$& target="_blank" rel="noreferrer">$&</a>');
+        return { __html: convertedText };
+    }
+
     const { channel, id, snippet, statistics } = selectedVideo;
 
     return (
@@ -108,7 +112,6 @@ const VideoSection = ({ userData, comments, selectedVideo, calculator, getMoreCo
                     id="ytplayer" 
                     type="text/html" 
                     title='videoplayer'
-                    width="720" height="405"
                     src={`https://www.youtube.com/embed/${id}`}
                     frameBorder="0" 
                     allowFullScreen
@@ -117,14 +120,14 @@ const VideoSection = ({ userData, comments, selectedVideo, calculator, getMoreCo
             <div className={styles.video_info_container}>
                 <h3 className={styles.video_title}>{snippet.title}</h3>
                 <div className={styles.video_info}>
-                    <div className={styles.video_info_left}>
+                    <div className={styles.video_info_text}>
                         <span>{`${Number(statistics.viewCount).toLocaleString("en")}회`}</span>
                         <span>{" • "}</span>
                         <span>{displayVideoDate()}</span>
                     </div>
-                    <div className={styles.video_info_right}>
+                    <div className={styles.video_info_button_container}>
                         <IconButton 
-                            className={`${styles.video_info_item} ${styles.btns}`} 
+                            className={`${styles.video_info_button} ${styles.btns}`} 
                             titleName="이 동영상이 마음에 듭니다."
                             dataFunc={rating.like ? "none" : "like"} 
                             onClick={sendRating}
@@ -132,7 +135,7 @@ const VideoSection = ({ userData, comments, selectedVideo, calculator, getMoreCo
                             text={calculator.convertCount(statistics.likeCount)}
                         />
                         <IconButton 
-                            className={`${styles.video_info_item} ${styles.btns}`}
+                            className={`${styles.video_info_button} ${styles.btns}`}
                             titleName="이 동영상이 마음에 들지 않습니다."
                             dataFunc={rating.disLike ? "none" : "dislike"} 
                             onClick={sendRating}
@@ -140,13 +143,13 @@ const VideoSection = ({ userData, comments, selectedVideo, calculator, getMoreCo
                             text="싫어요"
                         />
                         <IconButton 
-                            className={`${styles.video_info_item} ${styles.btns}`} 
+                            className={`${styles.video_info_button} ${styles.btns}`} 
                             titleName="공유"
                             def={SHARE_MARK}
                             text="공유"
                         />
                         <IconButton 
-                            className={`${styles.video_info_item} ${styles.btns}`} 
+                            className={`${styles.video_info_button} ${styles.btns}`} 
                             titleName="저장"
                             def={SAVE_MARK} 
                             text="저장"
@@ -155,7 +158,7 @@ const VideoSection = ({ userData, comments, selectedVideo, calculator, getMoreCo
                 </div>
             </div>
             <div className={styles.channel_info_container}>
-                <a className={styles.channel_info_left} href={`https://www.youtube.com/channel/${snippet.channelId}`} target="_blank" rel="noreferrer" >
+                <a className={styles.channel_thumbnail} href={`https://www.youtube.com/channel/${snippet.channelId}`} target="_blank" rel="noreferrer" >
                     <img 
                         src={channel.snippet.thumbnails.default.url} 
                         onError={({ currentTarget }) => handleThumbnailError(currentTarget, defaultThubmnail)}
@@ -163,7 +166,7 @@ const VideoSection = ({ userData, comments, selectedVideo, calculator, getMoreCo
                         alt="channelImage" 
                     />
                 </a>
-                <div className={styles.channel_info_right}>
+                <div className={styles.channel_info}>
                     <a 
                         href={`https://www.youtube.com/channel/${snippet.channelId}`} 
                         target="_blank" rel="noreferrer"
@@ -174,7 +177,7 @@ const VideoSection = ({ userData, comments, selectedVideo, calculator, getMoreCo
                     </a>
                     <span>{`구독자 ${calculator.convertCount(channel.statistics.subscriberCount)}명`}</span>
                     <div className={styles.desc_container}>
-                        <pre ref={descRef} className={`${styles.video_desc} shortcut`}>{snippet.description}</pre>
+                        <pre ref={descRef} className={`${styles.desc} shortcut`} dangerouslySetInnerHTML={convertToLink(snippet.description)}></pre>
                         {
                             isTextOver && 
                             <button 
