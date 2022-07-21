@@ -1,0 +1,21 @@
+@use './common/sizes';
+
+.container {
+  & .header {
+    margin: sizes.$large-space 0;
+  
+    & .count {
+      font-size: 1rem;
+      font-weight: normal;
+    }
+  }
+
+  .body {
+    padding: 0;
+    list-style: none;
+  }
+}
+
+.no_comments {
+  text-align: center;
+}

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useLocation } from 'react-router-dom';
 import VideoSection from 'components/VideoSection/VideoSection';
 import PlayList from 'components/PlayList/PlayList';
@@ -10,14 +10,12 @@ const Watch = (props) => {
     const { pathname, search } = useLocation();
     const isInSection = useResizeObserver(1016);
 
-    console.log(isInSection);
-
     useScrollUp([pathname, search]);
     useBackHome();
 
     return (
         props.selectedVideo.id && 
-        <section className="section-select-video">
+        <section className="section_select_video">
             <VideoSection
                 userData={props.userData}
                 comments={props.comments}

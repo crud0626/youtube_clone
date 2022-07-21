@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import styles from 'styles/playlist.module.scss';
+import styles from 'styles/gridVideoList.module.scss';
 import VideoBox from 'components/VideoBox/VideoBox';
 import Spinner from 'components/Spinner/Spinner';
 import VideoSkeleton from 'components/VideoSkeleton/VideoSkeleton';
-import useObserver from 'hooks/useObserver';
+import useScrollObserver from 'hooks/useScrollObserver';
 import { nanoid } from 'nanoid';
 
-const Playlist = ({ videos, onClickVideo, calculator, getMoreVideo, isVideoLoading }) => {
+const GridVideoList = ({ videos, onClickVideo, calculator, getMoreVideo, isVideoLoading }) => {
     const [isLoading, setIsLoading] = useState(false);
     const skeletonCount = new Array(8).fill({undefined});
     
@@ -15,11 +15,11 @@ const Playlist = ({ videos, onClickVideo, calculator, getMoreVideo, isVideoLoadi
         await getMoreVideo()
         .then(() => setIsLoading(false));
     };
-    const [lastVideoRef, setObserver] = useObserver(observerCallback);
+    const [lastVideoRef, setObserver] = useScrollObserver(observerCallback);
 
     return (
-        <div>
-            <ul className={styles.container}>
+        <section className={styles.section}>
+            <ul className={styles.videobox_container}>
                 {videos.items.map((item, index) => {
                     if (isVideoLoading && !item) {
                         return <VideoSkeleton key={nanoid()} />;
@@ -43,14 +43,14 @@ const Playlist = ({ videos, onClickVideo, calculator, getMoreVideo, isVideoLoadi
             </ul>
             {
                 !videos.nextPageToken &&
-                <div className={styles.noMoreVideos}>
+                <div className={styles.no_more_videos}>
                     <p>결과가 더 이상 없습니다.</p>
                 </div>
             }
             {isLoading && <Spinner />}
-        </div>
+        </section>
     );
 };
 
-export default Playlist;
+export default GridVideoList;
 

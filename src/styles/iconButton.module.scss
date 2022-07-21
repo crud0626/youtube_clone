@@ -1,0 +1,10 @@
+@use './common/colors';
+
+// OK
+
+.btns {
+    display: flex;
+    align-items: center;
+    color: colors.$icon-main-color;
+    font-size: 0.9rem;
+}

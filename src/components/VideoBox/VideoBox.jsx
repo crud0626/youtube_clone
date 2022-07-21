@@ -11,10 +11,10 @@ const VideoBox = forwardRef(({ video, onClickVideo, calculator, setObserver, isT
     const { channel, contentDetails, snippet, statistics } = video;
 
     return (
-        <li ref={ref || null} className={`${styles.container} videoBox`} onClick={() => onClickVideo(video)}>
-            <div className={styles.thumbnail_container}>
+        <li ref={ref || null} className={styles.container} onClick={() => onClickVideo(video)}>
+            <div className={styles.video_thumbnail_container}>
                 <img 
-                    className={styles.thumbnail} 
+                    className={styles.video_thumbnail} 
                     src={snippet.thumbnails.medium.url} 
                     draggable="false" 
                     alt="video thumbnail" 
@@ -26,7 +26,7 @@ const VideoBox = forwardRef(({ video, onClickVideo, calculator, setObserver, isT
             <div className={styles.info_container}>
                 {
                     isThumbnail &&
-                    <a className={styles.info_left}>
+                    <a className={styles.channel_thumbnail}>
                         <img 
                             src={channel?.snippet.thumbnails.default.url || "#"} 
                             onError={({ currentTarget }) => handleThumbnailError(currentTarget, defaultThubmnail)}
@@ -35,7 +35,7 @@ const VideoBox = forwardRef(({ video, onClickVideo, calculator, setObserver, isT
                         />
                     </a>
                 }
-                <div className={styles.info_right}>
+                <div className={styles.info_content}>
                     <h3 className={styles.title}>{snippet.title}</h3>
                     <div className={styles.info}>
                         <span className={styles.channelTitle}>{snippet.channelTitle}</span>

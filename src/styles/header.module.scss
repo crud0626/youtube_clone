@@ -1,20 +1,21 @@
-@use "./common/_colors";
-@use "./common/_mixins";
+@use './common/colors';
+@use './common/mixins';
+@use './common/sizes';
 
 header {
-  height: 56px;
-  border-bottom: colors.$blackBoder;
-  background-color: white;
+  height: sizes.$header-height;
+  border-bottom: sizes.$thin-black-border;
+  background-color: colors.$header-bg-color;
 }
 
 .container {
+  margin: auto;
+  padding: 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 95%;
+  width: sizes.$default-content-width;
   height: 100%;
-  margin: auto;
-  padding: 0;
 }
 
 .left {
@@ -22,13 +23,15 @@ header {
   justify-content: flex-start;
   align-items: center;
   cursor: pointer;
+
   & > img {
     width: 30px;
   }
+
   & > h1 {
     margin: 0;
     padding-left: 2px;
-    font-size: 24px;
+    font-size: 1.5rem;
   }
 }
 
@@ -39,9 +42,6 @@ header {
   align-items: center;
   padding: 0 30px;
   height: 70%;
-  & button {
-    cursor: pointer;
-  }
 }
 
 .searchbar_container {
@@ -49,34 +49,37 @@ header {
   display: flex;
   align-items: center;
   height: 100%;
-  & > button {
-    border: 1px solid #d3d3d3;
+
+  & .search_icon {
+    border: 1px solid colors.$search-icon-border-color;
     border-radius: 0 3px 3px 0;
-    background: #f8f8f8;
+    background: colors.$search-icon-bg-color;
   }
 }
 
-.search_bar {
+.searchbar {
   flex: 1 1 100%;
   display: flex;
   align-items: center;
   position: relative;
   height: 100%;
-  border: colors.$blackBoder;
+  border: sizes.$thin-black-border;
   border-radius: 3px 0 0 3px;
+
   & .search_form {
     flex: 1 1 100%;
     height: 100%;
+
     & input {
       width: 100%;
       height: 100%;
-      border: none;
-      outline: none;
+      border: 0;
       padding: 0 0 0 7px;
       font-size: 1rem;
       outline: none;
     }
   }
+  
   &:focus-within {
     border: 1px solid black;
   }
@@ -88,16 +91,21 @@ header {
   & .input_icon {
     margin: 1px 10px;
     padding: 0;
-    background: transparent;
     border: none;
-    font-size: 19px;
-    color: colors.$grayLight;
+    width: sizes.$icon-small-size;
+    height: sizes.$icon-small-size;
+    color: colors.$light-gray-color;
     opacity: 0.6;
+
+    &:first-child {
+      display: flex;
+      align-items: center;
+    }
+
     &:last-child {
       margin-left: 0;
-      width: 20px;
-      height: 20px;
     }
+
     &:hover {
       opacity: 0.8;
     }
@@ -105,125 +113,115 @@ header {
 }
 
 .search_icon {
-  display: flex;
   width: 64px;
   height: 100%;
+  display: flex;
   justify-content: center;
   align-items: center;
+
   &:hover {
-    background-color: #f0f0f0;
-  }
-  & img {
-    width: 24px;
+    background-color: colors.$header-modal-button-hover-color;
   }
 }
 
-.voiceBtn {
+.voice_btn {
   display: flex;
   justify-content: center;
   align-items: center;
   width: 40px;
   height: 40px;
-  background-color: #f9f9f9;
+  background-color: colors.$main-bg-color;
   border-radius: 50%;
   border: none;
   margin-left: 10px;
   font-size: 1.2rem;
 }
 
-.btns {
-  @include mixins.btnWithHoverTitle;
-}
-
 .right {
-  min-width: 225px;
   display: flex;
   justify-content: flex-end;
   align-items: center;
+  min-width: 225px;
 
   & .right_btns {
     display: flex;
     align-items: center;
-    padding: 8px;
-    border: none;
-    background-color: white;
-    cursor: pointer;
+    padding: sizes.$small-space;
   }
 
   & .login_btn {
     justify-content: space-evenly;
     width: 99.5px;
-    margin-left: 8px;
+    margin-left: sizes.$small-space;
     padding: 5px 11px;
-    border: 1px solid colors.$linkColor;
+    border: 1px solid colors.$link-blue-color;
     border-radius: 3px;
-    color: colors.$linkColor;
-    fill: colors.$linkColor;
-    font-size: 14px;
+    color: colors.$link-blue-color;
+    fill: colors.$link-blue-color;
+    font-size: 0.9rem;
   }
 }
 
-/* thumbnail */
 .thumbnail_container {
-  margin-left: 8px;
+  margin-left: sizes.$small-space;
   padding: 0;
-  width: 32px;
-  height: 32px;
-  border: 0;
-  background-color: transparent;
-  cursor: pointer;
+  width: sizes.$small-thumbnail;
+  height: sizes.$small-thumbnail;
 
   & img {
     width: 100%;
     border-radius: 50%;
-    background-color: #eeeeee;
+    background-color: colors.$default-img-color;
   }
 }
 
-.userModal_container {
+.modal_container {
   width: 300px;
   position: absolute;
-  /* header랑 사이즈 맞춰서 sizes에 묶어놓기. */
-  top: 56px;
-  border: colors.$blackBoder;
+  top: sizes.$header-height;
+  border: sizes.$thin-black-border;
   border-radius: 2px;
   background: white;
   visibility: hidden;
   z-index: 5;
 }
 
-.modal_top {
+.modal_header {
   display: flex;
   align-items: center;
-  padding: 16px;
-  border-bottom: colors.$blackBoder;
+  padding: sizes.$medium-space;
+  border-bottom: sizes.$thin-black-border;
 
-  & > img {
-    margin-right: 16px;
-    width: 40px;
-    height: 40px;
+  & img {
+    margin-right: sizes.$medium-space;
+    width: sizes.$medium-thumbnail;
+    height: sizes.$medium-thumbnail;
     border-radius: 50%;
   }
 
-  & > span {
+  & span {
     font-weight: bold;
   }
 }
 
-.modal_content {
+.modal_button {
   display: flex;
   align-items: center;
-  padding: 0 16px;
-  height: 48px;
-  cursor: pointer;
+  padding: 0 sizes.$medium-space;
+  width: 100%;
+  height: sizes.$large-thumbnail;
 
   &:hover {
-    background: #f2f2f2;
+    background: colors.$header-modal-button-hover-color;
   }
 
   & > .modal_icons {
-    width: 24px;
-    height: 24px;
-    margin-right: 16px;
+    width: sizes.$icon-medium-size;
+    height: sizes.$icon-medium-size;
+    margin-right: sizes.$medium-space;
   }
+}
+
+.btns {
+  @include mixins.btn-hover-title;
 }

@@ -1,0 +1,25 @@
+@use './common/sizes';
+
+.container {
+  display: flex;
+  flex-direction: column;
+  min-width: sizes.$playlist-video-min-width;
+  max-width: sizes.$playlist-video-max-width;
+
+  & .info_container {
+    display: flex;
+    padding: 10px 0px;
+    width: 100%;
+
+    & .channel_thumbnail {
+      margin-right: sizes.$playlist-info-default-space;
+    }
+
+    & .info {
+      display: flex;
+      flex-grow: 1;
+      flex-direction: column;
+      justify-content: space-around;
+    }
+  }
+}

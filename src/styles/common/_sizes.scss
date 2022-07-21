@@ -1,0 +1,49 @@
+@use 'colors';
+
+// common
+$thin-black-border: 1px solid rgba(0, 0, 0, 0.1);
+$body-min-width: 280px;
+$default-content-width: 95%;
+
+// margin & padding spaces
+$small-space: 8px;
+$medium-space: 16px;
+$large-space: 24px;
+
+// thumbnail
+$small-thumbnail: 32px;
+$medium-thumbnail: 36px;
+$large-thumbnail: 48px;
+
+// icon
+$icon-small-size: 20px;
+$icon-medium-size: 24px;
+
+// header
+$header-height: 56px;
+
+// playlist
+$grid-gap: 16px;
+
+$playlist-video-margin: 0 8px 8px 8px;
+$playlist-video-min-width: 240px;
+$playlist-video-max-width: 360px;
+$playlist-video-width: 168px;
+$playlist-video-height: 94px;
+$playlist-video-min-width: 300px;
+$playlist-video-max-width: 400px;
+
+$playlist-info-default-space: 12px;
+$playlist-variable-width: 1016px;
+
+// player
+$player-min-width: 640px;
+$player-min-height: 360px;
+$player-max-width: 1280px;
+$player-max-height: 720px;
+
+// loading spinner
+$spinner-outer-size: 60px;
+$spinner-inner-size: 30px;
+$spinner-border: 3px solid colors.$spinner-border-color;
+

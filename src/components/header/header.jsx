@@ -60,7 +60,7 @@ const Header = memo(({ initVideo, onSearchVideo, onLogIn, onLogOut, userData }) 
                 </div>
                 <div className={styles.center}>
                     <div className={styles.searchbar_container}>
-                        <div className={styles.search_bar}>
+                        <div className={styles.searchbar}>
                             <form className={styles.search_form} onSubmit={onSearch}>
                                 <input ref={inputRef} placeholder='검색' type="text" onKeyUp={handleInput}/>
                             </form>
@@ -84,7 +84,7 @@ const Header = memo(({ initVideo, onSearchVideo, onLogIn, onLogOut, userData }) 
                         />
                     </div>
                     <IconButton 
-                        className={`${styles.voiceBtn} ${styles.btns}`} 
+                        className={`${styles.voice_btn} ${styles.btns}`} 
                         titleName="음성으로 검색"
                         def={VOICE_MARK}
                     />
@@ -116,8 +116,8 @@ const Header = memo(({ initVideo, onSearchVideo, onLogIn, onLogOut, userData }) 
                                     alt="thumbnail" 
                                 />
                             </button>
-                            <div ref={modalRef} className={styles.userModal_container}>
-                                <div className={styles.modal_top}>
+                            <div ref={modalRef} className={styles.modal_container}>
+                                <div className={styles.modal_header}>
                                     <img 
                                         src={userData.url} 
                                         onError={({ currentTarget }) => handleThumbnailError(currentTarget, defaultThubmnail)}
@@ -125,13 +125,13 @@ const Header = memo(({ initVideo, onSearchVideo, onLogIn, onLogOut, userData }) 
                                     />
                                     <span>{userData.name}</span>
                                 </div>
-                                <div className={styles.modal_bottom}>
-                                    <div className={styles.modal_content} onClick={onLogOut}>
+                                <div className={styles.modal_body}>
+                                    <button className={styles.modal_button} onClick={onLogOut}>
                                         <div className={styles.modal_icons}>
                                             <Icon def={EXIT_MARK}/>
                                         </div>
                                         <span>로그아웃</span>
-                                    </div>
+                                    </button>
                                 </div>
                             </div>
                         </>

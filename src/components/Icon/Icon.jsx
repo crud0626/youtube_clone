@@ -2,9 +2,11 @@ import React, { memo } from 'react';
 
 const Icon = memo(({ def, w=24, h=24 }) => {
     return (
-        <svg width={w} height={h}>
-            <path d={def}></path>
-        </svg>
+        <div style={{width: w, height: h}} className="icon_container">
+            <svg>
+                <path d={def}></path>
+            </svg>
+        </div>
     );
 });
 

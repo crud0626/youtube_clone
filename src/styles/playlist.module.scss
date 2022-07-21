@@ -1,91 +1,22 @@
-@use "./common/_colors";
+@use './common/colors';
 
 .container {
-  display: flex;
-  margin: 0px 10px 10px 10px;
-  cursor: pointer;
-
-  & .thumbnail_container {
-    position: relative;
-    margin-right: 8px;
-
-    & .thumbnail {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    & .duration {
-      position: absolute;
-      right: 5px;
-      bottom: 8px;
-      background-color: rgba(0, 0, 0, 0.8);
-      color: white;
-      font-size: 12px;
-      padding: 3px 4px;
-      border-radius: 3px;
-    }
-  }
-
-  & .info_container {
-    width: 100%;
-    height: 100%;
-    padding: 10px 0;
+    margin: 0;
+    padding: 0;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    list-style: none;
 
-    & .title {
-      display: -webkit-box;
-      margin: 0 0 6px 0;
-      font-size: 1rem;
-      max-width: 850px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
+    & .video_container {
+        margin: 0;
+        padding: 0;
     }
-
-    & .info {
-      font-size: 0.9rem;
-      color: colors.$grayLight;
-
-      & .sub_info {
-        font-size: 0.8rem;
-      }
-    }
-  }
 }
 
-.selectedVideo {
-  & .video_info_container {
-    padding: 0 0 0 10px;
-  }
-
-  & .thumbnail_container {
-    & > img {
-      width: 168px;
-      height: 100%;
-    }
-  }
-}
-
-.notSelectedVideo {
-  flex-direction: column;
-  flex: 1 23%;
-  min-width: 240px;
-
-  & > img {
+.more_btn {
     width: 100%;
-  }
-
-  & .thumbnail_container {
-    width: 100%;
-  }
-}
-
-@media screen and (max-width: 1080px) {
-  .selectedVideo {
-    margin: 0 0 10px 0;
-  }
+    border: 1px solid colors.$button-blue-color;
+    border-radius: 2px;
+    padding: 9px 15px;
+    color: colors.$button-blue-color;
 }

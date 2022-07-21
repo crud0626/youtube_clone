@@ -5,14 +5,14 @@ import styles from 'styles/videoSkeleton.module.scss';
 
 const VideoSkeleton = ({index}) => {
     return(
-        <li key={index} className={styles.item}>
-            <div className={styles.thumbnail}>
-                <Skeleton className={styles.video_thumbnail} width={"100%"} height={180} />
+        <li key={index} className={styles.container}>
+            <div className={styles.video_thumbnail_container}>
+                <Skeleton className={styles.video_thumbnail} height={180} />
             </div>
             <div className={styles.info_container}>
-                <Skeleton className={styles.thumbnail} circle={true} width={36} height={36} />
+                <Skeleton className={styles.channel_thumbnail} circle={true} width={36} height={36} />
                 <div className={styles.info}>
-                    <Skeleton width={"100%"} height={30} />
+                    <Skeleton height={30} />
                     <Skeleton width={200} height={25} />
                 </div>
             </div>

@@ -1,0 +1,19 @@
+@use './common/sizes';
+
+.section {
+  padding: 0 sizes.$small-space;
+
+  & .videobox_container {
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(sizes.$playlist-video-min-width, auto));
+    gap: sizes.$grid-gap;
+    justify-content: stretch;
+    list-style: none;
+  }
+}
+
+.no_more_videos {
+  text-align: center;
+}

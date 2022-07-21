@@ -135,7 +135,7 @@ const App = ({ youtubeAPI, calculator, authService }) => {
           onLogOut={onLogOut}
           userData={userData}
         />
-        <section>
+        <main>
             <Routes>
               <Route 
                   path='/watch'
@@ -178,7 +178,7 @@ const App = ({ youtubeAPI, calculator, authService }) => {
                 }
               />
             </Routes>
-        </section>
+        </main>
         </>
     );
 };

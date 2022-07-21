@@ -22,8 +22,8 @@ const PlayList = ({ videos, onClickVideo, calculator, getMoreVideo, isInSection 
     const [lastVideoRef, setObserver] = useScrollObserver(observerCallback);
 
     return (
-        <div>
-            <ul className={styles.container}>
+        <div className={styles.container}>
+            <ul className={styles.video_container}>
                 {videos.items.map((item, index) => {
                     const renderProps = {
                             "key": nanoid(),
@@ -44,7 +44,7 @@ const PlayList = ({ videos, onClickVideo, calculator, getMoreVideo, isInSection 
             </ul>
             { 
                 isInSection && !isLoading &&
-                <button className={styles.moreBtn} onClick={getVideo}>
+                <button className={styles.more_btn} onClick={getVideo}>
                     <span>더보기</span>
                 </button>
             }

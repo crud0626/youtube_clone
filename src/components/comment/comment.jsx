@@ -26,19 +26,19 @@ const Comment = memo(({ commentData, getTimeDiff, lastCommentRef, setObserver })
                 />
             </a>
             <div className={styles.info_container}>
-                <div className={styles.info_top}>
-                    <a href={snippet.authorChannelUrl} target="_blank" rel='noreferrer' className={styles.author_name}>{snippet.authorDisplayName}</a>
-                    <span className={styles.comment_date}>{getTimeDiff(commentData.snippet.publishedAt)}</span>
+                <div className={styles.info_header}>
+                    <a href={snippet.authorChannelUrl} target="_blank" rel='noreferrer' className={styles.name}>{snippet.authorDisplayName}</a>
+                    <span className={styles.publish_data}>{getTimeDiff(commentData.snippet.publishedAt)}</span>
                 </div>
-                <div className={styles.info_bottom}>
-                    <div ref={spanRef} className={`${styles.span_container} shortcut`}>
+                <div className={styles.info_body}>
+                    <div ref={spanRef} className={`${styles.content_container} shortcut`}>
                         <span dangerouslySetInnerHTML={commentText}></span>
                     </div>
                     {
                         isTextOver && 
                         <button 
                             ref={toggleRef} 
-                            className="toggle" 
+                            className={styles.toggle_btn}
                             onClick={() => handleToggle(spanRef.current, toggleRef.current)}
                         >
                             자세히 보기

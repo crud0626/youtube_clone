@@ -1,4 +1,5 @@
-@import-normalize;
+@use './styles/common/colors';
+@use './styles/common/sizes';
 
 * {
   box-sizing: border-box;
@@ -11,28 +12,35 @@ body {
 }
 
 body {
-  min-width: 700px;
+  min-width: sizes.$body-min-width;
   font-family: "Roboto", Arial, sans-serif;
+
+  & main {
+    min-height: calc(100vh - sizes.$header-height);
+    padding-top: sizes.$large-space;
+    background-color: colors.$main-bg-color;
+    overflow-x: hidden;
+
+    & section {
+      padding: 0 sizes.$small-space;
+    
+      &.section-select-video {
+        display: flex;
+        padding: 0 sizes.$large-space;
+      }
+    }
+  }
 }
 
-div.separateLine {
-  border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+svg {
   width: 100%;
-  height: 1px;
-  margin: 8px 0 16px 0;
+  height: 100%;
 }
 
-.toggle {
-  margin-top: 4px;
-  padding: 0;
-  border: none;
+button {
   background-color: transparent;
-  color: rgb(96, 96, 96);
+  border: 0;
   cursor: pointer;
-}
-
-.toggle:hover {
-  text-decoration: underline;
 }
 
 .input_hidden {
@@ -48,5 +56,5 @@ div.separateLine {
 }
 
 .expander {
-  -webkit-line-clamp: none;
+  -webkit-line-clamp: unset;
 }

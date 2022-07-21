@@ -1,56 +1,53 @@
-@use "./common/_colors";
-@use "./common/_mixins";
+@use './common/colors';
+@use './common/mixins';
+@use './common/sizes';
 
 .container {
   flex: 1 1 65%;
-  padding-right: 8px;
-}
+  margin-right: sizes.$large-space;
 
-.player_container {
-  position: relative;
-  width: 100%;
-  padding-bottom: 56.25%;
-  min-width: 640px;
-  min-height: 360px;
-  max-width: 1280px;
-  max-height: 720px;
-
-  & > .player {
-    position: absolute;
+  & .player_container {
+    position: relative;
     width: 100%;
-    height: 100%;
+    padding-bottom: 56.25%;
+    min-width: sizes.$player-min-width;
+    min-height: sizes.$player-min-height;
+    max-width: sizes.$player-max-width;
+    max-height: sizes.$player-max-height;
+  
+    & > .player {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+    }
   }
 }
 
 .video_info_container {
-  @include mixins.separateLine;
+  @include mixins.separate-line;
 
   & .video_info {
     display: flex;
     height: 40px;
     justify-content: space-between;
     align-items: center;
-    color: colors.$grayLight;
+    color: colors.$light-gray-color;
     font-size: 0.9rem;
   
-    & .video_info_right {
+    & .video_info_button_container {
       display: flex;
       height: 100%;
       align-items: center;
       color: black;
   
-      & .video_info_item {
+      & .video_info_button {
+        margin-right: 10px;
         display: flex;
         align-items: center;
         height: 100%;
-        margin-right: 10px;
-        cursor: pointer;
-  
-        & > button {
-          height: 100%;
-          border: none;
-          background-color: transparent;
-          cursor: pointer;
+
+        & > div {
+          margin: 6px;
         }
       }
     }
@@ -58,23 +55,23 @@
 }
 
 .channel_info_container {
-  @include mixins.separateLine;
+  @include mixins.separate-line;
   display: flex;
 
-  & .channel_info_left {
-    width: 48px;
-    height: 48px;
+  & .channel_thumbnail {
+    width: sizes.$large-thumbnail;
+    height: sizes.$large-thumbnail;
 
     & > img {
       width: 100%;
       height: 100%;
       border-radius: 50%;
-      background-color: #eeeeee;
+      background-color: colors.$default-img-color;
     }
   }
 
-  & .channel_info_right {
-    padding-left: 16px;
+  & .channel_info {
+    padding-left: sizes.$medium-space;
 
     & > a {
       color: black;
@@ -86,7 +83,7 @@
       display: block;
       margin-top: 2px;
       font-size: 0.8rem;
-      color: colors.$grayLight;
+      color: colors.$light-gray-color;
     }
   }
 }
@@ -94,28 +91,20 @@
 .desc_container {
   padding-bottom: 20px;
 
-  & .video_desc {
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
+  & .desc {
+    @include mixins.filp-content;
+    margin-top: sizes.$medium-space;
     max-width: 656px;
-    margin-top: 14px;
-    font-size: 14px;
-    overflow: hidden;
+    font-size: 0.9rem;
+    white-space: pre-wrap;
   }
 
   & .toggle_btn {
-    margin-top: 8px;
-    padding: 0;
-    border: none;
-    color: colors.$grayLight;
-    background-color: transparent;
-    font-size: 12px;
-    cursor: pointer;
+    @include mixins.flip-toggle-button;
+    font-size: 0.75rem;
   }
 }
 
-/* buttons */
-
 .btns {
-  @include mixins.btnWithHoverTitle;
+  @include mixins.btn-hover-title;
 }
