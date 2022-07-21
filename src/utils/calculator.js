@@ -1,5 +1,6 @@
 export default class Calculator {
     convertCount(num) {
+        num = +num;
         switch (true) {
             case 1000 < num && num < 10000:
                 return num < 2000 
@@ -69,8 +70,8 @@ export default class Calculator {
     
         if (duration.split("S").length === 2) {
             seconds = duration.split("S")[0];
-            seconds = seconds.padStart(2, "0");
         }
+        seconds = seconds.padStart(2, "0");
     
         return `${hours}${minutes}${seconds}`;
     }

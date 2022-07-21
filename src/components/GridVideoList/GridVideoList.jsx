@@ -11,9 +11,11 @@ const GridVideoList = ({ videos, onClickVideo, calculator, getMoreVideo, isVideo
     const skeletonCount = new Array(8).fill({undefined});
     
     const observerCallback = async () => {
-        setIsLoading(true);
-        await getMoreVideo()
-        .then(() => setIsLoading(false));
+        if (videos.nextPageToken) {
+            setIsLoading(true);
+            await getMoreVideo()
+            .then(() => setIsLoading(false));
+        }
     };
     const [lastVideoRef, setObserver] = useScrollObserver(observerCallback);
 
