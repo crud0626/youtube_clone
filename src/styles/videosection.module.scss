@@ -24,7 +24,7 @@
 }
 
 .video_info_container {
-  @include mixins.separate-line;
+  @include mixins.separate-line(sizes.$medium-space);
 
   & .video_info {
     display: flex;
@@ -55,7 +55,7 @@
 }
 
 .channel_info_container {
-  @include mixins.separate-line;
+  @include mixins.separate-line(sizes.$large-space);
   display: flex;
 
   & .channel_thumbnail {

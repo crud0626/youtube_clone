@@ -9,12 +9,12 @@ header {
 }
 
 .container {
-  margin: auto;
-  padding: 0;
+  margin: 0;
+  padding: sizes.$default-section-padding;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: sizes.$default-content-width;
+  width: 100%;
   height: 100%;
 }
 

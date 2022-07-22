@@ -22,12 +22,11 @@ body {
     overflow-x: hidden;
 
     & section {
-      margin: auto;
-      padding: 0 sizes.$small-space;
+      margin: 0;
+      padding: sizes.$default-section-padding;
     
       &.section_select_video {
         display: flex;
-        padding: 0 sizes.$large-space;
         max-width: calc(sizes.$player-max-width + sizes.$large-space + sizes.$playlist-video-max-width + sizes.$small-space * 2);
       }
     }
