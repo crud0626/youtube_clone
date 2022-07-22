@@ -20,7 +20,7 @@ const GridVideoList = ({ videos, onClickVideo, calculator, getMoreVideo, isVideo
     const [lastVideoRef, setObserver] = useScrollObserver(observerCallback);
 
     return (
-        <section className={styles.section}>
+        <section>
             <ul className={styles.videobox_container}>
                 {videos.items.map((item, index) => {
                     if (isVideoLoading && !item) {
