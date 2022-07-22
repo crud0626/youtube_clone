@@ -26,20 +26,21 @@ export default class YoutubeAPI {
         if (token) params.pageToken = token;
         
         const { data } = await this.youtube.get('videos', { params });
-        const videosId = [];
         
-        data.items.map(item => {
-          videosId.push(item.snippet.channelId);
+        const videosId = data.items.map(item => {
           item.snippet.title = decode(item.snippet.title, 'all');
           item.snippet.description = decode(item.snippet.description, 'all');
 
-          const keys = Object.keys(item.statistics);
-          keys.map(key => item.statistics[key] = +item.statistics[key]);
-          return item;
+          return item.snippet.channelId;
         });
 
         const channelInfos = await this.getChannelInfo(videosId);
-        data.items.map((item, index) => item.channel = channelInfos[index]);
+        data.items.forEach(item => {
+          const itemID = item.snippet.channelId;
+          if (channelInfos[itemID]) {
+            item.channel = channelInfos[itemID];
+          }
+        });
 
         return data;
       } catch (error) {
@@ -77,7 +78,12 @@ export default class YoutubeAPI {
 
         const videosId = resData.items.map(item => item.snippet.channelId);
         const channelInfos = await this.getChannelInfo(videosId);
-        resData.items.forEach((item, index) => item.channel = channelInfos[index]);
+        resData.items.forEach(item => {
+          const itemID = item.snippet.channelId;
+          if (channelInfos[itemID]) {
+            item.channel = channelInfos[itemID];
+          }
+        });
         
         return resData;
       } catch (error) {
@@ -147,17 +153,18 @@ export default class YoutubeAPI {
     }
 
     async getChannelInfo(videosId) {
+      const IDs = new Set(videosId);
       try {
         const params = {
           part: 'snippet,statistics',
-          id: videosId.join(","),
-          fields: 'items(snippet(thumbnails),statistics(subscriberCount))'
+          id: Array.from(IDs).join(","),
+          fields: 'items(id, snippet(thumbnails),statistics(subscriberCount))'
         };
 
-        const resData = await this.youtube.get('channels', { params })
-        .then(({ data: { items }}) => {
-          items.map(item => +item.statistics.subscriberCount);
-          return items;
+        const resData = {};
+        const { data } = await this.youtube.get('channels', { params });
+        data.items.forEach(({ id, snippet, statistics }) => {
+          resData[id] = { snippet, statistics };
         });
 
         return resData;
