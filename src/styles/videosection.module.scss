@@ -59,6 +59,7 @@
   display: flex;
 
   & .channel_thumbnail {
+    flex-shrink: 0;
     width: sizes.$large-thumbnail;
     height: sizes.$large-thumbnail;
 
@@ -71,6 +72,7 @@
   }
 
   & .channel_info {
+    flex: 1 1;
     padding-left: sizes.$medium-space;
 
     & > a {

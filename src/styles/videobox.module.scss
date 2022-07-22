@@ -74,8 +74,6 @@
 
 :global {
   .section_select_video {
-    display: flex;
-
     & :local .container {
       margin: sizes.$playlist-video-margin;
       flex-direction: row;

@@ -22,11 +22,13 @@ body {
     overflow-x: hidden;
 
     & section {
+      margin: auto;
       padding: 0 sizes.$small-space;
     
-      &.section-select-video {
+      &.section_select_video {
         display: flex;
         padding: 0 sizes.$large-space;
+        max-width: calc(sizes.$player-max-width + sizes.$large-space + sizes.$playlist-video-max-width + sizes.$small-space * 2);
       }
     }
   }
