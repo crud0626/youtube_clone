@@ -1,6 +1,6 @@
-@use './common/colors';
-@use './common/sizes';
-@use './common/mixins';
+@use 'styles/common/colors';
+@use 'styles/common/sizes';
+@use 'styles/common/mixins';
 
 .container {
   margin: 0 0 sizes.$medium-space 0;

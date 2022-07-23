@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import styles from 'styles/gridVideoList.module.scss';
+import styles from 'styles/gridVideoList/gridVideoList.module.scss';
 import VideoBox from 'components/VideoBox/VideoBox';
 import Spinner from 'components/Spinner/Spinner';
-import VideoSkeleton from 'components/VideoSkeleton/VideoSkeleton';
+import VideoSkeleton from 'components/VideoSection/PlayList/VideoSkeleton/VideoSkeleton';
 import useScrollObserver from 'hooks/useScrollObserver';
 import { nanoid } from 'nanoid';
 

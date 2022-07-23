@@ -1,7 +1,7 @@
 import React, { memo, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Icon from 'components/Icon/Icon';
-import styles from 'styles/header.module.scss';
+import styles from 'styles/header/header.module.scss';
 import logoIMG from 'assets/logo.png';
 import keyboardIMG from 'assets/keyboard.gif';
 import defaultThubmnail from 'assets/default_thubmnail.gif';

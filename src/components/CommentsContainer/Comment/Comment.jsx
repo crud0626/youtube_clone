@@ -1,5 +1,5 @@
 import React, { memo, useEffect, useRef } from 'react';
-import styles from 'styles/comment.module.scss';
+import styles from 'styles/commentsContainer/comment/comment.module.scss';
 import useTextOver from 'hooks/useTextOver';
 import { handleThumbnailError, handleToggle } from 'utils/utils';
 import defaultThubmnail from 'assets/default_thubmnail.gif';

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import styles from 'styles/playList.module.scss'; 
+import styles from 'styles/videoSection/playList/playList.module.scss'; 
 import VideoBox from 'components/VideoBox/VideoBox';
 import Spinner from 'components/Spinner/Spinner';
 import useScrollObserver from 'hooks/useScrollObserver';

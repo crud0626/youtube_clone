@@ -1,6 +1,6 @@
-@use './common/colors';
-@use './common/mixins';
-@use './common/sizes';
+@use 'styles/common/colors';
+@use 'styles/common/mixins';
+@use 'styles/common/sizes';
 
 .container {
   flex: 1 1 65%;

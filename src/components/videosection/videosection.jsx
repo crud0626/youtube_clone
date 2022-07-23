@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
-import styles from 'styles/videoSection.module.scss';
+import styles from 'styles/videoSection/videoSection.module.scss';
 import CommentsContainer from 'components/CommentsContainer/CommentsContainer';
 import IconButton from 'components/IconButton/IconButton';
-import PlayList from 'components/PlayList/PlayList';
+import PlayList from 'components/VideoSection/PlayList/PlayList';
 import useTextOver from 'hooks/useTextOver';
 import useResizeObserver from 'hooks/useResizeObserver';
 import { handleThumbnailError, handleToggle } from 'utils/utils';

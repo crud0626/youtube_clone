@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import Comment from 'components/Comment/Comment';
+import Comment from 'components/CommentsContainer/Comment/Comment';
 import Spinner from 'components/Spinner/Spinner';
-import styles from 'styles/commentsContainer.module.scss';
+import styles from 'styles/commentsContainer/commentsContainer.module.scss';
 import useScrollObserver from 'hooks/useScrollObserver';
 import { nanoid } from 'nanoid';
 

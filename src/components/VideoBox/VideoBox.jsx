@@ -1,5 +1,5 @@
 import React, { forwardRef, useEffect } from 'react';
-import styles from 'styles/videoBox.module.scss';
+import styles from 'styles/videoBox/videoBox.module.scss';
 import { handleThumbnailError } from 'utils/utils';
 import defaultThubmnail from 'assets/default_thubmnail.gif';
 
