@@ -1,6 +1,5 @@
 import axios from 'axios';
-
-const decode = require('unescape');
+import { unescape } from 'lodash';
 
 export default class YoutubeAPI {
     constructor() {
@@ -27,8 +26,8 @@ export default class YoutubeAPI {
         const { data } = await this.youtube.get('videos', { params });
         
         const videosId = data.items.map(item => {
-          item.snippet.title = decode(item.snippet.title, 'all');
-          item.snippet.description = decode(item.snippet.description, 'all');
+          item.snippet.title = unescape(item.snippet.title);
+          item.snippet.description = unescape(item.snippet.description);
 
           return item.snippet.channelId;
         });
@@ -66,8 +65,10 @@ export default class YoutubeAPI {
 
           items.forEach(item => {
             item.id = item.id.videoId;
-            item.snippet.title = decode(item.snippet.title, 'all');
-            item.snippet.description = decode(item.snippet.description, 'all');
+            console.log(item.snippet.title);
+            item.snippet.title = unescape(item.snippet.title);
+            console.log(item.snippet.title);
+            item.snippet.description = unescape(item.snippet.description);
             return item;
           });
           return { items, nextPageToken };
@@ -133,8 +134,8 @@ export default class YoutubeAPI {
         .then(({data: { items, nextPageToken }}) => {
           items.map(item => {
             const snippet = item.snippet.topLevelComment.snippet;
-            snippet.authorDisplayName = decode(snippet.authorDisplayName, 'all');
-            snippet.textDisplay = decode(snippet.textDisplay, 'all');
+            snippet.authorDisplayName = unescape(snippet.authorDisplayName);
+            snippet.textDisplay = unescape(snippet.textDisplay);
             return item;
           })
           return { items, nextPageToken };
