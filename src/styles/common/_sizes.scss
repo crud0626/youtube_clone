@@ -32,6 +32,8 @@ $playlist-variable-width: 1016px;
 // Grid
 $grid-max-width: calc($playlist-video-min-width * 5);
 $grid-gap: 16px;
+$grid-video-box-min-width: 300px;
+$grid-video-box-min-height: 170px;
 
 // Player
 $player-min-width: 640px;

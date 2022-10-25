@@ -14,6 +14,7 @@ const VideoBox = forwardRef(({ video, onClickVideo, calculator, setObserver, isT
         <li ref={ref || null} className={styles.container} onClick={() => onClickVideo(video)}>
             <div className={styles.video_thumbnail_container}>
                 <img 
+                    loading="lazy"
                     className={styles.video_thumbnail} 
                     src={snippet.thumbnails.medium.url} 
                     draggable="false" 
@@ -27,7 +28,8 @@ const VideoBox = forwardRef(({ video, onClickVideo, calculator, setObserver, isT
                 {
                     isThumbnail &&
                     <a className={styles.channel_thumbnail}>
-                        <img 
+                        <img
+                            loading="lazy"
                             src={channel?.snippet.thumbnails.default.url || "#"} 
                             onError={({ currentTarget }) => handleThumbnailError(currentTarget, defaultThubmnail)}
                             draggable="false"
