@@ -1,12 +1,13 @@
 @use 'styles/common/sizes';
 
 .videobox_container {
-  margin: 0;
+  margin: 0 auto;
   padding: 0;
+  max-width: sizes.$grid-max-width;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(sizes.$playlist-video-min-width, auto));
   gap: sizes.$grid-gap;
-  justify-content: stretch;
+  justify-content: center;
   list-style: none;
 }
 

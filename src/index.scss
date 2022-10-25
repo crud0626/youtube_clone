@@ -22,7 +22,7 @@ body {
     overflow-x: hidden;
 
     & section {
-      margin: 0;
+      margin: 0 auto;
       padding: sizes.$default-section-padding;
     
       &.section_select_video {

@@ -1,25 +1,23 @@
 @use 'colors';
 
-// margin & padding spaces
+// Margin & Padding spaces
 $small-space: 8px;
 $medium-space: 16px;
 $large-space: 24px;
 
-// thumbnail
+// Thumbnail
 $small-thumbnail: 32px;
 $medium-thumbnail: 36px;
 $large-thumbnail: 48px;
 
-// icon
+// Icon
 $icon-small-size: 20px;
 $icon-medium-size: 24px;
 
-// header
+// Header
 $header-height: 56px;
 
-// playlist
-$grid-gap: 16px;
-
+// Playlist
 $playlist-video-margin: 0 8px 8px 8px;
 $playlist-video-min-width: 240px;
 $playlist-video-max-width: 360px;
@@ -31,18 +29,22 @@ $playlist-video-max-width: 400px;
 $playlist-info-default-space: 12px;
 $playlist-variable-width: 1016px;
 
-// player
+// Grid
+$grid-max-width: calc($playlist-video-min-width * 5);
+$grid-gap: 16px;
+
+// Player
 $player-min-width: 640px;
 $player-min-height: 360px;
 $player-max-width: 1280px;
 $player-max-height: 720px;
 
-// loading spinner
+// Loading spinner
 $spinner-outer-size: 60px;
 $spinner-inner-size: 30px;
 $spinner-border: 3px solid colors.$spinner-border-color;
 
-// common
+// Common
 $thin-black-border: 1px solid rgba(0, 0, 0, 0.1);
 $body-min-width: 280px;
 $default-section-padding: 0 $medium-space;
