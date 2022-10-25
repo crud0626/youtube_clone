@@ -38,7 +38,7 @@ const VideoBox = forwardRef(({ video, onClickVideo, calculator, setObserver, isT
                 <div className={styles.info_content}>
                     <h3 className={styles.title}>{snippet.title}</h3>
                     <div className={styles.info}>
-                        <span className={styles.channelTitle}>{snippet.channelTitle}</span>
+                        <span className={styles.channel_title}>{snippet.channelTitle}</span>
                         <div className={styles.sub_info}>
                             <span>{`조회수 ${calculator.convertCount(statistics.viewCount)}회`}</span>
                             <span>{calculator.getTimeDiff(video.snippet.publishedAt)}</span>

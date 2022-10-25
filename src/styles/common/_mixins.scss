@@ -34,8 +34,9 @@
   max-width: sizes.$playlist-video-max-width;
 }
 
-@mixin filp-content {
+@mixin filp-content($line-num) {
   display: -webkit-box;
+  -webkit-line-clamp: $line-num;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }

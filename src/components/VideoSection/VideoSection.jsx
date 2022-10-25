@@ -182,7 +182,7 @@ const VideoSection = ({ userData, comments, selectedVideo, calculator, getMoreCo
                         </a>
                         <span>{`구독자 ${calculator.convertCount(channel.statistics.subscriberCount)}명`}</span>
                         <div className={styles.desc_container}>
-                            <pre ref={descRef} className={`${styles.desc} shortcut`} dangerouslySetInnerHTML={convertToLink(snippet.description)}></pre>
+                            <pre ref={descRef} className={styles.desc} dangerouslySetInnerHTML={convertToLink(snippet.description)}></pre>
                             {
                                 isTextOver && 
                                 <button 

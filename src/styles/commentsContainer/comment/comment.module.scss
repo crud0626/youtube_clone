@@ -49,7 +49,7 @@
     font-size: 0.9rem;
   
     & > .content_container {
-      @include mixins.filp-content;
+      @include mixins.filp-content(4);
     }
     
     & .toggle_btn {

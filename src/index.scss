@@ -52,10 +52,6 @@ button {
   visibility: hidden;
 }
 
-.shortcut {
-  -webkit-line-clamp: 4;
-}
-
 .expander {
-  -webkit-line-clamp: unset;
+  -webkit-line-clamp: unset !important;
 }

@@ -31,7 +31,7 @@ const Comment = memo(({ commentData, getTimeDiff, lastCommentRef, setObserver })
                     <span className={styles.publish_data}>{getTimeDiff(commentData.snippet.publishedAt)}</span>
                 </div>
                 <div className={styles.info_body}>
-                    <div ref={spanRef} className={`${styles.content_container} shortcut`}>
+                    <div ref={spanRef} className={styles.content_container}>
                         <span dangerouslySetInnerHTML={commentText}></span>
                     </div>
                     {

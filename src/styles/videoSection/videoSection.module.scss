@@ -94,7 +94,7 @@
   padding-bottom: 20px;
 
   & .desc {
-    @include mixins.filp-content;
+    @include mixins.filp-content(4);
     margin-top: sizes.$medium-space;
     max-width: 656px;
     font-size: 0.9rem;

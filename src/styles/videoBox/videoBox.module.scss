@@ -49,16 +49,18 @@
     }
 
     & .title {
-      @include mixins.filp-content;
+      @include mixins.filp-content(2);
       margin: 0 0 6px 0;
-      text-overflow: ellipsis;
-      -webkit-line-clamp: 2;
       font-size: 1rem;
     }
 
     & .info {
       font-size: 0.9rem;
       color: colors.$light-gray-color;
+
+      & .channel_title{
+        @include mixins.filp-content(1);
+      }
 
       & .sub_info {
         font-size: 0.8rem;
