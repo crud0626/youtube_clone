@@ -4,7 +4,7 @@ import { unescape } from 'lodash';
 export default class YoutubeAPI {
     constructor() {
       this.youtube = axios.create({
-        baseURL: "https://crud0626-serverless-youtube.netlify.app/youtube/v3",
+        baseURL: process.env.REACT_APP_YOUTUBE_URL,
       });
       
       this.contentYoutube = axios.create({
@@ -65,9 +65,7 @@ export default class YoutubeAPI {
 
           items.forEach(item => {
             item.id = item.id.videoId;
-            console.log(item.snippet.title);
             item.snippet.title = unescape(item.snippet.title);
-            console.log(item.snippet.title);
             item.snippet.description = unescape(item.snippet.description);
             return item;
           });
