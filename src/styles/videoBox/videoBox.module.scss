@@ -36,20 +36,6 @@
     padding: sizes.$playlist-info-default-space 0;
     display: flex;
 
-    & .channel_thumbnail {
-      margin-right: sizes.$playlist-info-default-space;
-      width: sizes.$medium-thumbnail;
-      height: sizes.$medium-thumbnail;
-      flex-shrink: 0;
-  
-      & > img {
-        width: inherit;
-        height: inherit;
-        border-radius: 50%;
-        background-color: colors.$default-img-color;
-      }
-    }
-
     & .title {
       @include mixins.filp-content(2);
       margin: 0 0 6px 0;

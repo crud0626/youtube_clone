@@ -1,8 +1,8 @@
 import React, { memo, useEffect, useRef } from 'react';
 import styles from 'styles/commentsContainer/comment/comment.module.scss';
 import useTextOver from 'hooks/useTextOver';
-import { handleThumbnailError, handleToggle } from 'utils/utils';
-import defaultThubmnail from 'assets/default_thubmnail.gif';
+import { handleToggle } from 'utils/utils';
+import ChannelThumbnail from 'components/ChannelThumbnail/ChannelThumbnail';
 
 const Comment = memo(({ commentData, getTimeDiff, lastCommentRef, setObserver }) => {
     const toggleRef = useRef();
@@ -17,15 +17,10 @@ const Comment = memo(({ commentData, getTimeDiff, lastCommentRef, setObserver })
     
     return (
         <li ref={lastCommentRef || null} className={styles.container}>
-            <a href={snippet.authorChannelUrl} target="_blank" rel='noreferrer' className={styles.thumbnail}>
-                <img 
-                    loading='lazy'
-                    src={snippet.authorProfileImageUrl} 
-                    onError={({ currentTarget }) => handleThumbnailError(currentTarget, defaultThubmnail)}
-                    draggable="false"
-                    alt="author thumbnail" 
-                />
-            </a>
+            <ChannelThumbnail
+                thumbnailUrl={snippet.authorProfileImageUrl}
+                channelUrl={snippet.authorChannelUrl}
+            />
             <div className={styles.info_container}>
                 <div className={styles.info_header}>
                     <a href={snippet.authorChannelUrl} target="_blank" rel='noreferrer' className={styles.name}>{snippet.authorDisplayName}</a>

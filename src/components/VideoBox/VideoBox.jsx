@@ -1,7 +1,6 @@
 import React, { forwardRef, useEffect } from 'react';
 import styles from 'styles/videoBox/videoBox.module.scss';
-import { handleThumbnailError } from 'utils/utils';
-import defaultThubmnail from 'assets/default_thubmnail.gif';
+import ChannelThumbnail from 'components/ChannelThumbnail/ChannelThumbnail';
 
 const VideoBox = forwardRef(({ video, onClickVideo, calculator, setObserver, isThumbnail = true }, ref) => {
     useEffect(() => {
@@ -27,15 +26,9 @@ const VideoBox = forwardRef(({ video, onClickVideo, calculator, setObserver, isT
             <div className={styles.info_container}>
                 {
                     isThumbnail &&
-                    <a className={styles.channel_thumbnail}>
-                        <img
-                            loading="lazy"
-                            src={channel?.snippet.thumbnails.default.url || "#"} 
-                            onError={({ currentTarget }) => handleThumbnailError(currentTarget, defaultThubmnail)}
-                            draggable="false"
-                            alt="channelImage" 
-                        />
-                    </a>
+                    <ChannelThumbnail
+                        thumbnailUrl={channel.snippet.thumbnails.default.url}
+                    />
                 }
                 <div className={styles.info_content}>
                     <h3 className={styles.title}>{snippet.title}</h3>
