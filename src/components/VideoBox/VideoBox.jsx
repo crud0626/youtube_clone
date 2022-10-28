@@ -1,6 +1,7 @@
 import React, { forwardRef, useEffect } from 'react';
 import styles from 'styles/videoBox/videoBox.module.scss';
 import ChannelThumbnail from 'components/ChannelThumbnail/ChannelThumbnail';
+import VideoThumbnail from './VideoThumbnail';
 
 const VideoBox = forwardRef(({ video, onClickVideo, calculator, setObserver, isThumbnail = true }, ref) => {
     useEffect(() => {
@@ -11,18 +12,11 @@ const VideoBox = forwardRef(({ video, onClickVideo, calculator, setObserver, isT
 
     return (
         <li ref={ref || null} className={styles.container} onClick={() => onClickVideo(video)}>
-            <div className={styles.video_thumbnail_container}>
-                <img 
-                    loading="lazy"
-                    className={styles.video_thumbnail} 
-                    src={snippet.thumbnails.medium.url} 
-                    draggable="false" 
-                    alt="video thumbnail" 
-                />
-                <div className={styles.duration}>
-                    <span>{calculator.convertVideoDuration(contentDetails.duration)}</span>
-                </div>
-            </div>
+            <VideoThumbnail 
+                thumbnailUrl={snippet.thumbnails.medium.url}
+                duration={contentDetails.duration}
+                calculator={calculator}
+            />
             <div className={styles.info_container}>
                 {
                     isThumbnail &&
