@@ -1,10 +1,8 @@
 @use 'styles/common/sizes';
+@use 'styles/common/mixins';
 
 .container {
-  display: flex;
-  flex-direction: column;
-  min-width: sizes.$playlist-video-min-width;
-  max-width: sizes.$playlist-video-max-width;
+  @include mixins.grid-video-item;
 
   & .info_container {
     display: flex;

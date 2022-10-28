@@ -7,7 +7,6 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(sizes.$playlist-video-min-width, auto));
   gap: sizes.$grid-gap;
-  justify-content: center;
   list-style: none;
 }
 

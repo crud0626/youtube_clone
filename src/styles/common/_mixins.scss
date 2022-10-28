@@ -28,10 +28,12 @@
 }
 
 @mixin grid-video-item {
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
   min-width: sizes.$playlist-video-min-width;
   max-width: sizes.$playlist-video-max-width;
+  width: 100%;
 }
 
 @mixin filp-content($line-num) {
