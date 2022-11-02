@@ -8,9 +8,10 @@ import useResizeObserver from 'hooks/useResizeObserver';
 import { handleThumbnailError, handleToggle } from 'utils/utils';
 import { EMPTY_LIKE_MARK, FILL_LIKE_MARK, EMPTY_DISLIKE_MARK, FILL_DISLIKE_MARK, SHARE_MARK, SAVE_MARK } from 'constants/iconPath';
 import defaultThubmnail from 'assets/default_thubmnail.gif';
+import { useDispatch, useSelector } from 'react-redux';
+import { requestLogin } from 'store/slice/userSlice';
 
-
-const VideoSection = ({ userData, comments, selectedVideo, calculator, getMoreComment, youtube, onLogIn, ...restProps}) => {
+const VideoSection = ({ comments, selectedVideo, calculator, getMoreComment, youtube, ...restProps}) => {
     const toggleRef = useRef();
     const [isTextOver, descRef] = useTextOver();
     const isInSection = useResizeObserver(1016);
@@ -18,10 +19,8 @@ const VideoSection = ({ userData, comments, selectedVideo, calculator, getMoreCo
         like: false,
         disLike: false
     });
-  
-    useEffect(() => {
-        if (userData.uid) getCurrentRate();
-    }, [userData.uid]);
+    const dispatch = useDispatch();
+    const userData = useSelector(state => state.user);
 
     const displayVideoDate = () => {
         const date = new Date(selectedVideo.snippet.publishedAt);
@@ -35,11 +34,12 @@ const VideoSection = ({ userData, comments, selectedVideo, calculator, getMoreCo
     }
 
     const checkExpires = () => {
-        const { expires } = getToken();
-        if (Date.now() > expires) {
+        const tokenData = getToken();
+        if (Date.now() > tokenData.expires) {
             alert("토큰이 만료되어 로그인을 재시도합니다.");
-            onLogIn();
+            dispatch(requestLogin());
         }
+
         return true;
     }
 
@@ -64,7 +64,7 @@ const VideoSection = ({ userData, comments, selectedVideo, calculator, getMoreCo
             .catch(error => {
                 if (error === "Invalid Credentials") {
                     alert("토큰이 만료되어 로그인을 재시도합니다.");
-                    onLogIn();
+                    dispatch(requestLogin());
                 }
             });
         }
@@ -94,7 +94,7 @@ const VideoSection = ({ userData, comments, selectedVideo, calculator, getMoreCo
             .catch(error => {
                 if (error === "Invalid Credentials") {
                     alert("토큰이 만료되어 로그인을 재시도합니다.");
-                    onLogIn();
+                    dispatch(requestLogin());
                 }
             });
         }
@@ -104,6 +104,10 @@ const VideoSection = ({ userData, comments, selectedVideo, calculator, getMoreCo
         const convertedText = text.replace(/\bhttps?:\/\/\S+\b/g, '<a href=$& target="_blank" rel="noreferrer">$&</a>');
         return { __html: convertedText };
     }
+
+    useEffect(() => {
+        if (userData.uid) getCurrentRate();
+    }, [userData.uid]);
 
     const playListProps = { calculator, isInSection, ...restProps };
     const { channel, id, snippet, statistics } = selectedVideo;

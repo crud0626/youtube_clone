@@ -1,4 +1,4 @@
-import React, { memo, useRef } from 'react';
+import React, { memo, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Icon from 'components/Icon/Icon';
 import styles from 'styles/header/header.module.scss';
@@ -8,12 +8,15 @@ import defaultThubmnail from 'assets/default_thubmnail.gif';
 import { handleThumbnailError } from 'utils/utils';
 import { CLOSE_MARK, SEARCH_MARK, VOICE_MARK, ADD_VIDEO_MARK, GRID_MARK, BELL_MARK, EXIT_MARK, USER_MARK } from 'constants/iconPath';
 import IconButton from 'components/IconButton/IconButton';
+import { useDispatch, useSelector } from 'react-redux';
+import { requestLogin, requestLogout, LOGIN } from 'store/slice/userSlice';
+import { onAuthStateChanged } from 'firebase/auth';
+import authService from 'service/auth';
 
-const Header = memo(({ initVideo, onSearchVideo, onLogIn, onLogOut, userData }) => {
-    const navigate = useNavigate();
-    const inputRef = useRef();
-    const eraserRef = useRef();
-    const modalRef = useRef();
+const Header = memo(({ initVideo, onSearchVideo }) => {
+    const userData = useSelector(state => state.user);
+    const dispatch = useDispatch(), navigate = useNavigate();
+    const inputRef = useRef(), eraserRef = useRef(), modalRef = useRef();
 
     const handleModal = () => {
         const modal = modalRef.current;
@@ -50,6 +53,18 @@ const Header = memo(({ initVideo, onSearchVideo, onLogIn, onLogOut, userData }) 
         navigate("/");
         initVideo();
     }
+
+    useEffect(() => {
+        onAuthStateChanged(authService.auth, (user) => {
+            if (user) {
+                dispatch(LOGIN({
+                    "uid": user.uid,
+                    "name": user.displayName,
+                    "url": user.photoURL
+                }));
+            }
+        })
+    }, [dispatch]);
 
     return (
         <header>
@@ -126,7 +141,7 @@ const Header = memo(({ initVideo, onSearchVideo, onLogIn, onLogOut, userData }) 
                                     <span>{userData.name}</span>
                                 </div>
                                 <div className={styles.modal_body}>
-                                    <button className={styles.modal_button} onClick={onLogOut}>
+                                    <button className={styles.modal_button} onClick={() => dispatch(requestLogout())}>
                                         <div className={styles.modal_icons}>
                                             <Icon def={EXIT_MARK}/>
                                         </div>
@@ -141,7 +156,7 @@ const Header = memo(({ initVideo, onSearchVideo, onLogIn, onLogOut, userData }) 
                         <IconButton 
                             className={`${styles.right_btns} ${styles.login_btn}`} 
                             titleName={"login button"}
-                            onClick={onLogIn}
+                            onClick={() => dispatch(requestLogin())}
                             def={USER_MARK}
                             text={"로그인"}
                         />

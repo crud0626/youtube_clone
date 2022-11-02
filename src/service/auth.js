@@ -1,7 +1,7 @@
 import { getAuth, GoogleAuthProvider, signInWithPopup, signOut } from "firebase/auth";
 import firebaseApp from "./firebase";
 
-export default class AuthService {
+class AuthService {
     constructor() {
         this.auth = getAuth();
         this.provider = new GoogleAuthProvider();
@@ -48,9 +48,14 @@ export default class AuthService {
     async logOut() {
         try {
             await signOut(this.auth);
+            return true;
         } catch (error) {
             alert("로그아웃 도중 에러가 발생했습니다.");
             throw new Error(`로그아웃 중 에러가 발생했습니다. ${error.code}`);
         }
     }
 }
+
+const authService = new AuthService();
+
+export default authService;

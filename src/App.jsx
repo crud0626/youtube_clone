@@ -4,9 +4,10 @@ import Header from 'components/Header/Header';
 import Home from 'pages/Home';
 import Watch from 'pages/Watch';
 import Results from 'pages/Results';
-import { onAuthStateChanged } from 'firebase/auth';
+import { Provider } from 'react-redux';
+import { store } from './store/store';
 
-const App = ({ youtubeAPI, calculator, authService }) => {
+const App = ({ youtubeAPI, calculator }) => {
   const [videos, setVideos] = useState({
     items: [],
     nextPageToken: ""
@@ -18,39 +19,13 @@ const App = ({ youtubeAPI, calculator, authService }) => {
   });
   const [isSearched, setIsSearched] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
-  const [userData, setUserData] = useState({});
   const [isVideoLoading, setIsVideoLoading] = useState(false);
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    onAuthStateChanged(authService.auth, (user) => {
-      if (user) {
-        const data = {
-          "uid" : user.uid,
-          "name": user.displayName,
-          "url" : user.photoURL
-        };
-        setUserData(data);
-      }
-    });
-
     initVideo();
   }, []);
-
-  const onLogIn = async () => {
-    await authService.login()
-    .then(data => setUserData(data))
-    .catch(() => {return});
-  }
-
-  const onLogOut = async () => {
-    await authService.logOut()
-    .then(() => {
-      setUserData({});
-      alert("로그아웃 되었습니다.");
-    });
-  }
   
   const onSearchVideo = async (query) => {
     setIsVideoLoading(true);
@@ -127,13 +102,10 @@ const App = ({ youtubeAPI, calculator, authService }) => {
   }
 
     return (
-        <>
+      <Provider store={store}>
         <Header
           initVideo={initVideo} 
           onSearchVideo={onSearchVideo}
-          onLogIn={onLogIn}
-          onLogOut={onLogOut}
-          userData={userData}
         />
         <main>
             <Routes>
@@ -141,7 +113,6 @@ const App = ({ youtubeAPI, calculator, authService }) => {
                   path='/watch'
                   element={
                       <Watch 
-                        userData={userData}
                         selectedVideo={selectedVideo} 
                         comments={comments}
                         videos={videos} 
@@ -150,7 +121,6 @@ const App = ({ youtubeAPI, calculator, authService }) => {
                         onClickVideo={onClickVideo}
                         getMoreVideo={getMoreVideo}
                         youtube={youtubeAPI}
-                        onLogIn={onLogIn}
                       />
                   }
               />
@@ -179,7 +149,7 @@ const App = ({ youtubeAPI, calculator, authService }) => {
               />
             </Routes>
         </main>
-        </>
+      </Provider>
     );
 };
 
