@@ -14,8 +14,9 @@ import { onAuthStateChanged } from 'firebase/auth';
 import authService from 'service/auth';
 import { ADD_VIDEO_LIST, CHANGE_VIDEO_LOADING, RESET_SELECTED_VIDEO, RESET_VIDEO_LIST } from 'store/slice/videoSlice';
 import youtubeAPI from 'service/youtube-api';
+import { CHANGE_IS_SEARCHED, CHANGE_SEARCH_QUERY } from 'store/slice/conditionSlice';
 
-const Header = memo(({ onSearchVideo }) => {
+const Header = memo(() => {
     const userData = useSelector(state => state.user);
     const dispatch = useDispatch(), navigate = useNavigate();
     const inputRef = useRef(), eraserRef = useRef(), modalRef = useRef();
@@ -30,13 +31,27 @@ const Header = memo(({ onSearchVideo }) => {
         return;
     }
 
-    const onSearch = (event) => {
+    const onSearch = async (event) => {
         event.preventDefault();
-        
-        if (inputRef.current.value.match(/\S/)) {
-            onSearchVideo(inputRef.current.value);
+        dispatch(CHANGE_VIDEO_LOADING());
+
+        if(inputRef.current.value.match(/\S/)) {
+            const query = inputRef.current.value;
+
+            await youtubeAPI.searchVideo(query)
+            .then(({ items, nextPageToken }) => {
+                dispatch(RESET_VIDEO_LIST());
+                dispatch(ADD_VIDEO_LIST({ items, nextPageToken }));
+                dispatch(RESET_SELECTED_VIDEO());
+                dispatch(CHANGE_IS_SEARCHED());
+                dispatch(CHANGE_SEARCH_QUERY());
+                navigate(`results?search_query=${query}`);
+            })
+            .finally(() => {
+                dispatch(CHANGE_VIDEO_LOADING());
+            })
         }
-    }
+    };
 
     const handleInput = () => {
         if (inputRef.current.value.length === 0) {

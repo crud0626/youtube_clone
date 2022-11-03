@@ -8,60 +8,33 @@ import Watch from 'pages/Watch';
 import Results from 'pages/Results';
 
 const App = ({ calculator }) => {
-  const onSearchVideo = async (query) => {
-    // // setIsVideoLoading(true);
-
-    // await youtubeAPI.searchVideo(query)
-    // .then(({ items, nextPageToken }) => {
-    //   // setVideos({
-    //   //   items,
-    //   //   nextPageToken: nextPageToken ? nextPageToken : ""
-    //   // });
-    //   setSelectedVideo({});
-    //   setIsSearched(true);
-    //   setSearchQuery(query);
-    //   navigate(`results?search_query=${query}`);
-    // })
-    // .finally(() => {
-    //   // setIsVideoLoading(false);
-    // });
-  };
-
-    return (
-      <Provider store={store}>
-        <Header
-          onSearchVideo={onSearchVideo}
-        />
-        <main>
-            <Routes>
-              <Route 
-                  path='/watch'
-                  element={
-                      <Watch 
-                        calculator={calculator}
-                      />
-                  }
-              />
-              <Route 
-                  path='/'
-                  element={
-                  <Home 
-                    calculator={calculator}
-                  />
-                  }
-              />
-              <Route 
-                path='/results'
+  return (
+    <Provider store={store}>
+      <Header />
+      <main>
+          <Routes>
+            <Route 
+                path='/watch'
                 element={
-                  <Results 
-                    calculator={calculator}
-                  />
+                  <Watch calculator={calculator} />
                 }
-              />
-            </Routes>
-        </main>
-      </Provider>
-    );
+            />
+            <Route 
+                path='/'
+                element={
+                  <Home calculator={calculator} />
+                }
+            />
+            <Route 
+              path='/results'
+              element={
+                <Results calculator={calculator} />
+              }
+            />
+          </Routes>
+      </main>
+    </Provider>
+  );
 };
 
 export default App;

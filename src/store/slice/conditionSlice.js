@@ -9,8 +9,12 @@ const conditionSlice = createSlice({
     name: "condition",
     initialState,
     reducers: {
-        CHANGE_SEARCH_QUERY: (state, action) => state.searchQuery = action.payload,
-        CHANGE_IS_SEARCHED: (state, action) => !state.isSearched,
+        CHANGE_SEARCH_QUERY: (state, action) => {
+            state.searchQuery = action.payload ? action.payload : "";
+        },
+        CHANGE_IS_SEARCHED: (state) => {
+            state.isSearched = !state.isSearched;
+        },
     }
 })
 

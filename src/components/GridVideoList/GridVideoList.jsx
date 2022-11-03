@@ -11,7 +11,8 @@ import youtubeAPI from 'service/youtube-api';
 import { useNavigate } from 'react-router-dom';
 
 const GridVideoList = ({ calculator }) => {
-    const { videos, isVideoLoading } = useSelector((state) => state.video);
+    const { videos, isVideoLoading } = useSelector(state => state.video);
+    const { isSearched, searchQuery } = useSelector(state => state.condition);
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
@@ -22,10 +23,9 @@ const GridVideoList = ({ calculator }) => {
     const getMoreVideo = async () => {
         dispatch(CHANGE_VIDEO_LOADING());
 
-        // isSearched 가져온 후 다시 변경
-        // ? await youtubeAPI.searchVideo(searchQuery, videos.nextPageToken) 
-        // : await youtubeAPI.getMostPopular(videos.nextPageToken)
-        await youtubeAPI.getMostPopular(videos.nextPageToken)
+        isSearched
+        ? await youtubeAPI.searchVideo(searchQuery, videos.nextPageToken) 
+        : await youtubeAPI.getMostPopular(videos.nextPageToken)
         .then(({ items, nextPageToken }) => {
             dispatch(ADD_VIDEO_LIST({ items, nextPageToken }));
         })
@@ -35,6 +35,7 @@ const GridVideoList = ({ calculator }) => {
     
     const observerCallback = async () => {
         if (videos.nextPageToken && !isVideoLoading) {
+            console.log("Called infinite observer!");
             setIsLoading(true);
             await getMoreVideo()
             .then(() => setIsLoading(false));
@@ -70,7 +71,9 @@ const GridVideoList = ({ calculator }) => {
     };
 
     useEffect(() => {
-        initVideo();
+        if(!isVideoLoading && !videos.items.length) {
+            initVideo();
+        }
     }, []);
 
     return (

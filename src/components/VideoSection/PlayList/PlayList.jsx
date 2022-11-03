@@ -13,6 +13,7 @@ const PlayList = ({ calculator, isInSection }) => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const { videos } = useSelector(state => state.video);
+    const { isSearched, searchQuery } = useSelector(state => state.condition);
     const [isLoading, setIsLoading] = useState(false);
 
     const observerCallback = () => {
@@ -24,10 +25,9 @@ const PlayList = ({ calculator, isInSection }) => {
     const getMoreVideo = async () => {
         dispatch(CHANGE_VIDEO_LOADING());
     
-        // isSearched 가져온 후 다시 변경
-        // ? await youtubeAPI.searchVideo(searchQuery, videos.nextPageToken) 
-        // : await youtubeAPI.getMostPopular(videos.nextPageToken)
-        await youtubeAPI.getMostPopular(videos.nextPageToken)
+        isSearched
+        ? await youtubeAPI.searchVideo(searchQuery, videos.nextPageToken) 
+        : await youtubeAPI.getMostPopular(videos.nextPageToken)
         .then(({ items, nextPageToken }) => {
             dispatch(ADD_VIDEO_LIST({ items, nextPageToken }));
         })
