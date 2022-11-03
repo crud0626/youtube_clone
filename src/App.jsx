@@ -7,34 +7,32 @@ import Home from 'pages/Home';
 import Watch from 'pages/Watch';
 import Results from 'pages/Results';
 
-const App = ({ calculator }) => {
-  return (
-    <Provider store={store}>
-      <Header />
-      <main>
-          <Routes>
-            <Route 
-                path='/watch'
-                element={
-                  <Watch calculator={calculator} />
-                }
-            />
-            <Route 
-                path='/'
-                element={
-                  <Home calculator={calculator} />
-                }
-            />
-            <Route 
-              path='/results'
+const App = () => (
+  <Provider store={store}>
+    <Header />
+    <main>
+        <Routes>
+          <Route 
+              path='/watch'
               element={
-                <Results calculator={calculator} />
+                <Watch /> 
               }
-            />
-          </Routes>
-      </main>
-    </Provider>
-  );
-};
+          />
+          <Route 
+              path='/'
+              element={
+                <Home />
+              }
+          />
+          <Route 
+            path='/results'
+            element={
+              <Results />
+            }
+          />
+        </Routes>
+    </main>
+  </Provider>
+);
 
 export default App;

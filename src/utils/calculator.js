@@ -76,3 +76,7 @@ export default class Calculator {
         return `${hours}${minutes}${seconds}`;
     }
 }
+
+const calculator = new Calculator();
+
+export const {convertCount, getTimeDiff, convertVideoDuration} = calculator;

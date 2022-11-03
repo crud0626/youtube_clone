@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import styles from 'styles/videoSection/playList/playList.module.scss'; 
+import useScrollObserver from 'hooks/useScrollObserver';
 import VideoBox from 'components/VideoBox/VideoBox';
 import Spinner from 'components/Spinner/Spinner';
-import useScrollObserver from 'hooks/useScrollObserver';
-import { nanoid } from 'nanoid';
-import { useDispatch, useSelector } from 'react-redux';
 import { ADD_COMMENTS, ADD_VIDEO_LIST, CHANGE_SELECTED_VIDEO, CHANGE_VIDEO_LOADING } from 'store/slice/videoSlice';
+import { nanoid } from 'nanoid';
 import youtubeAPI from 'service/youtube-api';
-import { useNavigate } from 'react-router-dom';
 
-const PlayList = ({ calculator, isInSection }) => {
+const PlayList = ({ isInSection }) => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const { videos } = useSelector(state => state.video);
@@ -62,8 +62,7 @@ const PlayList = ({ calculator, isInSection }) => {
                             "key": nanoid(),
                             "isThumbnail": false,
                             "video": item,
-                            onClickVideo, 
-                            calculator
+                            onClickVideo
                     };
 
                     if (!isLoading && index === videos.items.length-1) {

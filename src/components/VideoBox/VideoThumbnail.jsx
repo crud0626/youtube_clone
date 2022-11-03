@@ -1,7 +1,8 @@
 import React from 'react';
 import styles from 'styles/videoBox/videoThumbnail.module.scss';
+import { convertVideoDuration } from 'utils/calculator';
 
-const VideoThumbnail = ({ thumbnailUrl, calculator, duration }) => {
+const VideoThumbnail = ({ thumbnailUrl, duration }) => {
     return (
         <div className={styles.container}>
             <img 
@@ -12,7 +13,7 @@ const VideoThumbnail = ({ thumbnailUrl, calculator, duration }) => {
                 alt="video thumbnail"
             />
             <div className={styles.duration}>
-                <span>{calculator.convertVideoDuration(duration)}</span>
+                <span>{convertVideoDuration(duration)}</span>
             </div>
         </div>
 

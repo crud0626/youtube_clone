@@ -3,17 +3,12 @@ import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import App from './App';
 import './index.scss';
-import Calculator from './utils/calculator';
-
-const calculator = new Calculator();
 
 const root = createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <BrowserRouter>
-      <App 
-        calculator = {calculator}
-      />
+      <App />
     </BrowserRouter>
   </React.StrictMode>
 );

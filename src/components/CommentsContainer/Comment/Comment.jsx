@@ -1,10 +1,11 @@
 import React, { memo, useEffect, useRef } from 'react';
 import styles from 'styles/commentsContainer/comment/comment.module.scss';
 import useTextOver from 'hooks/useTextOver';
-import { handleToggle } from 'utils/utils';
 import ChannelThumbnail from 'components/ChannelThumbnail/ChannelThumbnail';
+import { handleToggle } from 'utils/utils';
+import { getTimeDiff } from 'utils/calculator';
 
-const Comment = memo(({ commentData, getTimeDiff, lastCommentRef, setObserver }) => {
+const Comment = memo(({ commentData, lastCommentRef, setObserver }) => {
     const toggleRef = useRef();
     const [isTextOver, spanRef] = useTextOver();
 

@@ -1,18 +1,19 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import styles from 'styles/videoSection/videoSection.module.scss';
+import defaultThubmnail from 'assets/default_thubmnail.gif';
+import useTextOver from 'hooks/useTextOver';
+import useResizeObserver from 'hooks/useResizeObserver';
 import CommentsContainer from 'components/CommentsContainer/CommentsContainer';
 import IconButton from 'components/IconButton/IconButton';
 import PlayList from 'components/VideoSection/PlayList/PlayList';
-import useTextOver from 'hooks/useTextOver';
-import useResizeObserver from 'hooks/useResizeObserver';
-import { handleThumbnailError, handleToggle } from 'utils/utils';
 import { EMPTY_LIKE_MARK, FILL_LIKE_MARK, EMPTY_DISLIKE_MARK, FILL_DISLIKE_MARK, SHARE_MARK, SAVE_MARK } from 'constants/iconPath';
-import defaultThubmnail from 'assets/default_thubmnail.gif';
-import { useDispatch, useSelector } from 'react-redux';
 import { requestLogin } from 'store/slice/userSlice';
 import youtubeAPI from 'service/youtube-api';
+import { handleThumbnailError, handleToggle } from 'utils/utils';
+import { convertCount } from 'utils/calculator';
 
-const VideoSection = ({ calculator, ...restProps}) => {
+const VideoSection = () => {
     const { selectedVideo } = useSelector(state => state.video);
     const userData = useSelector(state => state.user);
     const toggleRef = useRef();
@@ -111,7 +112,6 @@ const VideoSection = ({ calculator, ...restProps}) => {
         if (userData.uid) getCurrentRate();
     }, [userData.uid]);
 
-    const playListProps = { calculator, isInSection, ...restProps };
     const { channel, id, snippet, statistics } = selectedVideo;
 
     return (
@@ -143,7 +143,7 @@ const VideoSection = ({ calculator, ...restProps}) => {
                                 dataFunc={rating.like ? "none" : "like"} 
                                 onClick={sendRating}
                                 def={rating.like ? FILL_LIKE_MARK : EMPTY_LIKE_MARK}
-                                text={calculator.convertCount(statistics.likeCount)}
+                                text={convertCount(statistics.likeCount)}
                             />
                             <IconButton 
                                 className={`${styles.video_info_button} ${styles.btns}`}
@@ -186,7 +186,7 @@ const VideoSection = ({ calculator, ...restProps}) => {
                         >
                             {snippet.channelTitle}
                         </a>
-                        <span>{`구독자 ${calculator.convertCount(channel.statistics.subscriberCount)}명`}</span>
+                        <span>{`구독자 ${convertCount(channel.statistics.subscriberCount)}명`}</span>
                         <div className={styles.desc_container}>
                             <pre ref={descRef} className={styles.desc} dangerouslySetInnerHTML={convertToLink(snippet.description)}></pre>
                             {
@@ -204,13 +204,12 @@ const VideoSection = ({ calculator, ...restProps}) => {
                     </div>
                     
                 </div>
-                { isInSection && <PlayList { ...playListProps } /> }
+                { isInSection && <PlayList isInSection={isInSection} /> }
                 <CommentsContainer 
-                    commentCount={statistics.commentCount} // ??
-                    getTimeDiff={calculator.getTimeDiff}
+                    commentCount={statistics.commentCount}
                 />
             </div>
-            { !isInSection && <PlayList { ...playListProps } /> }
+            { !isInSection && <PlayList isInSection={isInSection} /> }
         </section>
     );
 };

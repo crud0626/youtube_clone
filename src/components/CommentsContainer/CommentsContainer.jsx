@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import useScrollObserver from 'hooks/useScrollObserver';
+import styles from 'styles/commentsContainer/commentsContainer.module.scss';
 import Comment from 'components/CommentsContainer/Comment/Comment';
 import Spinner from 'components/Spinner/Spinner';
-import styles from 'styles/commentsContainer/commentsContainer.module.scss';
-import useScrollObserver from 'hooks/useScrollObserver';
 import { nanoid } from 'nanoid';
-import { useDispatch, useSelector } from 'react-redux';
 import youtubeAPI from 'service/youtube-api';
 import { ADD_COMMENTS } from 'store/slice/videoSlice';
 
-const CommentsContainer = ({ commentCount, getTimeDiff }) => {
+const CommentsContainer = ({ commentCount }) => {
     const { comments, selectedVideo } = useSelector(state => state.video);
     const dispatch = useDispatch();
     const [isLoading, setIsLoading] = useState(false);
@@ -48,7 +48,6 @@ const CommentsContainer = ({ commentCount, getTimeDiff }) => {
                             const renderProp = {
                                 "key": nanoid(),
                                 "commentData" : item.snippet.topLevelComment,
-                                "getTimeDiff" : getTimeDiff
                             };
 
                             if (!isLoading && index === items.length - 1 && nextPageToken) {

@@ -2,8 +2,9 @@ import React, { forwardRef, useEffect } from 'react';
 import styles from 'styles/videoBox/videoBox.module.scss';
 import ChannelThumbnail from 'components/ChannelThumbnail/ChannelThumbnail';
 import VideoThumbnail from './VideoThumbnail';
+import { convertCount, getTimeDiff } from 'utils/calculator';
 
-const VideoBox = forwardRef(({ video, onClickVideo, calculator, setObserver, isThumbnail = true }, ref) => {
+const VideoBox = forwardRef(({ video, onClickVideo, setObserver, isThumbnail = true }, ref) => {
     useEffect(() => {
         if (ref) setObserver();
     }, []);
@@ -15,7 +16,6 @@ const VideoBox = forwardRef(({ video, onClickVideo, calculator, setObserver, isT
             <VideoThumbnail 
                 thumbnailUrl={snippet.thumbnails.medium.url}
                 duration={contentDetails.duration}
-                calculator={calculator}
             />
             <div className={styles.info_container}>
                 {
@@ -29,8 +29,8 @@ const VideoBox = forwardRef(({ video, onClickVideo, calculator, setObserver, isT
                     <div className={styles.info}>
                         <span className={styles.channel_title}>{snippet.channelTitle}</span>
                         <div className={styles.sub_info}>
-                            <span>{`조회수 ${calculator.convertCount(statistics.viewCount)}회`}</span>
-                            <span>{calculator.getTimeDiff(video.snippet.publishedAt)}</span>
+                            <span>{`조회수 ${convertCount(statistics.viewCount)}회`}</span>
+                            <span>{getTimeDiff(video.snippet.publishedAt)}</span>
                         </div>
                     </div>
                 </div>
