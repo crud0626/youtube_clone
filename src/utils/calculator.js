@@ -22,31 +22,41 @@ export default class Calculator {
     }
 
     getTimeDiff(publishedDate) {
-        publishedDate = Date.parse(publishedDate);
-        const now = Date.now();
-        const minutesDiff = parseInt((now - publishedDate) / 60000);
+        const publishTime = Date.parse(publishedDate);
+        const currentTime = Date.now();
+
+        const secondsDiff = parseInt((currentTime - publishTime) / 1000);
 
         switch (true) {
-            case 0 < minutesDiff && minutesDiff < 60:
-                return `${minutesDiff}분 전`;
+            case 0 <= secondsDiff && secondsDiff < 60:
+                return `${secondsDiff}초 전`;
+
+            case secondsDiff < 3600:
+                const secondToMinute = 60;
+                return `${parseInt(secondsDiff / secondToMinute)}분 전`;
                 
-            case 59 < minutesDiff && minutesDiff < 1440:
-                return `${parseInt(minutesDiff / 60)}시간 전`;
+            case secondsDiff < 86400:
+                const secondToHour = 3600;
+                return `${parseInt(secondsDiff / secondToHour)}시간 전`;
                 
-            case 1439 < minutesDiff && minutesDiff < 20160:
-                return `${parseInt(minutesDiff / 1440)}일 전`;
+            case secondsDiff < 604800:
+                const secondToDay = 86400;
+                return `${parseInt(secondsDiff / secondToDay)}일 전`;
                 
-            case 20159 < minutesDiff && minutesDiff < 40320:
-                return `${parseInt(minutesDiff / 10080)}주 전`;
+            case secondsDiff < 2419200:
+                const secondToWeek = 604800;
+                return `${parseInt(secondsDiff / secondToWeek)}주 전`;
                 
-            case 40319 < minutesDiff && minutesDiff < 525600:
-                return `${parseInt(minutesDiff / 40320)}달 전`;
+            case secondsDiff < 29030400:
+                const secondToMonth = 2419200;
+                return `${parseInt(secondsDiff / secondToMonth)}달 전`;
                 
-            case 525599 < minutesDiff:
-                return `${parseInt(minutesDiff / 525600)}년 전`;
-                
+            case 29030400 < secondsDiff:
+                const secondToYear = 29030400;
+                return `${parseInt(secondsDiff / secondToYear)}년 전`;
+
             default:
-                console.error(`날짜 값이 잘못되었습니다. ${minutesDiff}`);
+                console.error(`날짜 값이 잘못되었습니다. ${publishTime}`);
                 return null;
         }
     }
