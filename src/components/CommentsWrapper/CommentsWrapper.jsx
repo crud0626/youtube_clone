@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import useScrollObserver from 'hooks/useScrollObserver';
-import styles from 'styles/commentsContainer/commentsContainer.module.scss';
-import Comment from 'components/CommentsContainer/Comment/Comment';
+import styles from 'styles/commentsWrapper/commentsWrapper.module.scss';
+import CommentBox from 'components/CommentsWrapper/CommentBox/CommentBox';
 import Spinner from 'components/Spinner/Spinner';
 import { nanoid } from 'nanoid';
 import youtubeAPI from 'service/youtube-api';
 import { ADD_COMMENTS } from 'store/slice/videoSlice';
 
-const CommentsContainer = () => {
+const CommentsWrapper = () => {
     const dispatch = useDispatch();
     const { comments, selectedVideo } = useSelector(state => state.video);
     const [isLoading, setIsLoading] = useState(false);
@@ -57,7 +57,7 @@ const CommentsContainer = () => {
                                 renderProp.setObserver = setObserver;
                             }
 
-                            return <Comment {...renderProp} />;
+                            return <CommentBox {...renderProp} />;
                         })}
                         {isLoading && nextPageToken && <Spinner />}
                     </ul>
@@ -67,4 +67,4 @@ const CommentsContainer = () => {
     );
 };
 
-export default CommentsContainer;
+export default CommentsWrapper;
