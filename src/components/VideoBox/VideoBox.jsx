@@ -1,10 +1,28 @@
 import React, { forwardRef, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import styles from 'styles/videoBox/videoBox.module.scss';
 import ChannelThumbnail from 'components/ChannelThumbnail/ChannelThumbnail';
 import VideoThumbnail from './VideoThumbnail';
 import { convertCount, getTimeDiff } from 'utils/calculator';
+import youtubeAPI from 'service/youtube-api';
+import { ADD_COMMENTS, CHANGE_SELECTED_VIDEO } from 'store/slice/videoSlice';
 
-const VideoBox = forwardRef(({ video, onClickVideo, setObserver, isThumbnail = true }, ref) => {
+const VideoBox = forwardRef(({ video, setObserver, isThumbnail = true }, ref) => {
+    const dispatch = useDispatch(), navigate = useNavigate();
+
+    const onClickVideo = async (video) => {
+        await youtubeAPI.getCurrentVidInfo(video)
+        .then(({ info, comments }) => {
+            dispatch(CHANGE_SELECTED_VIDEO(info));
+            dispatch(ADD_COMMENTS({
+                items: comments.items,
+                nextPageToken: comments.nextPageToken
+            }));
+            navigate(`/watch?v=${video.id}`);
+        });
+    };
+
     useEffect(() => {
         if (ref) setObserver();
     }, []);

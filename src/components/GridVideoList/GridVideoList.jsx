@@ -1,20 +1,18 @@
 import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import styles from 'styles/gridVideoList/gridVideoList.module.scss';
+import useScrollObserver from 'hooks/useScrollObserver';
 import VideoBox from 'components/VideoBox/VideoBox';
 import Spinner from 'components/Spinner/Spinner';
 import VideoSkeleton from 'components/VideoSection/PlayList/VideoSkeleton/VideoSkeleton';
-import useScrollObserver from 'hooks/useScrollObserver';
 import { nanoid } from 'nanoid';
-import { useDispatch, useSelector } from 'react-redux';
-import { ADD_COMMENTS, ADD_VIDEO_LIST, CHANGE_SELECTED_VIDEO, CHANGE_VIDEO_LOADING, RESET_SELECTED_VIDEO, RESET_VIDEO_LIST } from 'store/slice/videoSlice';
+import { ADD_VIDEO_LIST, CHANGE_VIDEO_LOADING, RESET_SELECTED_VIDEO, RESET_VIDEO_LIST } from 'store/slice/videoSlice';
 import youtubeAPI from 'service/youtube-api';
-import { useNavigate } from 'react-router-dom';
 
-const GridVideoList = ({ calculator }) => {
+const GridVideoList = () => {
     const { videos, isVideoLoading } = useSelector(state => state.video);
     const { isSearched, searchQuery } = useSelector(state => state.condition);
     const dispatch = useDispatch();
-    const navigate = useNavigate();
 
     // 이름 변경예정, isVideoLoading이 사용중이라서
     const [isLoading, setIsLoading] = useState(false);
@@ -35,9 +33,9 @@ const GridVideoList = ({ calculator }) => {
     
     const observerCallback = async () => {
         if (videos.nextPageToken && !isVideoLoading) {
-            console.log("Called infinite observer!");
             setIsLoading(true);
             await getMoreVideo()
+            // finally로 변경
             .then(() => setIsLoading(false));
         }
     };
@@ -58,18 +56,6 @@ const GridVideoList = ({ calculator }) => {
         .finally(() => dispatch(CHANGE_VIDEO_LOADING()));
     }
 
-    const onClickVideo = async (video) => {
-        await youtubeAPI.getCurrentVidInfo(video)
-        .then(({ info, comments }) => {
-            dispatch(CHANGE_SELECTED_VIDEO(info));
-            dispatch(ADD_COMMENTS({
-                items: comments.items,
-                nextPageToken: comments.nextPageToken
-            }));
-            navigate(`/watch?v=${video.id}`);
-        });
-    };
-
     useEffect(() => {
         if(!isVideoLoading && !videos.items.length) {
             initVideo();
@@ -84,10 +70,8 @@ const GridVideoList = ({ calculator }) => {
                         return <VideoSkeleton key={nanoid()} />;
                     } else {
                         const renderProps = {
-                                "key": nanoid(),
-                                "video": item,
-                                onClickVideo, 
-                                calculator
+                            "key": nanoid(),
+                            "video": item
                         };
     
                         if (!isLoading && index === videos.items.length-1) {

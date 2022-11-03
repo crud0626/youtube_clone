@@ -1,17 +1,15 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import styles from 'styles/videoSection/playList/playList.module.scss'; 
 import useScrollObserver from 'hooks/useScrollObserver';
 import VideoBox from 'components/VideoBox/VideoBox';
 import Spinner from 'components/Spinner/Spinner';
-import { ADD_COMMENTS, ADD_VIDEO_LIST, CHANGE_SELECTED_VIDEO, CHANGE_VIDEO_LOADING } from 'store/slice/videoSlice';
+import { ADD_VIDEO_LIST, CHANGE_VIDEO_LOADING } from 'store/slice/videoSlice';
 import { nanoid } from 'nanoid';
 import youtubeAPI from 'service/youtube-api';
 
 const PlayList = ({ isInSection }) => {
     const dispatch = useDispatch();
-    const navigate = useNavigate();
     const { videos } = useSelector(state => state.video);
     const { isSearched, searchQuery } = useSelector(state => state.condition);
     const [isLoading, setIsLoading] = useState(false);
@@ -40,18 +38,6 @@ const PlayList = ({ isInSection }) => {
         .then(() => setIsLoading(false));
     }
 
-    const onClickVideo = async (video) => {
-        await youtubeAPI.getCurrentVidInfo(video)
-        .then(({ info, comments }) => {
-            dispatch(CHANGE_SELECTED_VIDEO(info));
-            dispatch(ADD_COMMENTS({
-                items: comments.items,
-                nextPageToken: comments.nextPageToken
-            }));
-            navigate(`/watch?v=${video.id}`);
-        });
-    };
-
     const [lastVideoRef, setObserver] = useScrollObserver(observerCallback);
 
     return (
@@ -61,8 +47,7 @@ const PlayList = ({ isInSection }) => {
                     const renderProps = {
                             "key": nanoid(),
                             "isThumbnail": false,
-                            "video": item,
-                            onClickVideo
+                            "video": item
                     };
 
                     if (!isLoading && index === videos.items.length-1) {

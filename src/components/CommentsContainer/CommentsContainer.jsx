@@ -8,9 +8,9 @@ import { nanoid } from 'nanoid';
 import youtubeAPI from 'service/youtube-api';
 import { ADD_COMMENTS } from 'store/slice/videoSlice';
 
-const CommentsContainer = ({ commentCount }) => {
-    const { comments, selectedVideo } = useSelector(state => state.video);
+const CommentsContainer = () => {
     const dispatch = useDispatch();
+    const { comments, selectedVideo } = useSelector(state => state.video);
     const [isLoading, setIsLoading] = useState(false);
 
     const getMoreComment = async () => {
@@ -41,7 +41,9 @@ const CommentsContainer = ({ commentCount }) => {
                 items &&
                 <>
                     <div className={styles.header}>
-                        <h3 className={styles.count}>{`댓글 ${Number(commentCount).toLocaleString("en")} 개`}</h3>
+                        <h3 className={styles.count}>
+                            {`댓글 ${Number(selectedVideo.statistics.commentCount).toLocaleString("en")} 개`}
+                        </h3>
                     </div>
                     <ul className={styles.body}>
                         {items.map((item, index) => {

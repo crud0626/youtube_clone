@@ -14,6 +14,7 @@ import { handleThumbnailError, handleToggle } from 'utils/utils';
 import { convertCount } from 'utils/calculator';
 
 const VideoSection = () => {
+    const dispatch = useDispatch();
     const { selectedVideo } = useSelector(state => state.video);
     const userData = useSelector(state => state.user);
     const toggleRef = useRef();
@@ -23,7 +24,6 @@ const VideoSection = () => {
         like: false,
         disLike: false
     });
-    const dispatch = useDispatch();
 
     const displayVideoDate = () => {
         const date = new Date(selectedVideo.snippet.publishedAt);
@@ -205,9 +205,7 @@ const VideoSection = () => {
                     
                 </div>
                 { isInSection && <PlayList isInSection={isInSection} /> }
-                <CommentsContainer 
-                    commentCount={statistics.commentCount}
-                />
+                <CommentsContainer />
             </div>
             { !isInSection && <PlayList isInSection={isInSection} /> }
         </section>
