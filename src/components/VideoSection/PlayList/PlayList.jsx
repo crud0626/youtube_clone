@@ -4,9 +4,35 @@ import VideoBox from 'components/VideoBox/VideoBox';
 import Spinner from 'components/Spinner/Spinner';
 import useScrollObserver from 'hooks/useScrollObserver';
 import { nanoid } from 'nanoid';
+import { useDispatch, useSelector } from 'react-redux';
+import { ADD_COMMENTS, ADD_VIDEO_LIST, CHANGE_SELECTED_VIDEO, CHANGE_VIDEO_LOADING } from 'store/slice/videoSlice';
+import youtubeAPI from 'service/youtube-api';
+import { useNavigate } from 'react-router-dom';
 
-const PlayList = ({ videos, onClickVideo, calculator, getMoreVideo, isInSection }) => {
+const PlayList = ({ calculator, isInSection }) => {
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const { videos } = useSelector(state => state.video);
     const [isLoading, setIsLoading] = useState(false);
+
+    const observerCallback = () => {
+        if (window.innerWidth > 1016) {
+            getVideo();
+        }
+    };
+
+    const getMoreVideo = async () => {
+        dispatch(CHANGE_VIDEO_LOADING());
+    
+        // isSearched 가져온 후 다시 변경
+        // ? await youtubeAPI.searchVideo(searchQuery, videos.nextPageToken) 
+        // : await youtubeAPI.getMostPopular(videos.nextPageToken)
+        await youtubeAPI.getMostPopular(videos.nextPageToken)
+        .then(({ items, nextPageToken }) => {
+            dispatch(ADD_VIDEO_LIST({ items, nextPageToken }));
+        })
+        .finally(() => dispatch(CHANGE_VIDEO_LOADING()));
+    }
 
     const getVideo = async () => {
         setIsLoading(true);
@@ -14,11 +40,18 @@ const PlayList = ({ videos, onClickVideo, calculator, getMoreVideo, isInSection 
         .then(() => setIsLoading(false));
     }
 
-    const observerCallback = () => {
-        if (window.innerWidth > 1016) {
-            getVideo();
-        }
+    const onClickVideo = async (video) => {
+        await youtubeAPI.getCurrentVidInfo(video)
+        .then(({ info, comments }) => {
+            dispatch(CHANGE_SELECTED_VIDEO(info));
+            dispatch(ADD_COMMENTS({
+                items: comments.items,
+                nextPageToken: comments.nextPageToken
+            }));
+            navigate(`/watch?v=${video.id}`);
+        });
     };
+
     const [lastVideoRef, setObserver] = useScrollObserver(observerCallback);
 
     return (

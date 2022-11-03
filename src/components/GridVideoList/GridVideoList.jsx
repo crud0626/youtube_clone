@@ -1,29 +1,83 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from 'styles/gridVideoList/gridVideoList.module.scss';
 import VideoBox from 'components/VideoBox/VideoBox';
 import Spinner from 'components/Spinner/Spinner';
 import VideoSkeleton from 'components/VideoSection/PlayList/VideoSkeleton/VideoSkeleton';
 import useScrollObserver from 'hooks/useScrollObserver';
 import { nanoid } from 'nanoid';
+import { useDispatch, useSelector } from 'react-redux';
+import { ADD_COMMENTS, ADD_VIDEO_LIST, CHANGE_SELECTED_VIDEO, CHANGE_VIDEO_LOADING, RESET_SELECTED_VIDEO, RESET_VIDEO_LIST } from 'store/slice/videoSlice';
+import youtubeAPI from 'service/youtube-api';
+import { useNavigate } from 'react-router-dom';
 
-const GridVideoList = ({ videos, onClickVideo, calculator, getMoreVideo, isVideoLoading }) => {
+const GridVideoList = ({ calculator }) => {
+    const { videos, isVideoLoading } = useSelector((state) => state.video);
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
+    // 이름 변경예정, isVideoLoading이 사용중이라서
     const [isLoading, setIsLoading] = useState(false);
     const skeletonCount = new Array(8).fill({undefined});
+
+    const getMoreVideo = async () => {
+        dispatch(CHANGE_VIDEO_LOADING());
+
+        // isSearched 가져온 후 다시 변경
+        // ? await youtubeAPI.searchVideo(searchQuery, videos.nextPageToken) 
+        // : await youtubeAPI.getMostPopular(videos.nextPageToken)
+        await youtubeAPI.getMostPopular(videos.nextPageToken)
+        .then(({ items, nextPageToken }) => {
+            dispatch(ADD_VIDEO_LIST({ items, nextPageToken }));
+        })
+        .finally(() => dispatch(CHANGE_VIDEO_LOADING()));
+    }
+
     
     const observerCallback = async () => {
-        if (videos.nextPageToken) {
+        if (videos.nextPageToken && !isVideoLoading) {
             setIsLoading(true);
             await getMoreVideo()
             .then(() => setIsLoading(false));
         }
     };
+
     const [lastVideoRef, setObserver] = useScrollObserver(observerCallback);
+
+    const initVideo = async () => {
+        dispatch(CHANGE_VIDEO_LOADING());
+        const dummyVideos = { items: new Array(24).fill(""), nextPageToken: null};
+        dispatch(ADD_VIDEO_LIST(dummyVideos));
+
+        await youtubeAPI.getMostPopular()
+        .then(({ items, nextPageToken }) => {
+            dispatch(RESET_VIDEO_LIST());
+            dispatch(ADD_VIDEO_LIST({ items, nextPageToken }));
+            dispatch(RESET_SELECTED_VIDEO());
+        })
+        .finally(() => dispatch(CHANGE_VIDEO_LOADING()));
+    }
+
+    const onClickVideo = async (video) => {
+        await youtubeAPI.getCurrentVidInfo(video)
+        .then(({ info, comments }) => {
+            dispatch(CHANGE_SELECTED_VIDEO(info));
+            dispatch(ADD_COMMENTS({
+                items: comments.items,
+                nextPageToken: comments.nextPageToken
+            }));
+            navigate(`/watch?v=${video.id}`);
+        });
+    };
+
+    useEffect(() => {
+        initVideo();
+    }, []);
 
     return (
         <section>
             <ul className={styles.videobox_container}>
-                {videos.items.map((item, index) => {
-                    if (isVideoLoading && !item) {
+                {videos.items && videos.items.map((item, index) => {
+                    if (item === "") {
                         return <VideoSkeleton key={nanoid()} />;
                     } else {
                         const renderProps = {

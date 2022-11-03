@@ -11,7 +11,6 @@ const Watch = (props) => {
     useBackHome();
 
     return (
-        props.selectedVideo.id && 
         <VideoSection { ...props } />
     );
 };

@@ -4,9 +4,21 @@ import Spinner from 'components/Spinner/Spinner';
 import styles from 'styles/commentsContainer/commentsContainer.module.scss';
 import useScrollObserver from 'hooks/useScrollObserver';
 import { nanoid } from 'nanoid';
+import { useDispatch, useSelector } from 'react-redux';
+import youtubeAPI from 'service/youtube-api';
+import { ADD_COMMENTS } from 'store/slice/videoSlice';
 
-const CommentsContainer = ({ commentCount, comments, getTimeDiff, getMoreComment }) => {
+const CommentsContainer = ({ commentCount, getTimeDiff }) => {
+    const { comments, selectedVideo } = useSelector(state => state.video);
+    const dispatch = useDispatch();
     const [isLoading, setIsLoading] = useState(false);
+
+    const getMoreComment = async () => {
+        await youtubeAPI.getComment(selectedVideo.id, comments.nextPageToken)
+        .then(({ items, nextPageToken }) => {
+            dispatch(ADD_COMMENTS({ items, nextPageToken }));
+        });
+      }
 
     const observerCallback = async () => {
         setIsLoading(true);

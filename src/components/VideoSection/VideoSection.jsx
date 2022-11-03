@@ -10,8 +10,11 @@ import { EMPTY_LIKE_MARK, FILL_LIKE_MARK, EMPTY_DISLIKE_MARK, FILL_DISLIKE_MARK,
 import defaultThubmnail from 'assets/default_thubmnail.gif';
 import { useDispatch, useSelector } from 'react-redux';
 import { requestLogin } from 'store/slice/userSlice';
+import youtubeAPI from 'service/youtube-api';
 
-const VideoSection = ({ comments, selectedVideo, calculator, getMoreComment, youtube, ...restProps}) => {
+const VideoSection = ({ calculator, ...restProps}) => {
+    const { selectedVideo } = useSelector(state => state.video);
+    const userData = useSelector(state => state.user);
     const toggleRef = useRef();
     const [isTextOver, descRef] = useTextOver();
     const isInSection = useResizeObserver(1016);
@@ -20,7 +23,6 @@ const VideoSection = ({ comments, selectedVideo, calculator, getMoreComment, you
         disLike: false
     });
     const dispatch = useDispatch();
-    const userData = useSelector(state => state.user);
 
     const displayVideoDate = () => {
         const date = new Date(selectedVideo.snippet.publishedAt);
@@ -45,7 +47,7 @@ const VideoSection = ({ comments, selectedVideo, calculator, getMoreComment, you
 
     const getCurrentRate = async () => {
         if (checkExpires()) {
-            await youtube.getRating(selectedVideo.id, userData.uid)
+            await youtubeAPI.getRating(selectedVideo.id, userData.uid)
             .then((data) => {
                 const newRating = { like: false, disLike: false };
                 
@@ -73,7 +75,7 @@ const VideoSection = ({ comments, selectedVideo, calculator, getMoreComment, you
     const sendRating = async ({ currentTarget }) => {
         if (checkExpires()) {
             const rating = currentTarget.dataset.func;
-            await youtube.ratingVideo(rating, selectedVideo.id, userData.uid)
+            await youtubeAPI.ratingVideo(rating, selectedVideo.id, userData.uid)
             .then(() => {
                 const newRating = { like: false, disLike: false };
 
@@ -204,10 +206,8 @@ const VideoSection = ({ comments, selectedVideo, calculator, getMoreComment, you
                 </div>
                 { isInSection && <PlayList { ...playListProps } /> }
                 <CommentsContainer 
-                    commentCount={statistics.commentCount}
-                    comments={comments}
+                    commentCount={statistics.commentCount} // ??
                     getTimeDiff={calculator.getTimeDiff}
-                    getMoreComment={getMoreComment}
                 />
             </div>
             { !isInSection && <PlayList { ...playListProps } /> }

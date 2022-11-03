@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { unescape } from 'lodash';
 
-export default class YoutubeAPI {
+class YoutubeAPI {
     constructor() {
       this.youtube = axios.create({
         baseURL: process.env.REACT_APP_YOUTUBE_URL,
@@ -244,3 +244,7 @@ export default class YoutubeAPI {
       }
     }
 }
+
+const youtubeAPI = new YoutubeAPI();
+
+export default youtubeAPI;

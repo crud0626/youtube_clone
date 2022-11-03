@@ -12,8 +12,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { requestLogin, requestLogout, LOGIN } from 'store/slice/userSlice';
 import { onAuthStateChanged } from 'firebase/auth';
 import authService from 'service/auth';
+import { ADD_VIDEO_LIST, CHANGE_VIDEO_LOADING, RESET_SELECTED_VIDEO, RESET_VIDEO_LIST } from 'store/slice/videoSlice';
+import youtubeAPI from 'service/youtube-api';
 
-const Header = memo(({ initVideo, onSearchVideo }) => {
+const Header = memo(({ onSearchVideo }) => {
     const userData = useSelector(state => state.user);
     const dispatch = useDispatch(), navigate = useNavigate();
     const inputRef = useRef(), eraserRef = useRef(), modalRef = useRef();
@@ -47,6 +49,23 @@ const Header = memo(({ initVideo, onSearchVideo }) => {
     const eraseInputValue = () => {
         eraserRef.current.classList.add("input_hidden");
         inputRef.current.value = "";
+    }
+
+    const initVideo = async () => {
+        dispatch(CHANGE_VIDEO_LOADING());
+        const dummyVideos = { items: new Array(24).fill(""), nextPageToken: null};
+        // Header에만 필요한 로직
+        dispatch(RESET_VIDEO_LIST());
+        // 
+        dispatch(ADD_VIDEO_LIST(dummyVideos));
+
+        await youtubeAPI.getMostPopular()
+        .then(({ items, nextPageToken }) => {
+            dispatch(RESET_VIDEO_LIST());
+            dispatch(ADD_VIDEO_LIST({ items, nextPageToken }));
+            dispatch(RESET_SELECTED_VIDEO());
+        })
+        .finally(() => dispatch(CHANGE_VIDEO_LOADING()));
     }
 
     const onClickLogo = () => {
