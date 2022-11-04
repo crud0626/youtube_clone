@@ -1,8 +1,8 @@
 import React from 'react';
-import GridVideoList from 'components/GridVideoList/GridVideoList';
+import GridVideoListContainer from 'components/GridVideoList/GridVideoListContainer';
 
 const Home = () => (
-    <GridVideoList />
+    <GridVideoListContainer />
 );
 
 export default Home;
