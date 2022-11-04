@@ -8,44 +8,47 @@ import { nanoid } from 'nanoid';
 const skeletonCount = new Array(8).fill({undefined});
 
 const GridVideoList = forwardRef((props, ref) => {
-    const {
-        videos,
-        isVideoLoading,
-        isLoading,
-        setObserver
-    } = props;
+    const { videos, isVideoLoading, isSearched, setObserver } = props;
 
     return (
         <section>
-            <ul className={styles.videobox_container}>
-                {videos.items && videos.items.map((item, index) => {
-                    if (item === "") {
-                        return <VideoSkeleton key={nanoid()} />;
-                    } else {
-                        const renderProps = {
-                            "key": nanoid(),
-                            "video": item
-                        };
-    
-                        if (!isLoading && index === videos.items.length-1) {
-                            renderProps.ref = ref;
-                            renderProps.setObserver = setObserver;
-                        }
-    
-                        return <VideoBox { ...renderProps } />;
-                    }})
-                }
-                {/*  */}
-                { isVideoLoading && skeletonCount.map(() => <VideoSkeleton key={nanoid()} />) }
-            </ul>
             {
-                !videos.nextPageToken &&
-                <div className={styles.no_more_videos}>
-                    <p>결과가 더 이상 없습니다.</p>
-                </div>
+                videos.items &&
+                <>
+                    <ul className={styles.videobox_container}>
+                    {
+                        videos.items.map((video, index) => {
+                            if (video === "") {
+                                return <VideoSkeleton key={nanoid()} />;
+                            } else {
+                                const lastVideoCondition = !isVideoLoading && index === videos.items.length-1;
+
+                                return (
+                                    <VideoBox 
+                                        key={nanoid()}
+                                        ref={lastVideoCondition ? ref : null}
+                                        video={video}
+                                        setObserver={lastVideoCondition ? setObserver : null}
+                                    />
+                                );
+                            }
+                        })
+                    }
+                    { 
+                        isVideoLoading && 
+                        skeletonCount.map(() => <VideoSkeleton key={nanoid()} />)
+                    }
+                    </ul>
+                    {/* Result page에서는 스켈레톤 UI 없이 Spinner만 필요 */}
+                    { isSearched && <Spinner />}
+                    {
+                        !videos.nextPageToken &&
+                        <div className={styles.no_more_videos}>
+                            <p>결과가 더 이상 없습니다.</p>
+                        </div>
+                    }
+                </>
             }
-            {/*  */}
-            {isLoading && <Spinner />}
         </section>
     );
 });

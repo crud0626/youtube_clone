@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import GridVideoList from './GridVideoList';
 import useScrollObserver from 'hooks/useScrollObserver';
@@ -9,9 +9,6 @@ const GridVideoListContainer = () => {
     const { videos, isVideoLoading } = useSelector(state => state.video);
     const { isSearched, searchQuery } = useSelector(state => state.condition);
     const dispatch = useDispatch();
-
-    // 이름 변경예정, isVideoLoading이 사용중이라서
-    const [isLoading, setIsLoading] = useState(false);
 
     const getMoreVideo = async () => {
         dispatch(CHANGE_VIDEO_LOADING());
@@ -26,12 +23,9 @@ const GridVideoListContainer = () => {
     }
 
     
-    const observerCallback = async () => {
+    const observerCallback = () => {
         if (videos.nextPageToken && !isVideoLoading) {
-            setIsLoading(true);
-            await getMoreVideo()
-            // finally로 변경
-            .then(() => setIsLoading(false));
+            getMoreVideo();
         }
     };
 
@@ -39,7 +33,7 @@ const GridVideoListContainer = () => {
 
     const initVideo = async () => {
         const dummyVideos = { items: new Array(24).fill(""), nextPageToken: null};
-        
+
         dispatch(CHANGE_VIDEO_LOADING());
         dispatch(ADD_VIDEO_LIST(dummyVideos));
 
@@ -63,7 +57,7 @@ const GridVideoListContainer = () => {
             ref={lastVideoRef}
             videos={videos}
             isVideoLoading={isVideoLoading}
-            isLoading={isLoading}
+            isSearched={isSearched}
             setObserver={setObserver}
         />
     );
