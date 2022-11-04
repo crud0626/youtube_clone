@@ -2,14 +2,14 @@ import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { store } from './store/store';
-import Header from 'components/Header/Header';
+import HeaderContainer from 'components/Header/HeaderContainer';
 import Home from 'pages/Home';
 import Watch from 'pages/Watch';
 import Results from 'pages/Results';
 
 const App = () => (
   <Provider store={store}>
-    <Header />
+    <HeaderContainer />
     <main>
         <Routes>
           <Route 

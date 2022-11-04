@@ -1,5 +1,4 @@
-import React, { memo, useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { forwardRef } from 'react';
 import Icon from 'components/Icon/Icon';
 import styles from 'styles/header/header.module.scss';
 import logoIMG from 'assets/logo.png';
@@ -8,97 +7,20 @@ import defaultThubmnail from 'assets/default_thubmnail.gif';
 import { handleThumbnailError } from 'utils/utils';
 import { CLOSE_MARK, SEARCH_MARK, VOICE_MARK, ADD_VIDEO_MARK, GRID_MARK, BELL_MARK, EXIT_MARK, USER_MARK } from 'constants/iconPath';
 import IconButton from 'components/IconButton/IconButton';
-import { useDispatch, useSelector } from 'react-redux';
-import { requestLogin, requestLogout, LOGIN } from 'store/slice/userSlice';
-import { onAuthStateChanged } from 'firebase/auth';
-import authService from 'service/auth';
-import { ADD_VIDEO_LIST, CHANGE_VIDEO_LOADING, RESET_SELECTED_VIDEO, RESET_VIDEO_LIST } from 'store/slice/videoSlice';
-import youtubeAPI from 'service/youtube-api';
-import { CHANGE_IS_SEARCHED, CHANGE_SEARCH_QUERY } from 'store/slice/conditionSlice';
 
-const Header = memo(() => {
-    const userData = useSelector(state => state.user);
-    const dispatch = useDispatch(), navigate = useNavigate();
-    const inputRef = useRef(), eraserRef = useRef(), modalRef = useRef();
-
-    const handleModal = () => {
-        const modal = modalRef.current;
-        if (!modal.style.visibility || modal.style.visibility === 'hidden') {
-            modal.style.visibility = "visible";
-            return;
-        }
-        modal.style.visibility = "hidden";
-        return;
-    }
-
-    const onSearch = async (event) => {
-        event.preventDefault();
-        dispatch(CHANGE_VIDEO_LOADING());
-
-        if(inputRef.current.value.match(/\S/)) {
-            const query = inputRef.current.value;
-
-            await youtubeAPI.searchVideo(query)
-            .then(({ items, nextPageToken }) => {
-                dispatch(RESET_VIDEO_LIST());
-                dispatch(ADD_VIDEO_LIST({ items, nextPageToken }));
-                dispatch(RESET_SELECTED_VIDEO());
-                dispatch(CHANGE_IS_SEARCHED());
-                dispatch(CHANGE_SEARCH_QUERY());
-                navigate(`results?search_query=${query}`);
-            })
-            .finally(() => {
-                dispatch(CHANGE_VIDEO_LOADING());
-            })
-        }
-    };
-
-    const handleInput = () => {
-        if (inputRef.current.value.length === 0) {
-            eraserRef.current.classList.add("input_hidden");
-            return;
-        }
-        eraserRef.current.classList.remove("input_hidden");
-    }
-
-    const eraseInputValue = () => {
-        eraserRef.current.classList.add("input_hidden");
-        inputRef.current.value = "";
-    }
-
-    const initVideo = async () => {
-        dispatch(CHANGE_VIDEO_LOADING());
-        const dummyVideos = { items: new Array(24).fill(""), nextPageToken: null};
-        // Header에만 필요한 로직
-        dispatch(RESET_VIDEO_LIST());
-        // 
-        dispatch(ADD_VIDEO_LIST(dummyVideos));
-
-        await youtubeAPI.getMostPopular()
-        .then(({ items, nextPageToken }) => {
-            dispatch(RESET_VIDEO_LIST());
-            dispatch(ADD_VIDEO_LIST({ items, nextPageToken }));
-            dispatch(RESET_SELECTED_VIDEO());
-        })
-        .finally(() => dispatch(CHANGE_VIDEO_LOADING()));
-    }
-
-    const onClickLogo = () => {
-        navigate("/");
-        initVideo();
-    }
-
-    useEffect(() => {
-        onAuthStateChanged(authService.auth, (user) => {
-            if (user) {
-                dispatch(LOGIN({
-                    "uid": user.uid,
-                    "name": user.displayName,
-                    "url": user.photoURL
-                }));
-            }
-        })
-    }, [dispatch]);
+const Header = forwardRef((props, ref) => {
+    const { 
+        userData, 
+        isModalOpen, 
+        isDisplayEraser,
+        handleModal, 
+        handleEraserBtn, 
+        onSearch, 
+        onErase, 
+        onClickLogo,
+        onLogin,
+        onLogout
+    } = props;
 
     return (
         <header>
@@ -111,18 +33,20 @@ const Header = memo(() => {
                     <div className={styles.searchbar_container}>
                         <div className={styles.searchbar}>
                             <form className={styles.search_form} onSubmit={onSearch}>
-                                <input ref={inputRef} placeholder='검색' type="text" onKeyUp={handleInput}/>
+                                <input ref={ref} placeholder='검색' type="text" onKeyUp={() => handleEraserBtn()}/>
                             </form>
                             <div className={styles.input_icons_container}>
                                 <button className={styles.input_icon} onClick={(e) => e.preventDefault()}>
                                     <img src={keyboardIMG} draggable="false" alt="keyboardIcon" />
                                 </button>
-                                <IconButton 
-                                    ref={eraserRef}
-                                    className={`${styles.input_icon} input_hidden`}
-                                    onClick={eraseInputValue}
-                                    def={CLOSE_MARK}
-                                />
+                                {
+                                    isDisplayEraser && 
+                                    <IconButton 
+                                        className={styles.input_icon}
+                                        onClick={() => onErase()}
+                                        def={CLOSE_MARK}
+                                    />
+                                }
                             </div>
                         </div>
                         <IconButton 
@@ -157,7 +81,7 @@ const Header = memo(() => {
                     {
                         userData.uid &&
                         <>
-                            <button className={styles.thumbnail_container} onClick={handleModal}>
+                            <button className={styles.thumbnail_container} onClick={() => handleModal()}>
                                 <img 
                                     src={userData.url}
                                     onError={({ currentTarget }) => handleThumbnailError(currentTarget, defaultThubmnail)} 
@@ -165,24 +89,27 @@ const Header = memo(() => {
                                     alt="thumbnail" 
                                 />
                             </button>
-                            <div ref={modalRef} className={styles.modal_container}>
-                                <div className={styles.modal_header}>
-                                    <img 
-                                        src={userData.url} 
-                                        onError={({ currentTarget }) => handleThumbnailError(currentTarget, defaultThubmnail)}
-                                        alt="thumbnail" 
-                                    />
-                                    <span>{userData.name}</span>
+                            {
+                                isModalOpen &&
+                                <div className={styles.modal_container}>
+                                    <div className={styles.modal_header}>
+                                        <img 
+                                            src={userData.url} 
+                                            onError={({ currentTarget }) => handleThumbnailError(currentTarget, defaultThubmnail)}
+                                            alt="thumbnail" 
+                                        />
+                                        <span>{userData.name}</span>
+                                    </div>
+                                    <div className={styles.modal_body}>
+                                        <button className={styles.modal_button} onClick={() => onLogout()}>
+                                            <div className={styles.modal_icons}>
+                                                <Icon def={EXIT_MARK}/>
+                                            </div>
+                                            <span>로그아웃</span>
+                                        </button>
+                                    </div>
                                 </div>
-                                <div className={styles.modal_body}>
-                                    <button className={styles.modal_button} onClick={() => dispatch(requestLogout())}>
-                                        <div className={styles.modal_icons}>
-                                            <Icon def={EXIT_MARK}/>
-                                        </div>
-                                        <span>로그아웃</span>
-                                    </button>
-                                </div>
-                            </div>
+                            }
                         </>
                     }
                     {
@@ -190,7 +117,7 @@ const Header = memo(() => {
                         <IconButton 
                             className={`${styles.right_btns} ${styles.login_btn}`} 
                             titleName={"login button"}
-                            onClick={() => dispatch(requestLogin())}
+                            onClick={() => onLogin()}
                             def={USER_MARK}
                             text={"로그인"}
                         />
