@@ -4,7 +4,7 @@ import styles from 'styles/videoSection/videoSection.module.scss';
 import defaultThubmnail from 'assets/default_thubmnail.gif';
 import useTextOver from 'hooks/useTextOver';
 import useResizeObserver from 'hooks/useResizeObserver';
-import CommentsWrapper from 'components/CommentsWrapper/CommentsWrapper';
+import CommentsWrapperContainer from 'components/CommentsWrapper/CommentsWrapperContainer';
 import IconButton from 'components/IconButton/IconButton';
 import PlayList from 'components/VideoSection/PlayList/PlayList';
 import { EMPTY_LIKE_MARK, FILL_LIKE_MARK, EMPTY_DISLIKE_MARK, FILL_DISLIKE_MARK, SHARE_MARK, SAVE_MARK } from 'constants/iconPath';
@@ -205,7 +205,7 @@ const VideoSection = () => {
                     
                 </div>
                 { isInSection && <PlayList isInSection={isInSection} /> }
-                <CommentsWrapper />
+                <CommentsWrapperContainer />
             </div>
             { !isInSection && <PlayList isInSection={isInSection} /> }
         </section>

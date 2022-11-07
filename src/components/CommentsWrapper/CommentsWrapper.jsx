@@ -1,32 +1,10 @@
-import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import useScrollObserver from 'hooks/useScrollObserver';
+import React, { forwardRef } from 'react';
 import styles from 'styles/commentsWrapper/commentsWrapper.module.scss';
 import CommentBox from 'components/CommentsWrapper/CommentBox/CommentBox';
 import Spinner from 'components/Spinner/Spinner';
 import { nanoid } from 'nanoid';
-import youtubeAPI from 'service/youtube-api';
-import { ADD_COMMENTS } from 'store/slice/videoSlice';
 
-const CommentsWrapper = () => {
-    const dispatch = useDispatch();
-    const { comments, selectedVideo } = useSelector(state => state.video);
-    const [isLoading, setIsLoading] = useState(false);
-
-    const getMoreComment = async () => {
-        await youtubeAPI.getComment(selectedVideo.id, comments.nextPageToken)
-        .then(({ items, nextPageToken }) => {
-            dispatch(ADD_COMMENTS({ items, nextPageToken }));
-        });
-      }
-
-    const observerCallback = async () => {
-        setIsLoading(true);
-        await getMoreComment()
-        .then(() => setIsLoading(false));
-    }
-    const [lastCommentRef, setObserver] = useScrollObserver(observerCallback);
-
+const CommentsWrapper = forwardRef(({ comments, commentsCount, isLoading, setObserver }, ref) => {
     const { items, nextPageToken } = comments;
 
     return(
@@ -42,7 +20,7 @@ const CommentsWrapper = () => {
                 <>
                     <div className={styles.header}>
                         <h3 className={styles.count}>
-                            {`댓글 ${Number(selectedVideo.statistics.commentCount).toLocaleString("en")} 개`}
+                            {`댓글 ${Number(commentsCount).toLocaleString("en")} 개`}
                         </h3>
                     </div>
                     <ul className={styles.body}>
@@ -53,7 +31,7 @@ const CommentsWrapper = () => {
                             };
 
                             if (!isLoading && index === items.length - 1 && nextPageToken) {
-                                renderProp.lastCommentRef = lastCommentRef;
+                                renderProp.ref = ref;
                                 renderProp.setObserver = setObserver;
                             }
 
@@ -65,6 +43,6 @@ const CommentsWrapper = () => {
             }
         </div>
     );
-};
+});
 
 export default CommentsWrapper;
