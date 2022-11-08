@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useCallback, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styles from 'styles/videoSection/videoSection.module.scss';
 import defaultThubmnail from 'assets/default_thubmnail.gif';
@@ -10,20 +10,22 @@ import PlayList from 'components/VideoSection/PlayList/PlayList';
 import { EMPTY_LIKE_MARK, FILL_LIKE_MARK, EMPTY_DISLIKE_MARK, FILL_DISLIKE_MARK, SHARE_MARK, SAVE_MARK } from 'constants/iconPath';
 import { requestLogin } from 'store/slice/userSlice';
 import youtubeAPI from 'service/youtube-api';
-import { handleThumbnailError, handleToggle } from 'utils/utils';
+import { handleThumbnailError } from 'utils/utils';
 import { convertCount } from 'utils/calculator';
 
 const VideoSection = () => {
     const dispatch = useDispatch();
     const { selectedVideo } = useSelector(state => state.video);
     const userData = useSelector(state => state.user);
-    const toggleRef = useRef();
     const [isTextOver, descRef] = useTextOver();
     const isInSection = useResizeObserver(1016);
     const [rating, setRating] = useState({
         like: false,
         disLike: false
     });
+
+    const [isFlipOpen, setIsFlipOpen] = useState(false);
+    const handleToggle = useCallback(() => setIsFlipOpen((prevState) => !prevState), []);
 
     const displayVideoDate = () => {
         const date = new Date(selectedVideo.snippet.publishedAt);
@@ -188,15 +190,18 @@ const VideoSection = () => {
                         </a>
                         <span>{`구독자 ${convertCount(channel.statistics.subscriberCount)}명`}</span>
                         <div className={styles.desc_container}>
-                            <pre ref={descRef} className={styles.desc} dangerouslySetInnerHTML={convertToLink(snippet.description)}></pre>
+                            <pre 
+                                ref={descRef} 
+                                className={`${styles.desc} ${isFlipOpen ? "expander" : ""}`} 
+                                dangerouslySetInnerHTML={convertToLink(snippet.description)} 
+                            />
                             {
                                 isTextOver && 
                                 <button 
-                                    ref={toggleRef} 
                                     className={styles.toggle_btn} 
-                                    onClick={() => handleToggle(descRef.current, toggleRef.current)}
+                                    onClick={() => handleToggle()}
                                 >
-                                    <span>더보기</span>
+                                    <span>{ isFlipOpen ? "간략히" : "더보기" }</span>
                                 </button>
                             }
                         </div>

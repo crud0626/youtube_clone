@@ -1,23 +1,23 @@
-import React, { memo, useEffect, useRef } from 'react';
+import React, { forwardRef, useEffect, useState, useCallback } from 'react';
 import styles from 'styles/commentsWrapper/commentBox/commentBox.module.scss';
 import useTextOver from 'hooks/useTextOver';
 import ChannelThumbnail from 'components/ChannelThumbnail/ChannelThumbnail';
-import { handleToggle } from 'utils/utils';
 import { getTimeDiff } from 'utils/calculator';
 
-const CommentBox = memo(({ commentData, lastCommentRef, setObserver }) => {
-    const toggleRef = useRef();
+const CommentBox = forwardRef(({ commentData, setObserver }, ref) => {
+    const [isFlipOpen, setIsFlipOpen] = useState(false);
     const [isTextOver, spanRef] = useTextOver();
 
+    const handleToggle = useCallback(() => setIsFlipOpen((prevState) => !prevState), []);
+
     useEffect(() => {
-        if (lastCommentRef) setObserver();
+        if (ref) setObserver();
     }, []);
 
-    const { snippet } = commentData;
-    const commentText = { __html: snippet.textDisplay };
+    const { snippet } = commentData, commentText = { __html: snippet.textDisplay };
     
     return (
-        <li ref={lastCommentRef || null} className={styles.container}>
+        <li ref={ref} className={styles.container}>
             <ChannelThumbnail
                 thumbnailUrl={snippet.authorProfileImageUrl}
                 channelUrl={snippet.authorChannelUrl}
@@ -28,17 +28,16 @@ const CommentBox = memo(({ commentData, lastCommentRef, setObserver }) => {
                     <span className={styles.publish_data}>{getTimeDiff(commentData.snippet.publishedAt)}</span>
                 </div>
                 <div className={styles.info_body}>
-                    <div ref={spanRef} className={styles.content_container}>
+                    <div ref={spanRef} className={`${styles.content_container} ${isFlipOpen ? "expander" : ""}`}>
                         <span dangerouslySetInnerHTML={commentText}></span>
                     </div>
                     {
                         isTextOver && 
                         <button 
-                            ref={toggleRef} 
                             className={styles.toggle_btn}
-                            onClick={() => handleToggle(spanRef.current, toggleRef.current)}
+                            onClick={() => handleToggle()}
                         >
-                            자세히 보기
+                            <span>{ isFlipOpen ? "간략히" : "자세히 보기" }</span>
                         </button>
                     }
                 </div>
