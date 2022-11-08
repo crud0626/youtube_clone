@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import CommentsWrapper from './CommentsWrapper';
+import CommentsWrapperPresenter from './CommentsWrapperPresenter';
 import useScrollObserver from 'hooks/useScrollObserver';
 import youtubeAPI from 'service/youtube-api';
 import { ADD_COMMENTS } from 'store/slice/videoSlice';
@@ -26,7 +26,7 @@ const CommentsWrapperContainer = () => {
     const [lastCommentRef, setObserver] = useScrollObserver(observerCallback);
 
     return (
-        <CommentsWrapper 
+        <CommentsWrapperPresenter 
             ref={lastCommentRef}
             comments={comments}
             commentsCount={selectedVideo.statistics.commentCount}

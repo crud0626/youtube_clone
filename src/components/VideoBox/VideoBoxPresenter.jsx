@@ -1,10 +1,10 @@
 import React, { forwardRef } from 'react';
-import styles from 'styles/videoBox/videoBox.module.scss';
+import styles from './VideoBox.module.scss';
 import ChannelThumbnail from 'components/ChannelThumbnail/ChannelThumbnail';
 import VideoThumbnail from './VideoThumbnail/VideoThumbnail';
 import { convertCount, getTimeDiff } from 'utils/calculator';
 
-const VideoBox = forwardRef(({ video, isThumbnail, onClickVideo }, ref) => {
+const VideoBoxPresenter = forwardRef(({ video, isThumbnail, onClickVideo }, ref) => {
     const { channel, contentDetails, snippet, statistics } = video;
 
     return (
@@ -35,5 +35,5 @@ const VideoBox = forwardRef(({ video, isThumbnail, onClickVideo }, ref) => {
     );
 });
 
-export default VideoBox;
+export default VideoBoxPresenter;
 

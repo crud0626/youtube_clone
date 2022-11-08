@@ -2,7 +2,7 @@ import React, { useCallback, useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import useResizeObserver from 'hooks/useResizeObserver';
 import useTextOver from 'hooks/useTextOver';
-import VideoSection from './VideoSection';
+import VideoSectionPresenter from './VideoSectionPresenter';
 import youtubeAPI from 'service/youtube-api';
 import { requestLogin } from 'store/slice/userSlice';
 
@@ -108,7 +108,7 @@ const VideoSectionContainer = () => {
     }, [userData.uid]);
     
     return (
-        <VideoSection 
+        <VideoSectionPresenter 
             ref={descRef}
             selectedVideo={selectedVideo}
             rating={rating}

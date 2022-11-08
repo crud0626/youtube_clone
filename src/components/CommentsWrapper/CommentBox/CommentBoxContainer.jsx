@@ -1,6 +1,6 @@
 import React, { forwardRef, useCallback, useState, useEffect } from 'react';
 import useTextOver from 'hooks/useTextOver';
-import CommentBox from './CommentBox';
+import CommentBoxPresenter from './CommentBoxPresenter';
 
 // ref 2개인거 추후 해결하기
 const CommentBoxContainer = forwardRef(({ commentData, setObserver }, ref) => {
@@ -14,7 +14,7 @@ const CommentBoxContainer = forwardRef(({ commentData, setObserver }, ref) => {
     }, []);
 
     return (
-        <CommentBox 
+        <CommentBoxPresenter 
             ref={ref}
             commentData={commentData}
             isFlipOpen={isFlipOpen}

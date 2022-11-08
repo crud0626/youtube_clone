@@ -1,5 +1,5 @@
 import React, { forwardRef } from 'react';
-import styles from 'styles/gridVideoList/gridVideoList.module.scss';
+import styles from './GridVideoList.module.scss';
 import VideoBoxContainer from 'components/VideoBox/VideoBoxContainer';
 import Spinner from 'components/Spinner/Spinner';
 import VideoSkeleton from 'components/VideoSection/PlayList/VideoSkeleton/VideoSkeleton';
@@ -7,7 +7,7 @@ import { nanoid } from 'nanoid';
 
 const skeletonCount = new Array(8).fill({undefined});
 
-const GridVideoList = forwardRef((props, ref) => {
+const GridVideoListPresenter = forwardRef((props, ref) => {
     const { videos, isVideoLoading, isSearched, setObserver } = props;
 
     return (
@@ -53,5 +53,5 @@ const GridVideoList = forwardRef((props, ref) => {
     );
 });
 
-export default GridVideoList;
+export default GridVideoListPresenter;
 

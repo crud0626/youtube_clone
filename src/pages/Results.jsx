@@ -1,6 +1,6 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
-import GridVideoListContainer from 'components/GridVideoList/GridVideoListContainer';
+import GridVideoList from 'components/GridVideoList';
 import useScrollUp from 'hooks/useScrollUp';
 import useBackHome from 'hooks/useBackHome';
 
@@ -11,7 +11,7 @@ const Results = () => {
     useBackHome();
 
     return (
-        <GridVideoListContainer />
+        <GridVideoList />
     );
 };
 

@@ -1,10 +1,10 @@
 import React, { forwardRef } from 'react';
-import styles from 'styles/videoSection/playList/playList.module.scss'; 
-import VideoBoxContainer from 'components/VideoBox/VideoBoxContainer';
+import styles from './PlayList.module.scss'; 
+import VideoBox from 'components/VideoBox';
 import Spinner from 'components/Spinner/Spinner';
 import { nanoid } from 'nanoid';
 
-const PlayList = forwardRef((props, ref) => {
+const PlayListPresenter = forwardRef((props, ref) => {
     const {
         videos,
         isInSection,
@@ -28,7 +28,7 @@ const PlayList = forwardRef((props, ref) => {
                         renderProps.setObserver = setObserver;
                     }
 
-                    return <VideoBoxContainer { ...renderProps } />;
+                    return <VideoBox { ...renderProps } />;
                     
                 })}
             </ul>
@@ -43,4 +43,4 @@ const PlayList = forwardRef((props, ref) => {
     );
 });
 
-export default PlayList;
+export default PlayListPresenter;

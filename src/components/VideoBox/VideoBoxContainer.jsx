@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import youtubeAPI from 'service/youtube-api';
 import { ADD_COMMENTS, CHANGE_SELECTED_VIDEO } from 'store/slice/videoSlice';
-import VideoBox from './VideoBox';
+import VideoBoxPresenter from './VideoBoxPresenter';
 
 const VideoBoxContainer = forwardRef(({ video, setObserver, isThumbnail = true }, ref) => {
     const dispatch = useDispatch(), navigate = useNavigate();
@@ -24,7 +24,7 @@ const VideoBoxContainer = forwardRef(({ video, setObserver, isThumbnail = true }
     }, []);
 
     return (
-        <VideoBox 
+        <VideoBoxPresenter 
             ref={ref}
             video={video}
             isThumbnail={isThumbnail}

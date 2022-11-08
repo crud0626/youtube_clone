@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from 'styles/videoBox/videoThumbnail.module.scss';
+import styles from './VideoThumbnail.module.scss';
 import { convertVideoDuration } from 'utils/calculator';
 
 const VideoThumbnail = ({ thumbnailUrl, duration }) => {

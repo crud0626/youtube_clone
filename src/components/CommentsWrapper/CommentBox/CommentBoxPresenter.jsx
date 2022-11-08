@@ -1,9 +1,9 @@
 import React, { forwardRef } from 'react';
-import styles from 'styles/commentsWrapper/commentBox/commentBox.module.scss';
+import styles from './CommentBox.module.scss';
 import ChannelThumbnail from 'components/ChannelThumbnail/ChannelThumbnail';
 import { getTimeDiff } from 'utils/calculator';
 
-const CommentBox = forwardRef((props, ref) => {
+const CommentBoxPresenter = forwardRef((props, ref) => {
     const {
         spanRef,
         commentData,
@@ -44,4 +44,4 @@ const CommentBox = forwardRef((props, ref) => {
     );
 });
 
-export default CommentBox;
+export default CommentBoxPresenter;

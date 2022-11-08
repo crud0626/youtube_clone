@@ -7,7 +7,7 @@ import authService from 'service/auth';
 import { CHANGE_IS_SEARCHED, CHANGE_SEARCH_QUERY } from 'store/slice/conditionSlice';
 import { ADD_VIDEO_LIST, CHANGE_VIDEO_LOADING, RESET_SELECTED_VIDEO, RESET_VIDEO_LIST } from 'store/slice/videoSlice';
 import { LOGIN, requestLogin, requestLogout } from 'store/slice/userSlice';
-import Header from './Header';
+import HeaderPresenter from './HeaderPresenter';
 
 const HeaderContainer = () => {
     const userData = useSelector(state => state.user);
@@ -99,7 +99,7 @@ const HeaderContainer = () => {
     }, [dispatch]);
     
     return (
-        <Header 
+        <HeaderPresenter 
             ref={inputRef}
             userData={userData}
             isDisplayEraser={isDisplayEraser}

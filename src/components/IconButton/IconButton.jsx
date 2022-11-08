@@ -1,6 +1,6 @@
 import React, { forwardRef, memo } from 'react';
 import Icon from 'components/Icon/Icon';
-import styles from 'styles/iconButton/iconButton.module.scss';
+import styles from './IconButton.module.scss';
 
 const IconButton = ({ className, titleName, text, def, onClick, dataFunc }, ref) => {
     return (

@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import GridVideoList from './GridVideoList';
+import GridVideoListPresenter from './GridVideoListPresenter';
 import useScrollObserver from 'hooks/useScrollObserver';
 import youtubeAPI from 'service/youtube-api';
 import { ADD_VIDEO_LIST, CHANGE_VIDEO_LOADING, RESET_SELECTED_VIDEO, RESET_VIDEO_LIST } from 'store/slice/videoSlice';
@@ -53,7 +53,7 @@ const GridVideoListContainer = () => {
     }, []);
 
     return (
-        <GridVideoList 
+        <GridVideoListPresenter 
             ref={lastVideoRef}
             videos={videos}
             isVideoLoading={isVideoLoading}

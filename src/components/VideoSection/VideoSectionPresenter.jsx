@@ -1,14 +1,14 @@
 import React, { forwardRef } from 'react';
-import styles from 'styles/videoSection/videoSection.module.scss';
+import styles from './VideoSection.module.scss'
 import defaultThubmnail from 'assets/default_thubmnail.gif';
-import CommentsWrapperContainer from 'components/CommentsWrapper/CommentsWrapperContainer';
+import CommentsWrapper from 'components/CommentsWrapper';
 import IconButton from 'components/IconButton/IconButton';
-import PlayListContainer from 'components/VideoSection/PlayList/PlayListContainer';
+import PlayList from './PlayList';
 import { EMPTY_LIKE_MARK, FILL_LIKE_MARK, EMPTY_DISLIKE_MARK, FILL_DISLIKE_MARK, SHARE_MARK, SAVE_MARK } from 'constants/iconPath';
 import { handleThumbnailError } from 'utils/utils';
 import { convertCount } from 'utils/calculator';
 
-const VideoSection = forwardRef((props, ref) => {
+const VideoSectionPresenter = forwardRef((props, ref) => {
     const {
         selectedVideo,
         rating,
@@ -116,12 +116,12 @@ const VideoSection = forwardRef((props, ref) => {
                     </div>
                     
                 </div>
-                { isInSection && <PlayListContainer isInSection={isInSection} /> }
-                <CommentsWrapperContainer />
+                { isInSection && <PlayList isInSection={isInSection} /> }
+                <CommentsWrapper />
             </div>
-            { !isInSection && <PlayListContainer isInSection={isInSection} /> }
+            { !isInSection && <PlayList isInSection={isInSection} /> }
         </section>
     );
 });
 
-export default VideoSection;
+export default VideoSectionPresenter;

@@ -1,6 +1,6 @@
 import React, { forwardRef } from 'react';
 import Icon from 'components/Icon/Icon';
-import styles from 'styles/header/header.module.scss';
+import styles from './Header.module.scss';
 import logoIMG from 'assets/logo.png';
 import keyboardIMG from 'assets/keyboard.gif';
 import defaultThubmnail from 'assets/default_thubmnail.gif';
@@ -8,7 +8,7 @@ import { handleThumbnailError } from 'utils/utils';
 import { CLOSE_MARK, SEARCH_MARK, VOICE_MARK, ADD_VIDEO_MARK, GRID_MARK, BELL_MARK, EXIT_MARK, USER_MARK } from 'constants/iconPath';
 import IconButton from 'components/IconButton/IconButton';
 
-const Header = forwardRef((props, ref) => {
+const HeaderPresenter = forwardRef((props, ref) => {
     const { 
         userData, 
         isModalOpen, 
@@ -128,4 +128,4 @@ const Header = forwardRef((props, ref) => {
     );
 });
 
-export default Header;
+export default HeaderPresenter;

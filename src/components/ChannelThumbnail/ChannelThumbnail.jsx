@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from 'styles/channelThumbnail/channelThumbnail.module.scss';
+import styles from './ChannelThumbnail.module.scss';
 import { handleThumbnailError } from 'utils/utils';
 import defaultThubmnail from 'assets/default_thubmnail.gif';
 

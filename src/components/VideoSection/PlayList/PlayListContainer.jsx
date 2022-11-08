@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import useScrollObserver from 'hooks/useScrollObserver';
 import youtubeAPI from 'service/youtube-api';
 import { ADD_VIDEO_LIST, CHANGE_VIDEO_LOADING } from 'store/slice/videoSlice';
-import PlayList from './PlayList';
+import PlayList from './PlayListPresenter';
 
 const PlayListContainer = ({ isInSection }) => {
     const dispatch = useDispatch();
