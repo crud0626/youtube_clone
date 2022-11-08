@@ -1,8 +1,8 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
-import VideoSection from 'components/VideoSection/VideoSection';
 import useScrollUp from 'hooks/useScrollUp';
 import useBackHome from 'hooks/useBackHome';
+import VideoSectionContainer from 'components/VideoSection/VideoSectionContainer';
 
 const Watch = () => {
     const { pathname, search } = useLocation();
@@ -11,7 +11,7 @@ const Watch = () => {
     useBackHome();
 
     return (
-        <VideoSection />
+        <VideoSectionContainer />
     );
 };
 

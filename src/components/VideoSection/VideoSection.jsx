@@ -1,118 +1,25 @@
-import React, { useEffect, useCallback, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { forwardRef } from 'react';
 import styles from 'styles/videoSection/videoSection.module.scss';
 import defaultThubmnail from 'assets/default_thubmnail.gif';
-import useTextOver from 'hooks/useTextOver';
-import useResizeObserver from 'hooks/useResizeObserver';
 import CommentsWrapperContainer from 'components/CommentsWrapper/CommentsWrapperContainer';
 import IconButton from 'components/IconButton/IconButton';
 import PlayList from 'components/VideoSection/PlayList/PlayList';
 import { EMPTY_LIKE_MARK, FILL_LIKE_MARK, EMPTY_DISLIKE_MARK, FILL_DISLIKE_MARK, SHARE_MARK, SAVE_MARK } from 'constants/iconPath';
-import { requestLogin } from 'store/slice/userSlice';
-import youtubeAPI from 'service/youtube-api';
 import { handleThumbnailError } from 'utils/utils';
 import { convertCount } from 'utils/calculator';
 
-const VideoSection = () => {
-    const dispatch = useDispatch();
-    const { selectedVideo } = useSelector(state => state.video);
-    const userData = useSelector(state => state.user);
-    const [isTextOver, descRef] = useTextOver();
-    const isInSection = useResizeObserver(1016);
-    const [rating, setRating] = useState({
-        like: false,
-        disLike: false
-    });
-
-    const [isFlipOpen, setIsFlipOpen] = useState(false);
-    const handleToggle = useCallback(() => setIsFlipOpen((prevState) => !prevState), []);
-
-    const displayVideoDate = () => {
-        const date = new Date(selectedVideo.snippet.publishedAt);
-        return `${date.getFullYear()}. ${date.getMonth() + 1}. ${date.getDate()}.`;
-    }
-
-    const getToken = () => {
-        if (userData.uid) {
-            return JSON.parse(localStorage.getItem(userData.uid));
-        }
-    }
-
-    const checkExpires = () => {
-        const tokenData = getToken();
-        if (Date.now() > tokenData.expires) {
-            alert("토큰이 만료되어 로그인을 재시도합니다.");
-            dispatch(requestLogin());
-        }
-
-        return true;
-    }
-
-    const getCurrentRate = async () => {
-        if (checkExpires()) {
-            await youtubeAPI.getRating(selectedVideo.id, userData.uid)
-            .then((data) => {
-                const newRating = { like: false, disLike: false };
-                
-                switch(data) {
-                    case "like":
-                        newRating.like = true;
-                        break;
-                    case "dislike":
-                        newRating.disLike = true;
-                        break;
-                    default:
-                        return;
-                }
-                setRating({ ...newRating });
-            })
-            .catch(error => {
-                if (error === "Invalid Credentials") {
-                    alert("토큰이 만료되어 로그인을 재시도합니다.");
-                    dispatch(requestLogin());
-                }
-            });
-        }
-    }
-
-    const sendRating = async ({ currentTarget }) => {
-        if (checkExpires()) {
-            const rating = currentTarget.dataset.func;
-            await youtubeAPI.ratingVideo(rating, selectedVideo.id, userData.uid)
-            .then(() => {
-                const newRating = { like: false, disLike: false };
-
-                switch(rating) {
-                    case "like":
-                        newRating.like = true;
-                        break;
-                    case "dislike":
-                        newRating.disLike = true;
-                        break;
-                    case "none":
-                        break;
-                    default:
-                        throw new Error(`정의되지 않은 평가입니다. ${rating}`);
-                }
-                setRating({ ...newRating });
-            })
-            .catch(error => {
-                if (error === "Invalid Credentials") {
-                    alert("토큰이 만료되어 로그인을 재시도합니다.");
-                    dispatch(requestLogin());
-                }
-            });
-        }
-    };
-
-    const convertToLink = (text) => {
-        const convertedText = text.replace(/\bhttps?:\/\/\S+\b/g, '<a href=$& target="_blank" rel="noreferrer">$&</a>');
-        return { __html: convertedText };
-    }
-
-    useEffect(() => {
-        if (userData.uid) getCurrentRate();
-    }, [userData.uid]);
+const VideoSection = forwardRef((props, ref) => {
+    const {
+        selectedVideo,
+        rating,
+        isFlipOpen,
+        isTextOver,
+        isInSection,
+        handleToggle,
+        displayVideoDate,
+        sendRating,
+        convertToLink
+    } = props;
 
     const { channel, id, snippet, statistics } = selectedVideo;
 
@@ -191,9 +98,9 @@ const VideoSection = () => {
                         <span>{`구독자 ${convertCount(channel.statistics.subscriberCount)}명`}</span>
                         <div className={styles.desc_container}>
                             <pre 
-                                ref={descRef} 
-                                className={`${styles.desc} ${isFlipOpen ? "expander" : ""}`} 
-                                dangerouslySetInnerHTML={convertToLink(snippet.description)} 
+                                ref={ref} 
+                                className={`${styles.desc} `}
+                                dangerouslySetInnerHTML={convertToLink(snippet.description)}
                             />
                             {
                                 isTextOver && 
@@ -215,6 +122,6 @@ const VideoSection = () => {
             { !isInSection && <PlayList isInSection={isInSection} /> }
         </section>
     );
-};
+});
 
 export default VideoSection;
