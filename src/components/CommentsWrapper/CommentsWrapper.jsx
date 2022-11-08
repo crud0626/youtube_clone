@@ -1,13 +1,13 @@
 import React, { forwardRef } from 'react';
 import styles from 'styles/commentsWrapper/commentsWrapper.module.scss';
-import CommentBox from 'components/CommentsWrapper/CommentBox/CommentBox';
+import CommentBoxContainer from './CommentBox/CommentBoxContainer';
 import Spinner from 'components/Spinner/Spinner';
 import { nanoid } from 'nanoid';
 
 const CommentsWrapper = forwardRef(({ comments, commentsCount, isLoading, setObserver }, ref) => {
     const { items, nextPageToken } = comments;
 
-    return(
+    return( 
         <div className={styles.container}>
             {
                 !items &&
@@ -35,7 +35,7 @@ const CommentsWrapper = forwardRef(({ comments, commentsCount, isLoading, setObs
                                 renderProp.setObserver = setObserver;
                             }
 
-                            return <CommentBox {...renderProp} />;
+                            return <CommentBoxContainer {...renderProp} />;
                         })}
                         {isLoading && nextPageToken && <Spinner />}
                     </ul>

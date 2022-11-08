@@ -1,18 +1,16 @@
-import React, { forwardRef, useEffect, useState, useCallback } from 'react';
+import React, { forwardRef } from 'react';
 import styles from 'styles/commentsWrapper/commentBox/commentBox.module.scss';
-import useTextOver from 'hooks/useTextOver';
 import ChannelThumbnail from 'components/ChannelThumbnail/ChannelThumbnail';
 import { getTimeDiff } from 'utils/calculator';
 
-const CommentBox = forwardRef(({ commentData, setObserver }, ref) => {
-    const [isFlipOpen, setIsFlipOpen] = useState(false);
-    const [isTextOver, spanRef] = useTextOver();
-
-    const handleToggle = useCallback(() => setIsFlipOpen((prevState) => !prevState), []);
-
-    useEffect(() => {
-        if (ref) setObserver();
-    }, []);
+const CommentBox = forwardRef((props, ref) => {
+    const {
+        spanRef,
+        commentData,
+        isFlipOpen,
+        isTextOver,
+        handleToggle
+    } = props;
 
     const { snippet } = commentData, commentText = { __html: snippet.textDisplay };
     
