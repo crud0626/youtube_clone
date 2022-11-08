@@ -1,6 +1,6 @@
 import React, { forwardRef } from 'react';
 import styles from 'styles/gridVideoList/gridVideoList.module.scss';
-import VideoBox from 'components/VideoBox/VideoBox';
+import VideoBoxContainer from 'components/VideoBox/VideoBoxContainer';
 import Spinner from 'components/Spinner/Spinner';
 import VideoSkeleton from 'components/VideoSection/PlayList/VideoSkeleton/VideoSkeleton';
 import { nanoid } from 'nanoid';
@@ -24,7 +24,7 @@ const GridVideoList = forwardRef((props, ref) => {
                                 const lastVideoCondition = !isVideoLoading && index === videos.items.length-1;
 
                                 return (
-                                    <VideoBox 
+                                    <VideoBoxContainer 
                                         key={nanoid()}
                                         ref={lastVideoCondition ? ref : null}
                                         video={video}

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styles from 'styles/videoSection/playList/playList.module.scss'; 
 import useScrollObserver from 'hooks/useScrollObserver';
-import VideoBox from 'components/VideoBox/VideoBox';
+import VideoBoxContainer from 'components/VideoBox/VideoBoxContainer';
 import Spinner from 'components/Spinner/Spinner';
 import { ADD_VIDEO_LIST, CHANGE_VIDEO_LOADING } from 'store/slice/videoSlice';
 import { nanoid } from 'nanoid';
@@ -55,7 +55,7 @@ const PlayList = ({ isInSection }) => {
                         renderProps.setObserver = setObserver;
                     }
 
-                    return <VideoBox { ...renderProps } />;
+                    return <VideoBoxContainer { ...renderProps } />;
                     
                 })}
             </ul>
