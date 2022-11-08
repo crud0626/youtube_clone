@@ -3,7 +3,7 @@ import styles from 'styles/videoSection/videoSection.module.scss';
 import defaultThubmnail from 'assets/default_thubmnail.gif';
 import CommentsWrapperContainer from 'components/CommentsWrapper/CommentsWrapperContainer';
 import IconButton from 'components/IconButton/IconButton';
-import PlayList from 'components/VideoSection/PlayList/PlayList';
+import PlayListContainer from 'components/VideoSection/PlayList/PlayListContainer';
 import { EMPTY_LIKE_MARK, FILL_LIKE_MARK, EMPTY_DISLIKE_MARK, FILL_DISLIKE_MARK, SHARE_MARK, SAVE_MARK } from 'constants/iconPath';
 import { handleThumbnailError } from 'utils/utils';
 import { convertCount } from 'utils/calculator';
@@ -116,10 +116,10 @@ const VideoSection = forwardRef((props, ref) => {
                     </div>
                     
                 </div>
-                { isInSection && <PlayList isInSection={isInSection} /> }
+                { isInSection && <PlayListContainer isInSection={isInSection} /> }
                 <CommentsWrapperContainer />
             </div>
-            { !isInSection && <PlayList isInSection={isInSection} /> }
+            { !isInSection && <PlayListContainer isInSection={isInSection} /> }
         </section>
     );
 });
