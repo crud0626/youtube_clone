@@ -2,10 +2,9 @@ import { onAuthStateChanged } from 'firebase/auth';
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import youtubeAPI from 'service/youtube-api';
 import authService from 'service/auth';
 import { CHANGE_IS_SEARCHED, CHANGE_SEARCH_QUERY } from 'store/slice/conditionSlice';
-import { ADD_VIDEO_LIST, CHANGE_VIDEO_LOADING, RESET_SELECTED_VIDEO, RESET_VIDEO_LIST } from 'store/slice/videoSlice';
+import { ADD_VIDEO_LIST, CHANGE_VIDEO_LOADING, requestSearchData, requestVideoData, RESET_SELECTED_VIDEO } from 'store/slice/videoSlice';
 import { LOGIN, requestLogin, requestLogout } from 'store/slice/userSlice';
 import HeaderPresenter from './HeaderPresenter';
 
@@ -28,19 +27,14 @@ const HeaderContainer = () => {
 
         if(inputRef.current.value.match(/\S/)) {
             const query = inputRef.current.value;
-
-            await youtubeAPI.searchVideo(query)
-            .then(({ items, nextPageToken }) => {
-                dispatch(RESET_VIDEO_LIST());
-                dispatch(ADD_VIDEO_LIST({ items, nextPageToken }));
+            dispatch(requestSearchData({ searchQuery: query, isFirst: true }))
+            .then(() => {
                 dispatch(RESET_SELECTED_VIDEO());
                 dispatch(CHANGE_IS_SEARCHED());
-                dispatch(CHANGE_SEARCH_QUERY());
+                dispatch(CHANGE_SEARCH_QUERY(query));
                 navigate(`results?search_query=${query}`);
             })
-            .finally(() => {
-                dispatch(CHANGE_VIDEO_LOADING());
-            })
+            .finally(() => dispatch(CHANGE_VIDEO_LOADING()))
         }
     };
 
@@ -61,15 +55,10 @@ const HeaderContainer = () => {
         const dummyVideos = { items: new Array(24).fill(""), nextPageToken: null};
 
         dispatch(CHANGE_VIDEO_LOADING());
-        dispatch(RESET_VIDEO_LIST());
         dispatch(ADD_VIDEO_LIST(dummyVideos));
 
-        await youtubeAPI.getMostPopular()
-        .then(({ items, nextPageToken }) => {
-            dispatch(RESET_VIDEO_LIST());
-            dispatch(ADD_VIDEO_LIST({ items, nextPageToken }));
-            dispatch(RESET_SELECTED_VIDEO());
-        })
+        dispatch(requestVideoData())
+        .then(() => dispatch(RESET_SELECTED_VIDEO()))
         .finally(() => dispatch(CHANGE_VIDEO_LOADING()));
     }
 

@@ -2,23 +2,23 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import GridVideoListPresenter from './GridVideoListPresenter';
 import useScrollObserver from 'hooks/useScrollObserver';
-import youtubeAPI from 'service/youtube-api';
-import { ADD_VIDEO_LIST, CHANGE_VIDEO_LOADING, RESET_SELECTED_VIDEO, RESET_VIDEO_LIST } from 'store/slice/videoSlice';
+import { ADD_VIDEO_LIST, CHANGE_VIDEO_LOADING, requestSearchData, requestVideoData, RESET_SELECTED_VIDEO } from 'store/slice/videoSlice';
 
 const GridVideoListContainer = () => {
     const { videos, isVideoLoading } = useSelector(state => state.video);
     const { isSearched, searchQuery } = useSelector(state => state.condition);
     const dispatch = useDispatch();
 
-    const getMoreVideo = async () => {
+    const getMoreVideo = () => {
         dispatch(CHANGE_VIDEO_LOADING());
 
-        isSearched
-        ? await youtubeAPI.searchVideo(searchQuery, videos.nextPageToken) 
-        : await youtubeAPI.getMostPopular(videos.nextPageToken)
-        .then(({ items, nextPageToken }) => {
-            dispatch(ADD_VIDEO_LIST({ items, nextPageToken }));
-        })
+        if(isSearched) {
+            dispatch(requestSearchData({ searchQuery, nextToken: videos.nextPageToken}))
+            .finally(() => dispatch(CHANGE_VIDEO_LOADING()))
+            return;
+        }
+        
+        dispatch(requestVideoData(videos.nextPageToken))
         .finally(() => dispatch(CHANGE_VIDEO_LOADING()));
     }
 
@@ -31,18 +31,14 @@ const GridVideoListContainer = () => {
 
     const [lastVideoRef, setObserver] = useScrollObserver(observerCallback);
 
-    const initVideo = async () => {
+    const initVideo = () => {
         const dummyVideos = { items: new Array(24).fill(""), nextPageToken: null};
 
         dispatch(CHANGE_VIDEO_LOADING());
         dispatch(ADD_VIDEO_LIST(dummyVideos));
 
-        await youtubeAPI.getMostPopular()
-        .then(({ items, nextPageToken }) => {
-            dispatch(RESET_VIDEO_LIST());
-            dispatch(ADD_VIDEO_LIST({ items, nextPageToken }));
-            dispatch(RESET_SELECTED_VIDEO());
-        })
+        dispatch(requestVideoData())
+        .then(() => dispatch(RESET_SELECTED_VIDEO()))
         .finally(() => dispatch(CHANGE_VIDEO_LOADING()));
     }
 
