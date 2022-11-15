@@ -4,8 +4,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import authService from 'service/auth';
 import { CHANGE_IS_SEARCHED, CHANGE_SEARCH_QUERY } from 'store/slice/conditionSlice';
-import { ADD_VIDEO_LIST, CHANGE_VIDEO_LOADING, requestSearchData, requestVideoData, RESET_SELECTED_VIDEO } from 'store/slice/videoSlice';
+import { CHANGE_VIDEO_LOADING, requestSearchData, RESET_SELECTED_VIDEO } from 'store/slice/videoSlice';
 import { LOGIN, requestLogin, requestLogout } from 'store/slice/userSlice';
+import { initVideo } from 'store/actions/initVideo';
 import HeaderPresenter from './HeaderPresenter';
 
 const HeaderContainer = () => {
@@ -51,20 +52,9 @@ const HeaderContainer = () => {
         setIsDisplayEraser(false);
     }
 
-    const initVideo = async () => {
-        const dummyVideos = { items: new Array(24).fill(""), nextPageToken: null};
-
-        dispatch(CHANGE_VIDEO_LOADING());
-        dispatch(ADD_VIDEO_LIST(dummyVideos));
-
-        dispatch(requestVideoData())
-        .then(() => dispatch(RESET_SELECTED_VIDEO()))
-        .finally(() => dispatch(CHANGE_VIDEO_LOADING()));
-    }
-
     const onClickLogo = () => {
         navigate("/");
-        initVideo();
+        dispatch(initVideo());
     }
 
     const onLogin = () => {

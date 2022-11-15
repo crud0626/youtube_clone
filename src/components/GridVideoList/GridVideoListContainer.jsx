@@ -2,7 +2,8 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import GridVideoListPresenter from './GridVideoListPresenter';
 import useScrollObserver from 'hooks/useScrollObserver';
-import { ADD_VIDEO_LIST, CHANGE_VIDEO_LOADING, requestSearchData, requestVideoData, RESET_SELECTED_VIDEO } from 'store/slice/videoSlice';
+import { CHANGE_VIDEO_LOADING, requestSearchData, requestVideoData } from 'store/slice/videoSlice';
+import { initVideo } from 'store/actions/initVideo';
 
 const GridVideoListContainer = () => {
     const { videos, isVideoLoading } = useSelector(state => state.video);
@@ -31,20 +32,9 @@ const GridVideoListContainer = () => {
 
     const [lastVideoRef, setObserver] = useScrollObserver(observerCallback);
 
-    const initVideo = () => {
-        const dummyVideos = { items: new Array(24).fill(""), nextPageToken: null};
-
-        dispatch(CHANGE_VIDEO_LOADING());
-        dispatch(ADD_VIDEO_LIST(dummyVideos));
-
-        dispatch(requestVideoData())
-        .then(() => dispatch(RESET_SELECTED_VIDEO()))
-        .finally(() => dispatch(CHANGE_VIDEO_LOADING()));
-    }
-
     useEffect(() => {
         if(!isVideoLoading && !videos.items.length) {
-            initVideo();
+            dispatch(initVideo());
         }
     }, []);
 
