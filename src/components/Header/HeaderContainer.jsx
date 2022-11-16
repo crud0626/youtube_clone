@@ -1,5 +1,5 @@
 import { onAuthStateChanged } from 'firebase/auth';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import authService from 'service/auth';
@@ -17,12 +17,7 @@ const HeaderContainer = () => {
 
     const inputRef = useRef();
 
-
-    const handleModal = () => {
-        setIsModalOpen(prevState => !prevState);
-    }
-
-    const onSearch = async (event) => {
+    const onSearch = useCallback((event) => {
         event.preventDefault();
         dispatch(CHANGE_VIDEO_LOADING());
 
@@ -37,33 +32,29 @@ const HeaderContainer = () => {
             })
             .finally(() => dispatch(CHANGE_VIDEO_LOADING()))
         }
-    };
+    }, [dispatch, navigate]);
 
-    const handleEraserBtn = () => {
-        if (inputRef.current.value.length === 0) {
+    const handleEraserBtn = useCallback(() => {
+        setIsDisplayEraser(inputRef.current.value.length === 0 ? false : true);
+    }, []);
+
+    const onErase = useCallback(() => {
+        if(inputRef.current) {
+            inputRef.current.value = "";
             setIsDisplayEraser(false);
-            return;
         }
-        setIsDisplayEraser(true);
-    }
+    }, []);
 
-    const onErase = () => {
-        inputRef.current.value = "";
-        setIsDisplayEraser(false);
-    }
-
-    const onClickLogo = () => {
+    const onClickLogo = useCallback(() => {
         navigate("/");
         dispatch(initVideo());
-    }
+    }, [navigate, dispatch]);
 
-    const onLogin = () => {
-        dispatch(requestLogin());
-    }
+    const handleModal = useCallback(() => setIsModalOpen(prevState => !prevState), []);
 
-    const onLogout = () => {
-        dispatch(requestLogout());
-    }
+    const onLogin = useCallback(() => dispatch(requestLogin()), [dispatch]);
+
+    const onLogout = useCallback(() => dispatch(requestLogout()), [dispatch]);
 
     useEffect(() => {
         onAuthStateChanged(authService.auth, (user) => {
