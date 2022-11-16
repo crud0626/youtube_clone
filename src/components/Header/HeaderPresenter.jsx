@@ -1,22 +1,18 @@
-import React, { forwardRef } from 'react';
+import React from 'react';
 import Icon from 'components/Icon/Icon';
 import styles from './Header.module.scss';
 import logoIMG from 'assets/logo.png';
-import keyboardIMG from 'assets/keyboard.gif';
 import defaultThubmnail from 'assets/default_thubmnail.gif';
 import { handleThumbnailError } from 'utils/utils';
-import { CLOSE_MARK, SEARCH_MARK, VOICE_MARK, ADD_VIDEO_MARK, GRID_MARK, BELL_MARK, EXIT_MARK, USER_MARK } from 'constants/iconPath';
+import { ADD_VIDEO_MARK, GRID_MARK, BELL_MARK, EXIT_MARK, USER_MARK } from 'constants/iconPath';
 import IconButton from 'components/IconButton/IconButton';
+import SearchBar from './SearchBar/index';
 
-const HeaderPresenter = forwardRef((props, ref) => {
+const HeaderPresenter = (props) => {
     const { 
         userData, 
         isModalOpen, 
-        isDisplayEraser,
         handleModal, 
-        handleEraserBtn, 
-        onSearch, 
-        onErase, 
         onClickLogo,
         onLogin,
         onLogout
@@ -29,39 +25,7 @@ const HeaderPresenter = forwardRef((props, ref) => {
                     <img src={logoIMG} draggable="false" alt="mainlogo"/>
                     <h1>YouTube</h1>
                 </div>
-                <div className={styles.center}>
-                    <div className={styles.searchbar_container}>
-                        <div className={styles.searchbar}>
-                            <form className={styles.search_form} onSubmit={onSearch}>
-                                <input ref={ref} placeholder='검색' type="text" onKeyUp={() => handleEraserBtn()}/>
-                            </form>
-                            <div className={styles.input_icons_container}>
-                                <button className={styles.input_icon} onClick={(e) => e.preventDefault()}>
-                                    <img src={keyboardIMG} draggable="false" alt="keyboardIcon" />
-                                </button>
-                                {
-                                    isDisplayEraser && 
-                                    <IconButton 
-                                        className={styles.input_icon}
-                                        onClick={() => onErase()}
-                                        def={CLOSE_MARK}
-                                    />
-                                }
-                            </div>
-                        </div>
-                        <IconButton 
-                            className={`${styles.search_icon} ${styles.btns}`} 
-                            onClick={onSearch} 
-                            titleName="검색"
-                            def={SEARCH_MARK}
-                        />
-                    </div>
-                    <IconButton 
-                        className={`${styles.voice_btn} ${styles.btns}`} 
-                        titleName="음성으로 검색"
-                        def={VOICE_MARK}
-                    />
-                </div>
+                <SearchBar />
                 <div className={styles.right}>
                     <IconButton 
                         className={`${styles.right_btns} ${styles.btns}`} 
@@ -126,6 +90,6 @@ const HeaderPresenter = forwardRef((props, ref) => {
             </div>
         </header>
     );
-});
+};
 
 export default HeaderPresenter;
