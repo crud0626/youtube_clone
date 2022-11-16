@@ -5,7 +5,7 @@ import Icon from 'components/Icon/Icon';
 import { ADD_VIDEO_MARK, BELL_MARK, EXIT_MARK, GRID_MARK } from 'constants/iconPath';
 import { USER_MARK } from 'constants/iconPath';
 import { handleThumbnailError } from 'utils/utils';
-import defaultThubmnail from 'assets/default_thubmnail.gif';
+import { DEFAULT_THUMBNAIL } from 'assets';
 
 const RightBtnWrapperPresenter = (props) => {
     const {
@@ -39,7 +39,7 @@ const RightBtnWrapperPresenter = (props) => {
                     <button className={styles.thumbnail_container} onClick={() => handleModal()}>
                         <img 
                             src={userData.url}
-                            onError={({ currentTarget }) => handleThumbnailError(currentTarget, defaultThubmnail)} 
+                            onError={({ currentTarget }) => handleThumbnailError(currentTarget, DEFAULT_THUMBNAIL)} 
                             draggable="false"
                             alt="thumbnail" 
                         />
@@ -50,7 +50,7 @@ const RightBtnWrapperPresenter = (props) => {
                             <div className={styles.modal_header}>
                                 <img 
                                     src={userData.url} 
-                                    onError={({ currentTarget }) => handleThumbnailError(currentTarget, defaultThubmnail)}
+                                    onError={({ currentTarget }) => handleThumbnailError(currentTarget, DEFAULT_THUMBNAIL)}
                                     alt="thumbnail" 
                                 />
                                 <span>{userData.name}</span>

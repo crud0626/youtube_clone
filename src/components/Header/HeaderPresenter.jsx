@@ -2,7 +2,7 @@ import React from 'react';
 import styles from './Header.module.scss';
 import SearchBar from './SearchBar';
 import RightBtnWrapper from './RightBtnWrapper';
-import logoIMG from 'assets/logo.png';
+import { LOGO_IMG } from 'assets';
 
 const HeaderPresenter = ({ onClickLogo }) => {
     return (
@@ -13,7 +13,7 @@ const HeaderPresenter = ({ onClickLogo }) => {
                     onClick={() => onClickLogo()}
                 >
                     <img 
-                        src={logoIMG} 
+                        src={LOGO_IMG} 
                         draggable="false" 
                         alt="mainlogo"
                     />

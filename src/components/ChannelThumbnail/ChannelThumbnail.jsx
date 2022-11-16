@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './ChannelThumbnail.module.scss';
 import { handleThumbnailError } from 'utils/utils';
-import defaultThubmnail from 'assets/default_thubmnail.gif';
+import { DEFAULT_THUMBNAIL } from 'assets';
 
 const ChannelThumbnail = ({ thumbnailUrl, channelUrl = "#" }) => {
     return (
@@ -14,7 +14,7 @@ const ChannelThumbnail = ({ thumbnailUrl, channelUrl = "#" }) => {
             <img 
                 src={thumbnailUrl}
                 className={styles.thumbnail}
-                onError={({ currentTarget }) => handleThumbnailError(currentTarget, defaultThubmnail)}
+                onError={({ currentTarget }) => handleThumbnailError(currentTarget, DEFAULT_THUMBNAIL)}
                 draggable="false"
                 loading="lazy"
                 alt="channel thumbnail"

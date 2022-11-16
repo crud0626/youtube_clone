@@ -1,8 +1,8 @@
 import React, { forwardRef } from 'react';
 import styles from './SearchBar.module.scss';
 import { CLOSE_MARK, SEARCH_MARK, VOICE_MARK } from 'constants/iconPath';
-import keyboardIMG from 'assets/keyboard.gif';
 import IconButton from 'components/IconButton/IconButton';
+import { KEYBOARD_IMG } from 'assets';
 
 const SearchBarPresenter = forwardRef((props, ref) => {
     const { isDisplayEraser, handleEraserBtn, onSearch, onErase } = props;
@@ -16,7 +16,7 @@ const SearchBarPresenter = forwardRef((props, ref) => {
                     </form>
                     <div className={styles.input_icons_container}>
                         <button className={styles.input_icon} onClick={(e) => e.preventDefault()}>
-                            <img src={keyboardIMG} draggable="false" alt="keyboardIcon" />
+                            <img src={KEYBOARD_IMG} draggable="false" alt="keyboardIcon" />
                         </button>
                         {
                             isDisplayEraser && 
