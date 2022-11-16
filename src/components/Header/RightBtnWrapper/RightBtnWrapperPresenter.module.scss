@@ -1,0 +1,91 @@
+@use 'styles/common/colors';
+@use 'styles/common/mixins';
+@use 'styles/common/sizes';
+
+.right {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    min-width: 225px;
+  
+    & .right_btns {
+        display: flex;
+        align-items: center;
+        padding: sizes.$small-space;
+    }
+  
+    & .login_btn {
+        justify-content: space-evenly;
+        width: 99.5px;
+        margin-left: sizes.$small-space;
+        padding: 5px 11px;
+        border: 1px solid colors.$link-blue-color;
+        border-radius: 3px;
+        color: colors.$link-blue-color;
+        fill: colors.$link-blue-color;
+        font-size: 0.9rem;
+    }
+}
+  
+.thumbnail_container {
+    margin-left: sizes.$small-space;
+    padding: 0;
+    width: sizes.$small-thumbnail;
+    height: sizes.$small-thumbnail;
+  
+    & img {
+        width: 100%;
+        border-radius: 50%;
+        background-color: colors.$default-img-color;
+    }
+}
+  
+.modal_container {
+    width: 300px;
+    position: absolute;
+    top: sizes.$header-height;
+    border: sizes.$thin-black-border;
+    border-radius: 2px;
+    background: white;
+    z-index: 5;
+}
+  
+.modal_header {
+    display: flex;
+    align-items: center;
+    padding: sizes.$medium-space;
+    border-bottom: sizes.$thin-black-border;
+  
+    & img {
+        margin-right: sizes.$medium-space;
+        width: sizes.$medium-thumbnail;
+        height: sizes.$medium-thumbnail;
+        border-radius: 50%;
+    }
+  
+    & span {
+        font-weight: bold;
+    }
+}
+  
+.modal_button {
+    display: flex;
+    align-items: center;
+    padding: 0 sizes.$medium-space;
+    width: 100%;
+    height: sizes.$large-thumbnail;
+  
+    &:hover {
+        background: colors.$header-modal-button-hover-color;
+    }
+  
+    & > .modal_icons {
+        width: sizes.$icon-medium-size;
+        height: sizes.$icon-medium-size;
+        margin-right: sizes.$medium-space;
+    }
+}
+
+.btns {
+    @include mixins.btn-hover-title;
+}
