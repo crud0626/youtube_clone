@@ -2,13 +2,14 @@
 @use 'styles/common/mixins';
 @use 'styles/common/sizes';
 
-.right {
+.wrapper {
     display: flex;
     justify-content: flex-end;
     align-items: center;
     min-width: 225px;
   
-    & .right_btns {
+    & .btns {
+        @include mixins.btn-hover-title;
         display: flex;
         align-items: center;
         padding: sizes.$small-space;
@@ -26,8 +27,8 @@
         font-size: 0.9rem;
     }
 }
-  
-.thumbnail_container {
+
+.thumbnail_wrapper {
     margin-left: sizes.$small-space;
     padding: 0;
     width: sizes.$small-thumbnail;
@@ -40,7 +41,7 @@
     }
 }
   
-.modal_container {
+.modal_wrapper {
     width: 300px;
     position: absolute;
     top: sizes.$header-height;
@@ -48,44 +49,40 @@
     border-radius: 2px;
     background: white;
     z-index: 5;
-}
-  
-.modal_header {
-    display: flex;
-    align-items: center;
-    padding: sizes.$medium-space;
-    border-bottom: sizes.$thin-black-border;
-  
-    & img {
-        margin-right: sizes.$medium-space;
-        width: sizes.$medium-thumbnail;
-        height: sizes.$medium-thumbnail;
-        border-radius: 50%;
-    }
-  
-    & span {
-        font-weight: bold;
-    }
-}
-  
-.modal_button {
-    display: flex;
-    align-items: center;
-    padding: 0 sizes.$medium-space;
-    width: 100%;
-    height: sizes.$large-thumbnail;
-  
-    &:hover {
-        background: colors.$header-modal-button-hover-color;
-    }
-  
-    & > .modal_icons {
-        width: sizes.$icon-medium-size;
-        height: sizes.$icon-medium-size;
-        margin-right: sizes.$medium-space;
-    }
-}
 
-.btns {
-    @include mixins.btn-hover-title;
+    & .modal_header {
+        display: flex;
+        align-items: center;
+        padding: sizes.$medium-space;
+        border-bottom: sizes.$thin-black-border;
+      
+        & img {
+            margin-right: sizes.$medium-space;
+            width: sizes.$medium-thumbnail;
+            height: sizes.$medium-thumbnail;
+            border-radius: 50%;
+        }
+      
+        & span {
+            font-weight: bold;
+        }
+    }
+
+    & .modal_body .modal_button {
+        display: flex;
+        align-items: center;
+        padding: 0 sizes.$medium-space;
+        width: 100%;
+        height: sizes.$large-thumbnail;
+      
+        &:hover {
+            background: colors.$header-modal-button-hover-color;
+        }
+      
+        & > .modal_icons {
+            width: sizes.$icon-medium-size;
+            height: sizes.$icon-medium-size;
+            margin-right: sizes.$medium-space;
+        }
+    }
 }

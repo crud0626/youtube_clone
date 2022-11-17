@@ -8,10 +8,7 @@ const RightBtnWrapperContainer = () => {
     const userData = useSelector(state => state.user);
     const [isModalOpen, setIsModalOpen] = useState(false);
 
-    const handleModal = useCallback(() => {
-        console.log("clicked!");
-        setIsModalOpen(prevState => !prevState);
-    }, []);
+    const handleModal = useCallback(() => setIsModalOpen(prevState => !prevState), []);
 
     const onLogout = useCallback(() => dispatch(requestLogout()), [dispatch]);
 
