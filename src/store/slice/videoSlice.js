@@ -47,6 +47,23 @@ const requestSearchData = createAsyncThunk(
     }
 );
 
+const requestVideoInfo = createAsyncThunk(
+    "video/requestVideoInfo",
+    async (video, thunkAPI) => {
+        const data = await youtubeAPI.getCurrentVidInfo(video);
+        if (data) {
+            const { info, comments } = data;
+            thunkAPI.dispatch(CHANGE_SELECTED_VIDEO(info));
+            thunkAPI.dispatch(ADD_COMMENTS({
+                items: comments.items,
+                nextPageToken: comments.nextPageToken
+            }));
+
+            return video.id;
+        }
+    }
+);
+
 
 const videoSlice = createSlice({
     name: "video",
@@ -108,7 +125,12 @@ const videoSlice = createSlice({
 
 export default videoSlice;
 
-export { requestVideoData, requestCommentData, requestSearchData };
+export { 
+    requestVideoData, 
+    requestCommentData, 
+    requestSearchData,
+    requestVideoInfo
+};
 
 export const { 
     ADD_VIDEO_LIST,

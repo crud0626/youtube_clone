@@ -2,11 +2,11 @@
 @use 'styles/common/mixins';
 @use 'styles/common/sizes';
 
-.container {
+.wrapper {
   @include mixins.grid-video-item;
   cursor: pointer;
 
-  & .info_container {
+  & .info_wrapper {
     width: 100%;
     height: 100%;
     padding: sizes.$playlist-info-default-space 0;

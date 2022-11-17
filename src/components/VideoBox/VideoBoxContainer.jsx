@@ -1,22 +1,15 @@
 import React, { forwardRef, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import youtubeAPI from 'service/youtube-api';
-import { ADD_COMMENTS, CHANGE_SELECTED_VIDEO } from 'store/slice/videoSlice';
 import VideoBoxPresenter from './VideoBoxPresenter';
+import { requestVideoInfo } from 'store/slice/videoSlice';
 
 const VideoBoxContainer = forwardRef(({ video, setObserver, isThumbnail = true }, ref) => {
     const dispatch = useDispatch(), navigate = useNavigate();
-    const onClickVideo = async (video) => {
-        await youtubeAPI.getCurrentVidInfo(video)
-        .then(({ info, comments }) => {
-            dispatch(CHANGE_SELECTED_VIDEO(info));
-            dispatch(ADD_COMMENTS({
-                items: comments.items,
-                nextPageToken: comments.nextPageToken
-            }));
-            navigate(`/watch?v=${video.id}`);
-        });
+
+    const onClickVideo = (video) => {
+        dispatch(requestVideoInfo(video))
+        .then((videoId) => navigate(`/watch?v=${videoId}`));
     };
 
     useEffect(() => {

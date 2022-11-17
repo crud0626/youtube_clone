@@ -10,12 +10,16 @@ const VideoBoxPresenter = forwardRef(({ video, isThumbnail, onClickVideo }, ref)
 
     return (
         snippet ? (
-        <li ref={ref || null} className={styles.container} onClick={() => onClickVideo(video)}>
+        <li 
+            ref={ref || null} 
+            className={styles.wrapper} 
+            onClick={() => onClickVideo(video)}
+        >
             <VideoThumbnail 
                 thumbnailUrl={snippet.thumbnails.medium.url}
                 duration={contentDetails.duration}
             />
-            <div className={styles.info_container}>
+            <div className={styles.info_wrapper}>
                 {
                     isThumbnail &&
                     <ChannelThumbnail
@@ -23,9 +27,13 @@ const VideoBoxPresenter = forwardRef(({ video, isThumbnail, onClickVideo }, ref)
                     />
                 }
                 <div className={styles.info_content}>
-                    <h3 className={styles.title}>{snippet.title}</h3>
+                    <h3 className={styles.title}>
+                        {snippet.title}
+                    </h3>
                     <div className={styles.info}>
-                        <span className={styles.channel_title}>{snippet.channelTitle}</span>
+                        <span className={styles.channel_title}>
+                            {snippet.channelTitle}
+                        </span>
                         <div className={styles.sub_info}>
                             <span>{`조회수 ${convertCount(statistics.viewCount)}회`}</span>
                             <span>{getTimeDiff(video.snippet.publishedAt)}</span>
