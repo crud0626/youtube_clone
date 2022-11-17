@@ -11,7 +11,7 @@ const SearchBarPresenter = forwardRef((props, ref) => {
         <div className={styles.center}>
             <div className={styles.searchbar_container}>
                 <div className={styles.searchbar}>
-                    <form className={styles.search_form} onSubmit={() => onSearch()}>
+                    <form className={styles.search_form} onSubmit={(e) => onSearch(e)}>
                         <input ref={ref} placeholder='검색' type="text" onKeyUp={() => handleEraserBtn()} />
                     </form>
                     <div className={styles.input_icons_container}>
