@@ -2,12 +2,14 @@ import React, { forwardRef } from 'react';
 import styles from './VideoBox.module.scss';
 import ChannelThumbnail from 'components/ChannelThumbnail/ChannelThumbnail';
 import VideoThumbnail from './VideoThumbnail/VideoThumbnail';
+import VideoSkeleton from './VideoSkeleton/VideoSkeleton';
 import { convertCount, getTimeDiff } from 'utils/calculator';
 
 const VideoBoxPresenter = forwardRef(({ video, isThumbnail, onClickVideo }, ref) => {
     const { channel, contentDetails, snippet, statistics } = video;
 
     return (
+        snippet ? (
         <li ref={ref || null} className={styles.container} onClick={() => onClickVideo(video)}>
             <VideoThumbnail 
                 thumbnailUrl={snippet.thumbnails.medium.url}
@@ -32,6 +34,7 @@ const VideoBoxPresenter = forwardRef(({ video, isThumbnail, onClickVideo }, ref)
                 </div>
             </div>
         </li>
+        ) : <VideoSkeleton />
     );
 });
 
