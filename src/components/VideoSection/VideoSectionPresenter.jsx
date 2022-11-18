@@ -1,9 +1,8 @@
 import React, { forwardRef } from 'react';
-import styles from './VideoSection.module.scss'
-import CommentsWrapper from 'components/CommentsWrapper';
-import IconButton from 'components/IconButton/IconButton';
+import styles from './VideoSection.module.scss';
+import PlayerBox from './PlayerBox';
 import PlayList from './PlayList';
-import { EMPTY_LIKE_MARK, FILL_LIKE_MARK, EMPTY_DISLIKE_MARK, FILL_DISLIKE_MARK, SHARE_MARK, SAVE_MARK } from 'constants/iconPath';
+import CommentsWrapper from 'components/CommentsWrapper';
 import { handleThumbnailError } from 'utils/utils';
 import { convertCount } from 'utils/calculator';
 import { DEFAULT_THUMBNAIL } from 'assets';
@@ -11,72 +10,19 @@ import { DEFAULT_THUMBNAIL } from 'assets';
 const VideoSectionPresenter = forwardRef((props, ref) => {
     const {
         selectedVideo,
-        rating,
         isOpenFlip,
         isTextOver,
         isInSection,
         handleToggle,
-        displayVideoDate,
-        sendRating,
         convertToLink
     } = props;
 
-    const { channel, id, snippet, statistics } = selectedVideo;
+    const { channel, snippet } = selectedVideo;
 
     return (
         <section className="section_select_video">
             <div className={styles.wrapper}>
-                <div className={styles.player_wrapper}>
-                <iframe 
-                    className={styles.player}
-                    id="ytplayer" 
-                    type="text/html" 
-                    title='videoplayer'
-                    src={`https://www.youtube.com/embed/${id}`}
-                    frameBorder="0" 
-                    allowFullScreen
-                ></iframe>
-                </div>
-                <div className={styles.video_info_wrapper}>
-                    <h3 className={styles.video_title}>{snippet.title}</h3>
-                    <div className={styles.video_info}>
-                        <div className={styles.video_info_text}>
-                            <span>{`${Number(statistics.viewCount).toLocaleString("en")}회`}</span>
-                            <span>{" • "}</span>
-                            <span>{displayVideoDate()}</span>
-                        </div>
-                        <div className={styles.video_info_button_wrapper}>
-                            <IconButton 
-                                className={`${styles.video_info_button} ${styles.btns}`} 
-                                titleName="이 동영상이 마음에 듭니다."
-                                dataFunc={rating.like ? "none" : "like"} 
-                                onClick={sendRating}
-                                def={rating.like ? FILL_LIKE_MARK : EMPTY_LIKE_MARK}
-                                text={convertCount(statistics.likeCount)}
-                            />
-                            <IconButton 
-                                className={`${styles.video_info_button} ${styles.btns}`}
-                                titleName="이 동영상이 마음에 들지 않습니다."
-                                dataFunc={rating.disLike ? "none" : "dislike"} 
-                                onClick={sendRating}
-                                def={rating.disLike ? FILL_DISLIKE_MARK : EMPTY_DISLIKE_MARK}
-                                text="싫어요"
-                            />
-                            <IconButton 
-                                className={`${styles.video_info_button} ${styles.btns}`} 
-                                titleName="공유"
-                                def={SHARE_MARK}
-                                text="공유"
-                            />
-                            <IconButton 
-                                className={`${styles.video_info_button} ${styles.btns}`} 
-                                titleName="저장"
-                                def={SAVE_MARK} 
-                                text="저장"
-                            />
-                        </div>
-                    </div>
-                </div>
+                <PlayerBox />
                 <div className={styles.channel_info_wrapper}>
                     <a className={styles.channel_thumbnail} href={`https://www.youtube.com/channel/${snippet.channelId}`} target="_blank" rel="noreferrer" >
                         <img 

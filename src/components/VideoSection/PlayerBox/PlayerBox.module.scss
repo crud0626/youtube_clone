@@ -1,0 +1,53 @@
+@use 'styles/common/colors';
+@use 'styles/common/mixins';
+@use 'styles/common/sizes';
+
+// Video Player
+.player_wrapper {
+    position: relative;
+    width: 100%;
+    padding-bottom: 56.25%;
+    min-width: sizes.$player-min-width;
+    min-height: sizes.$player-min-height;
+    max-width: sizes.$player-max-width;
+    max-height: sizes.$player-max-height;
+  
+    & > .player {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+    }
+}
+
+// Video Info
+.info_wrapper {
+    @include mixins.separate-line(sizes.$medium-space);
+  
+    & .info {
+        display: flex;
+        height: 40px;
+        justify-content: space-between;
+        align-items: center;
+        color: colors.$light-gray-color;
+        font-size: 0.9rem;
+    
+      & .info_btn_wrapper {
+        display: flex;
+        height: 100%;
+        align-items: center;
+        color: black;
+    
+        & .info_btn {
+            @include mixins.btn-hover-title;
+            margin-right: 10px;
+            display: flex;
+            align-items: center;
+            height: 100%;
+  
+            & > div {
+                margin: 6px;
+            }
+        }
+      }
+    }
+}
