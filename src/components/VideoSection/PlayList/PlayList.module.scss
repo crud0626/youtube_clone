@@ -1,13 +1,13 @@
 @use 'styles/common/colors';
 
-.container {
+.wrapper {
     margin: 0;
     padding: 0;
     display: flex;
     flex-direction: column;
     list-style: none;
 
-    & .video_container {
+    & .video_wrapper {
         margin: 0;
         padding: 0;
     }

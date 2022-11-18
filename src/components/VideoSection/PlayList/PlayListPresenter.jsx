@@ -14,31 +14,33 @@ const PlayListPresenter = forwardRef((props, ref) => {
     } = props;
 
     return (
-        <div className={styles.container}>
-            <ul className={styles.video_container}>
-                {videos.items.map((item, index) => {
-                    const renderProps = {
-                            "key": nanoid(),
-                            "isThumbnail": false,
-                            "video": item
-                    };
+        <div className={styles.wrapper}>
+            <ul className={styles.video_wrapper}>
+                {
+                    videos.items.map((video, index) => {
+                        const isLastVideo =  !isLoading && index === videos.items.length - 1;
 
-                    if (!isLoading && index === videos.items.length-1) {
-                        renderProps.ref = ref;
-                        renderProps.setObserver = setObserver;
-                    }
-
-                    return <VideoBox { ...renderProps } />;
-                    
-                })}
+                        return (
+                            <VideoBox
+                                ref={isLastVideo ? ref : null}
+                                key={nanoid()}
+                                isThumbnail={false}
+                                video={video}
+                                setObserver={setObserver}
+                            />
+                        );
+                    })
+                }
             </ul>
-            { 
-                isInSection && !isLoading &&
-                <button className={styles.more_btn} onClick={() => getVideo()}>
-                    <span>더보기</span>
-                </button>
+            {
+                isLoading 
+                ? <Spinner /> 
+                : isInSection &&  (
+                    <button className={styles.more_btn} onClick={() => getVideo()}>
+                        <span>더보기</span>
+                    </button>
+                )
             }
-            { isLoading && <Spinner /> }
         </div>
     );
 });

@@ -18,9 +18,7 @@ const PlayListContainer = ({ isInSection }) => {
     }
 
     const observerCallback = () => {
-        if (window.innerWidth > 1016) {
-            getVideo();
-        }
+        if (!isInSection) getVideo();
     };
 
     const [lastVideoRef, setObserver] = useScrollObserver(observerCallback);
