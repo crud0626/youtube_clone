@@ -1,37 +1,42 @@
 import React, { useCallback, useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import VideoSectionPresenter from './VideoSectionPresenter';
 import useResizeObserver from 'hooks/useResizeObserver';
 import useTextOver from 'hooks/useTextOver';
-import VideoSectionPresenter from './VideoSectionPresenter';
-import youtubeAPI from 'service/youtube-api';
 import { requestLogin } from 'store/slice/userSlice';
+import youtubeAPI from 'service/youtube-api';
 
 const VideoSectionContainer = () => {
     const dispatch = useDispatch();
     const userData = useSelector(state => state.user);
     const isInSection = useResizeObserver(1016);
     const { selectedVideo } = useSelector(state => state.video);
-    const [isFlipOpen, setIsFlipOpen] = useState(false);
+    const [isOpenFlip, setIsOpenFlip] = useState(false);
     const [isTextOver, descRef] = useTextOver();
     const [rating, setRating] = useState({
         like: false,
         disLike: false
     });
 
-    const handleToggle = useCallback(() => setIsFlipOpen((prevState) => !prevState), []);
+    const handleToggle = useCallback(() => setIsOpenFlip((prevState) => !prevState), []);
 
-    const displayVideoDate = () => {
+    const displayVideoDate = useCallback(() => {
         const date = new Date(selectedVideo.snippet.publishedAt);
         return `${date.getFullYear()}. ${date.getMonth() + 1}. ${date.getDate()}.`;
-    }
+    }, [selectedVideo.snippet.publishedAt]);
 
-    const getToken = () => {
+    const convertToLink = useCallback((text) => {
+        const convertedText = text.replace(/\bhttps?:\/\/\S+\b/g, '<a href=$& target="_blank" rel="noreferrer">$&</a>');
+        return { __html: convertedText };
+    }, []);
+
+    const getToken = useCallback(() => {
         if (userData.uid) {
             return JSON.parse(localStorage.getItem(userData.uid));
         }
-    }
+    }, [userData.uid]);
 
-    const checkExpires = () => {
+    const checkExpires = useCallback(() => {
         const tokenData = getToken();
         if (Date.now() > tokenData.expires) {
             alert("토큰이 만료되어 로그인을 재시도합니다.");
@@ -39,7 +44,7 @@ const VideoSectionContainer = () => {
         }
 
         return true;
-    }
+    }, [dispatch, getToken]);
 
     const getCurrentRate = async () => {
         if (checkExpires()) {
@@ -98,11 +103,6 @@ const VideoSectionContainer = () => {
         }
     };
 
-    const convertToLink = (text) => {
-        const convertedText = text.replace(/\bhttps?:\/\/\S+\b/g, '<a href=$& target="_blank" rel="noreferrer">$&</a>');
-        return { __html: convertedText };
-    }
-
     useEffect(() => {
         if (userData.uid) getCurrentRate();
     }, [userData.uid]);
@@ -112,7 +112,7 @@ const VideoSectionContainer = () => {
             ref={descRef}
             selectedVideo={selectedVideo}
             rating={rating}
-            isFlipOpen={isFlipOpen}
+            isOpenFlip={isOpenFlip}
             isTextOver={isTextOver}
             isInSection={isInSection}
             handleToggle={handleToggle}

@@ -1,18 +1,18 @@
 import React, { forwardRef } from 'react';
 import styles from './VideoSection.module.scss'
-import defaultThubmnail from 'assets/default_thubmnail.gif';
 import CommentsWrapper from 'components/CommentsWrapper';
 import IconButton from 'components/IconButton/IconButton';
 import PlayList from './PlayList';
 import { EMPTY_LIKE_MARK, FILL_LIKE_MARK, EMPTY_DISLIKE_MARK, FILL_DISLIKE_MARK, SHARE_MARK, SAVE_MARK } from 'constants/iconPath';
 import { handleThumbnailError } from 'utils/utils';
 import { convertCount } from 'utils/calculator';
+import { DEFAULT_THUMBNAIL } from 'assets';
 
 const VideoSectionPresenter = forwardRef((props, ref) => {
     const {
         selectedVideo,
         rating,
-        isFlipOpen,
+        isOpenFlip,
         isTextOver,
         isInSection,
         handleToggle,
@@ -25,19 +25,19 @@ const VideoSectionPresenter = forwardRef((props, ref) => {
 
     return (
         <section className="section_select_video">
-            <div className={styles.container}>
-                <div className={styles.player_container}>
-                    <iframe 
-                        className={styles.player}
-                        id="ytplayer" 
-                        type="text/html" 
-                        title='videoplayer'
-                        src={`https://www.youtube.com/embed/${id}`}
-                        frameBorder="0" 
-                        allowFullScreen
-                    ></iframe>
+            <div className={styles.wrapper}>
+                <div className={styles.player_wrapper}>
+                <iframe 
+                    className={styles.player}
+                    id="ytplayer" 
+                    type="text/html" 
+                    title='videoplayer'
+                    src={`https://www.youtube.com/embed/${id}`}
+                    frameBorder="0" 
+                    allowFullScreen
+                ></iframe>
                 </div>
-                <div className={styles.video_info_container}>
+                <div className={styles.video_info_wrapper}>
                     <h3 className={styles.video_title}>{snippet.title}</h3>
                     <div className={styles.video_info}>
                         <div className={styles.video_info_text}>
@@ -45,7 +45,7 @@ const VideoSectionPresenter = forwardRef((props, ref) => {
                             <span>{" • "}</span>
                             <span>{displayVideoDate()}</span>
                         </div>
-                        <div className={styles.video_info_button_container}>
+                        <div className={styles.video_info_button_wrapper}>
                             <IconButton 
                                 className={`${styles.video_info_button} ${styles.btns}`} 
                                 titleName="이 동영상이 마음에 듭니다."
@@ -77,11 +77,11 @@ const VideoSectionPresenter = forwardRef((props, ref) => {
                         </div>
                     </div>
                 </div>
-                <div className={styles.channel_info_container}>
+                <div className={styles.channel_info_wrapper}>
                     <a className={styles.channel_thumbnail} href={`https://www.youtube.com/channel/${snippet.channelId}`} target="_blank" rel="noreferrer" >
                         <img 
                             src={channel.snippet.thumbnails.default.url} 
-                            onError={({ currentTarget }) => handleThumbnailError(currentTarget, defaultThubmnail)}
+                            onError={({ currentTarget }) => handleThumbnailError(currentTarget, DEFAULT_THUMBNAIL)}
                             draggable="false"
                             alt="channelImage" 
                         />
@@ -96,7 +96,7 @@ const VideoSectionPresenter = forwardRef((props, ref) => {
                             {snippet.channelTitle}
                         </a>
                         <span>{`구독자 ${convertCount(channel.statistics.subscriberCount)}명`}</span>
-                        <div className={styles.desc_container}>
+                        <div className={styles.desc_wrapper}>
                             <pre 
                                 ref={ref} 
                                 className={`${styles.desc} `}
@@ -108,7 +108,7 @@ const VideoSectionPresenter = forwardRef((props, ref) => {
                                     className={styles.toggle_btn} 
                                     onClick={() => handleToggle()}
                                 >
-                                    <span>{ isFlipOpen ? "간략히" : "더보기" }</span>
+                                    <span>{ isOpenFlip ? "간략히" : "더보기" }</span>
                                 </button>
                             }
                         </div>
