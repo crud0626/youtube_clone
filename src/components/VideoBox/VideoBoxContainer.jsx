@@ -9,7 +9,7 @@ const VideoBoxContainer = forwardRef(({ video, setObserver, isThumbnail = true }
 
     const onClickVideo = (video) => {
         dispatch(requestVideoInfo(video))
-        .then((videoId) => navigate(`/watch?v=${videoId}`));
+        .then(() => navigate(`/watch?v=${video.id}`));
     };
 
     useEffect(() => {
