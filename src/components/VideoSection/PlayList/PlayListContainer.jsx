@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import useScrollObserver from 'hooks/useScrollObserver';
-import youtubeAPI from 'service/youtube-api';
-import { ADD_VIDEO_LIST, CHANGE_VIDEO_LOADING } from 'store/slice/videoSlice';
 import PlayList from './PlayListPresenter';
+import useScrollObserver from 'hooks/useScrollObserver';
+import { getMoreVideo } from 'store/actions/getMoreVideo';
 
 const PlayListContainer = ({ isInSection }) => {
     const dispatch = useDispatch();
@@ -11,29 +10,18 @@ const PlayListContainer = ({ isInSection }) => {
     const { isSearched, searchQuery } = useSelector(state => state.condition);
     const [isLoading, setIsLoading] = useState(false);
 
+    const getVideo = () => {
+        setIsLoading(true);
+
+        dispatch(getMoreVideo(videos.nextPageToken, isSearched, searchQuery))
+        .finally(() => setIsLoading(false));
+    }
+
     const observerCallback = () => {
         if (window.innerWidth > 1016) {
             getVideo();
         }
     };
-
-    const getMoreVideo = async () => {
-        dispatch(CHANGE_VIDEO_LOADING());
-    
-        isSearched
-        ? await youtubeAPI.searchVideo(searchQuery, videos.nextPageToken) 
-        : await youtubeAPI.getMostPopular(videos.nextPageToken)
-        .then(({ items, nextPageToken }) => {
-            dispatch(ADD_VIDEO_LIST({ items, nextPageToken }));
-        })
-        .finally(() => dispatch(CHANGE_VIDEO_LOADING()));
-    }
-
-    const getVideo = async () => {
-        setIsLoading(true);
-        await getMoreVideo()
-        .then(() => setIsLoading(false));
-    }
 
     const [lastVideoRef, setObserver] = useScrollObserver(observerCallback);
 
