@@ -40,13 +40,13 @@
 
 :global {
   .section_select_video {
-    & :local .container {
+    & :local .wrapper {
       margin: sizes.$playlist-video-margin;
       flex-direction: row;
       min-width: sizes.$playlist-video-min-width;
       max-width: sizes.$playlist-video-max-width;
 
-      & .info_container {
+      & .info_wrapper {
         padding: 0;
       }
     }
@@ -58,7 +58,7 @@
     .section_select_video {
       display: block;
 
-      & :local .container {
+      & :local .wrapper {
         width: 100%;
         max-width: none;
       }
