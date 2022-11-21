@@ -4,6 +4,7 @@ import ChannelThumbnail from 'components/ChannelThumbnail/ChannelThumbnail';
 import VideoThumbnail from './VideoThumbnail/VideoThumbnail';
 import VideoSkeleton from './VideoSkeleton/VideoSkeleton';
 import { convertCount, getTimeDiff } from 'utils/calculator';
+import { convertIdToUrl } from 'utils/utils';
 
 const VideoBoxPresenter = forwardRef(({ video, isThumbnail, onClickVideo }, ref) => {
     const { channel, contentDetails, snippet, statistics } = video;
@@ -24,6 +25,7 @@ const VideoBoxPresenter = forwardRef(({ video, isThumbnail, onClickVideo }, ref)
                     isThumbnail &&
                     <ChannelThumbnail
                         thumbnailUrl={channel.snippet.thumbnails.default.url}
+                        channelUrl={convertIdToUrl(snippet.channelId)}
                     />
                 }
                 <div className={styles.info_content}>

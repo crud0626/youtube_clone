@@ -1,8 +1,8 @@
 import React, { forwardRef } from 'react';
 import styles from './ChannelInfo.module.scss';
-import { DEFAULT_THUMBNAIL } from 'assets';
-import { handleThumbnailError } from 'utils/utils';
+import ChannelThumbnail from 'components/ChannelThumbnail/ChannelThumbnail';
 import { convertCount } from 'utils/calculator';
+import { convertIdToUrl } from 'utils/utils';
 
 const ChannelDescPresenter = forwardRef((props, ref) => {
     const { isTextOver, isOpenFlip, selectedVideo, handleToggle, convertToLink } = props;
@@ -10,27 +10,15 @@ const ChannelDescPresenter = forwardRef((props, ref) => {
 
     return (
         <div className={styles.wrapper}>
-            {/* Channel Thumbnail 컴포넌트 적용 가능 사이즈만 변경하면 */}
-            <a 
-                className={styles.thumbnail} 
-                href={`https://www.youtube.com/channel/${snippet.channelId}`} 
-                target="_blank" 
-                rel="noreferrer" 
-            >
-                <img 
-                    src={channel.snippet.thumbnails.default.url} 
-                    onError={({ currentTarget }) => 
-                        handleThumbnailError(currentTarget, DEFAULT_THUMBNAIL)
-                    }
-                    draggable="false"
-                    alt="channelImage"
-                />
-            </a>
-            {/* Channel Thumbnail 컴포넌트 */}
+            <ChannelThumbnail 
+                thumbnailUrl={channel.snippet.thumbnails.default.url}
+                channelUrl={convertIdToUrl(snippet.channelId)}
+                isLarge={true}
+            />
             <div className={styles.info}>
                 {/* 채널 타이틀과 링크 */}
                 <a 
-                    href={`https://www.youtube.com/channel/${snippet.channelId}`} 
+                    href={convertIdToUrl(snippet.channelId)} 
                     target="_blank" 
                     rel="noreferrer"
                     className={styles.channel}

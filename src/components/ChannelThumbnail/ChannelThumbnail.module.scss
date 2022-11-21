@@ -7,6 +7,11 @@
     height: sizes.$medium-thumbnail;
     flex-shrink: 0;
 
+    &.large {
+        width: sizes.$large-thumbnail;
+        height: sizes.$large-thumbnail;
+    }
+
     & > .thumbnail {
         width: 100%;
         height: 100%;
