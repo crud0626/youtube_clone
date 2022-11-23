@@ -2,20 +2,23 @@ import React, { forwardRef, useCallback, useState, useEffect } from 'react';
 import useTextOver from 'hooks/useTextOver';
 import CommentBoxPresenter from './CommentBoxPresenter';
 
-// ref 2개인거 추후 해결하기
 const CommentBoxContainer = forwardRef(({ commentData, setObserver }, ref) => {
     const [isFlipOpen, setIsFlipOpen] = useState(false);
-    const [isTextOver, spanRef] = useTextOver(); // 일단 spanRef는 필요함.
+    const [isTextOver, spanRef] = useTextOver();
+    const refs = {
+        spanRef,
+        lastCommentRef: ref
+    };
 
     const handleToggle = useCallback(() => setIsFlipOpen((prevState) => !prevState), []);
 
     useEffect(() => {
-        if (ref) setObserver();
+        if (refs.lastCommentRef) setObserver();
     }, []);
 
     return (
         <CommentBoxPresenter 
-            ref={ref}
+            ref={refs}
             commentData={commentData}
             isFlipOpen={isFlipOpen}
             isTextOver={isTextOver}

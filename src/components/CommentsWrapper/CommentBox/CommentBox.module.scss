@@ -2,7 +2,7 @@
 @use 'styles/common/sizes';
 @use 'styles/common/mixins';
 
-.container {
+.wrapper {
   margin: 0 0 sizes.$medium-space 0;
   display: flex;
 
@@ -12,13 +12,13 @@
   }
 }
 
-.info_container {
+.info_wrapper {
   & .info_header {
     margin-bottom: 3px;
     display: flex;
     align-items: center;
   
-    & > .name {
+    & > .channel_name {
       margin: 0;
       font-size: 0.9rem;
       color: black;
@@ -34,7 +34,7 @@
   & .info_body {
     font-size: 0.9rem;
   
-    & > .content_container {
+    & > .content_wrapper {
       @include mixins.filp-content(4);
     }
     
