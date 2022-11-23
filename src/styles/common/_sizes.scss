@@ -19,8 +19,6 @@ $header-height: 56px;
 
 // Playlist
 $playlist-video-margin: 0 8px 8px 8px;
-$playlist-video-min-width: 240px;
-$playlist-video-max-width: 360px;
 $playlist-video-width: 168px;
 $playlist-video-height: 94px;
 $playlist-video-min-width: 300px;
@@ -30,10 +28,10 @@ $playlist-info-default-space: 12px;
 $playlist-variable-width: 1016px;
 
 // Grid
-$grid-max-width: calc($playlist-video-min-width * 5);
 $grid-gap: 16px;
 $grid-video-box-min-width: 300px;
 $grid-video-box-min-height: 170px;
+$grid-max-width: calc($playlist-video-min-width * 4 + $grid-gap * 3 + $medium-space * 2);
 
 // Player
 $player-min-width: 640px;
