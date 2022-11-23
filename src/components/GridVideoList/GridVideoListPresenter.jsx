@@ -36,11 +36,9 @@ const GridVideoListPresenter = forwardRef((props, ref) => {
                     }
                     </ul>
                     { 
-                        /* 
-                            Result page에서는 스켈레톤 UI 없이 Spinner만 필요 
-                            Result 컴포넌트 생성 예정
-                        */
-                        isSearched && <Spinner />
+                        // Result page에서는 스켈레톤 UI 없이 Spinner만 필요 
+                        // 추후 Result 컴포넌트 생성 예정 
+                        isSearched && isVideoLoading && <Spinner />
                     }
                     {
                         !videos.nextPageToken &&
