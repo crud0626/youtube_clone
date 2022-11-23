@@ -6,16 +6,15 @@ import useTextOver from 'hooks/useTextOver';
 const ChannelInfoContainer = () => {
     const [isTextOver, descRef] = useTextOver();
     const { selectedVideo } = useSelector(state => state.video);
-    const [isOpenFlip, setIsOpenFlip] = useState(false);
+    const [isFlipOpen, setIsFlipOpen] = useState(false);
 
-    const handleToggle = useCallback(() => 
-        setIsOpenFlip((prevState) => !prevState)
-    , []);
+    const handleToggle = useCallback(() => setIsFlipOpen((prevState) => !prevState), []);
 
     const convertToLink = useCallback((text) => {
         const convertedText = text.replace(/\bhttps?:\/\/\S+\b/g, 
             '<a href=$& target="_blank" rel="noreferrer">$&</a>'
         );
+        
         return { __html: convertedText };
     }, []);
     
@@ -23,7 +22,7 @@ const ChannelInfoContainer = () => {
         <ChannelInfoPresenter 
             ref={descRef}
             isTextOver={isTextOver}
-            isOpenFlip={isOpenFlip}
+            isFlipOpen={isFlipOpen}
             selectedVideo={selectedVideo}
             handleToggle={handleToggle}
             convertToLink={convertToLink}

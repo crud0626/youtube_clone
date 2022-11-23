@@ -5,7 +5,7 @@ import { convertCount } from 'utils/calculator';
 import { convertIdToUrl } from 'utils/utils';
 
 const ChannelDescPresenter = forwardRef((props, ref) => {
-    const { isTextOver, isOpenFlip, selectedVideo, handleToggle, convertToLink } = props;
+    const { isTextOver, isFlipOpen, selectedVideo, handleToggle, convertToLink } = props;
     const { channel, snippet } = selectedVideo;
 
     return (
@@ -32,7 +32,7 @@ const ChannelDescPresenter = forwardRef((props, ref) => {
                 <div className={styles.desc_wrapper}>
                     <pre 
                         ref={ref} 
-                        className={styles.desc}
+                        className={`${styles.desc} ${isFlipOpen ? "expander" : ""}`}
                         dangerouslySetInnerHTML={convertToLink(snippet.description)}
                     />
                     {
@@ -41,7 +41,9 @@ const ChannelDescPresenter = forwardRef((props, ref) => {
                             className={styles.toggle_btn} 
                             onClick={() => handleToggle()}
                         >
-                            <span>{ isOpenFlip ? "간략히" : "더보기" }</span>
+                            <span>
+                                { isFlipOpen ? "간략히" : "더보기" }
+                            </span>
                         </button>
                     }
                 </div>
