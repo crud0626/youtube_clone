@@ -1,0 +1,78 @@
+@use 'styles/common/colors';
+@use 'styles/common/mixins';
+@use 'styles/common/sizes';
+
+.overlap_wrapper {
+    position: fixed;
+    width: 100%;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.3);
+    z-index: 5;
+
+    & .wrapper {
+        margin: 0;
+        padding: sizes.$default-section-padding;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        height: sizes.$header-height;
+        background: colors.$header-bg-color;
+    
+        & .voice_btn {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: sizes.$icon-larget-size;
+            height: sizes.$icon-larget-size;
+            padding: 3px;
+            background-color: colors.$header-mobile-sub-color;
+            border-radius: 50%;
+            border: none;
+            margin-left: 10px;
+            font-size: 1.2rem;
+        }
+    }
+}
+
+.searchbar {
+    flex: 1 1 100%;
+    display: flex;
+    align-items: center;
+    position: relative;
+    height: sizes.$header-mobile-input-height;
+    border: sizes.$thin-black-border;
+    border-radius: 3px 0 0 3px;
+    background: colors.$header-mobile-sub-color;
+  
+    & .search_form {
+        flex: 1 1 100%;
+        height: 100%;
+  
+        & input {
+            width: 100%;
+            height: 100%;
+            border: 0;
+            padding: 0 0 0 7px;
+            font-size: 1rem;
+            outline: none;
+            background: colors.$header-mobile-sub-color;
+        }
+    }
+}
+
+.search_icon {
+    width: 64px;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  
+    &:hover {
+        background-color: colors.$header-modal-button-hover-color;
+    }
+}
+
+.btns {
+    @include mixins.btn-hover-title;
+}
