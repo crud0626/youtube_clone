@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState} from 'react';
+import React, { useCallback, useRef, useState, useEffect} from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { CHANGE_IS_SEARCHING, CHANGE_SEARCH_QUERY } from 'store/slice/conditionSlice';
@@ -42,9 +42,14 @@ const MobileSearchBarContainer = () => {
                 dispatch(CHANGE_SEARCH_QUERY(query));
                 navigate(`results?search_query=${query}`);
             })
-            .finally(() => dispatch(CHANGE_VIDEO_LOADING()))
+            .finally(() => {
+                dispatch(CHANGE_VIDEO_LOADING());
+                dispatch(CHANGE_IS_SEARCHING());
+            })
         }
     }, [dispatch, navigate]);
+
+    useEffect(() => inputRef.current.focus(), []);
 
     return (
         <MobileSearchBarPresenter 
