@@ -2,8 +2,7 @@ import React from 'react';
 import styles from './RightBtnWrapperPresenter.module.scss';
 import IconButton from 'components/IconButton/IconButton';
 import Icon from 'components/Icon/Icon';
-import { ADD_VIDEO_MARK, BELL_MARK, EXIT_MARK, GRID_MARK } from 'constants/iconPath';
-import { USER_MARK } from 'constants/iconPath';
+import { ADD_VIDEO_MARK, BELL_MARK, EXIT_MARK, GRID_MARK, SEARCH_MARK, USER_MARK } from 'constants/iconPath';
 import { handleThumbnailError } from 'utils/utils';
 import { DEFAULT_THUMBNAIL } from 'assets';
 
@@ -38,6 +37,7 @@ const UserModal = ({ userData, handleThumbnailError, onLogout }) => {
 const RightBtnWrapperPresenter = (props) => {
     const {
         userData,
+        isMobile,
         isModalOpen,
         handleModal,
         onLogout,
@@ -61,6 +61,15 @@ const RightBtnWrapperPresenter = (props) => {
                 titleName="알림"
                 def={BELL_MARK}
             />
+            {
+                isMobile && 
+                <IconButton 
+                    className={`${styles.btns} ${styles.mobile_search_btn}`}
+                    titleName="검색"
+                    def={SEARCH_MARK}
+                    // onClick 추가 예정
+                />
+            }
             {
                 userData.uid ? (
                     <>
@@ -88,7 +97,7 @@ const RightBtnWrapperPresenter = (props) => {
                     </>
                 ) : (
                     <IconButton 
-                        className={`${styles.login_btn} ${styles.btns}`}
+                        className={styles.login_btn}
                         titleName={"login button"}
                         onClick={() => onLogin()}
                         def={USER_MARK}

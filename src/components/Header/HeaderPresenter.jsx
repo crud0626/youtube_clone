@@ -4,7 +4,7 @@ import SearchBar from './SearchBar';
 import RightBtnWrapper from './RightBtnWrapper';
 import { LOGO_IMG } from 'assets';
 
-const HeaderPresenter = ({ onClickLogo }) => {
+const HeaderPresenter = ({ isMobile, onClickLogo }) => {
     return (
         <header>
             <div className={styles.container}>
@@ -19,7 +19,7 @@ const HeaderPresenter = ({ onClickLogo }) => {
                     />
                     <h1>YouTube</h1>
                 </div>
-                <SearchBar />
+                {!isMobile && <SearchBar />}
                 <RightBtnWrapper />
             </div>
         </header>

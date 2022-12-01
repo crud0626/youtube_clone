@@ -6,9 +6,11 @@ import { onAuthStateChanged } from 'firebase/auth';
 import authService from 'service/auth';
 import { LOGIN } from 'store/slice/userSlice';
 import { initVideo } from 'store/actions/initVideo';
+import useResizeObserver from 'hooks/useResizeObserver';
 
 const HeaderContainer = () => {
     const dispatch = useDispatch(), navigate = useNavigate();
+    const isMobile = useResizeObserver(600);
 
     const onClickLogo = useCallback(() => {
         navigate("/");
@@ -28,7 +30,10 @@ const HeaderContainer = () => {
     }, [dispatch]);
     
     return (
-        <HeaderPresenter onClickLogo={onClickLogo} />
+        <HeaderPresenter 
+            isMobile={isMobile}
+            onClickLogo={onClickLogo} 
+        />
     );
 };
 

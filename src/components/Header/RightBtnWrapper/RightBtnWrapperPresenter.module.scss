@@ -6,16 +6,14 @@
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    min-width: 225px;
   
     & .btns {
         @include mixins.btn-hover-title;
-        display: flex;
-        align-items: center;
         padding: sizes.$small-space;
     }
   
     & .login_btn {
+        @include mixins.btn-hover-title;
         justify-content: space-evenly;
         width: 99.5px;
         margin-left: sizes.$small-space;
@@ -83,6 +81,18 @@
             width: sizes.$icon-medium-size;
             height: sizes.$icon-medium-size;
             margin-right: sizes.$medium-space;
+        }
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .wrapper {
+        & .btns {
+            display: none;
+        }
+
+        & .mobile_search_btn {
+            display: flex;
         }
     }
 }

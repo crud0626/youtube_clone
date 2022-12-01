@@ -1,10 +1,9 @@
 import { useState } from "react";
 
-let timer;
-
 const useResizeObserver = (conditionSize) => {
     const [isSmall, setIsSmall] = useState(false);
     const body = document.querySelector("body");
+    let timer;
     
     const observer = new ResizeObserver((entries) => {
         clearTimeout(timer);
