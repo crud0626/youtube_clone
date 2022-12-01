@@ -1,22 +1,29 @@
 import React, { forwardRef } from 'react';
 import styles from './MobileSearchBar.module.scss';
-import { CLOSE_MARK, LEFT_ARROW_MARK, SEARCH_MARK, VOICE_MARK } from 'constants/iconPath';
 import IconButton from 'components/IconButton/IconButton';
+import { CLOSE_MARK, LEFT_ARROW_MARK, SEARCH_MARK, VOICE_MARK } from 'constants/iconPath';
 
-const MobileSearchBarPresenter = forwardRef(({ isFillInput, handleInput, onErase, onSearch }, ref) => {
+const MobileSearchBarPresenter = forwardRef((props, ref) => {
+    const { isFillInput, handleInput, handleMobileSearchBar, onErase, onSearch } = props;
+
     return (
-        <div className={styles.overlap_wrapper}>
+        <div 
+            className={styles.overlap_wrapper}
+            onClick={(event) => handleMobileSearchBar(event)}
+        >
             <div className={styles.wrapper}>
                 <IconButton 
                     className={styles.btns}
                     titleName="검색 닫기"
                     def={LEFT_ARROW_MARK}
+                    onClick={() => handleMobileSearchBar()}
                 />
+                {/* search bar 부분 분할 예정 */}
                 <div className={styles.searchbar}>
                     <form className={styles.search_form} onSubmit={(e) => onSearch(e)}>
                         <input 
                             ref={ref} 
-                            placeholder='검색' 
+                            placeholder='YouTube 검색' 
                             type="text"
                             onKeyUp={(e) => handleInput(e)} 
                         />

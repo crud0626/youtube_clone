@@ -1,15 +1,16 @@
 import React, { useEffect, useCallback } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import HeaderPresenter from './HeaderPresenter';
 import { onAuthStateChanged } from 'firebase/auth';
-import authService from 'service/auth';
 import { LOGIN } from 'store/slice/userSlice';
 import { initVideo } from 'store/actions/initVideo';
+import authService from 'service/auth';
 import useResizeObserver from 'hooks/useResizeObserver';
 
 const HeaderContainer = () => {
     const dispatch = useDispatch(), navigate = useNavigate();
+    const { isSearching } = useSelector(state => state.condition);
     const isMobile = useResizeObserver(600);
 
     const onClickLogo = useCallback(() => {
@@ -32,6 +33,7 @@ const HeaderContainer = () => {
     return (
         <HeaderPresenter 
             isMobile={isMobile}
+            isSearching={isSearching}
             onClickLogo={onClickLogo} 
         />
     );

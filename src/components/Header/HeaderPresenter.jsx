@@ -2,11 +2,14 @@ import React from 'react';
 import styles from './Header.module.scss';
 import SearchBar from './SearchBar';
 import RightBtnWrapper from './RightBtnWrapper';
+import MobileSearchBar from './MobileSearchBar';
 import { LOGO_IMG } from 'assets';
 
-const HeaderPresenter = ({ isMobile, onClickLogo }) => {
+const HeaderPresenter = ({ isMobile, isSearching, onClickLogo }) => {
     return (
         <header>
+            {/* 검색 버튼 클릭시 MobileSearchBar 렌더링 */}
+            {isSearching && <MobileSearchBar />}
             <div className={styles.container}>
                 <div 
                     className={styles.left} 

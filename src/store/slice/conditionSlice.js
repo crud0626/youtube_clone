@@ -1,7 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-    searchQuery: ""
+    searchQuery: "",
+    isSearching: false
 }
 
 const conditionSlice = createSlice({
@@ -10,6 +11,9 @@ const conditionSlice = createSlice({
     reducers: {
         CHANGE_SEARCH_QUERY: (state, action) => {
             state.searchQuery = action.payload ? action.payload : "";
+        },
+        CHANGE_IS_SEARCHING: (state) => {
+            state.isSearching = !state.isSearching;
         }
     }
 })

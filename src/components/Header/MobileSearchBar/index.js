@@ -1,3 +1,3 @@
-import MobileSearchBar from "./MobileSearchBarPresenter";
+import MobileSearchBar from "./MobileSearchBarContainer";
 
 export default MobileSearchBar;

@@ -40,6 +40,7 @@ const RightBtnWrapperPresenter = (props) => {
         isMobile,
         isModalOpen,
         handleModal,
+        handleMobileSearchBar,
         onLogout,
         onLogin
     } = props;
@@ -67,9 +68,10 @@ const RightBtnWrapperPresenter = (props) => {
                     className={`${styles.btns} ${styles.mobile_search_btn}`}
                     titleName="검색"
                     def={SEARCH_MARK}
-                    // onClick 추가 예정
+                    onClick={() => handleMobileSearchBar()}
                 />
             }
+            {/* 로그인 버튼, LoginBtn으로 분할 예정*/}
             {
                 userData.uid ? (
                     <>
