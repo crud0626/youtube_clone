@@ -8,11 +8,11 @@ import { getMoreVideo } from 'store/actions/getMoreVideo';
 const GridVideoListContainer = () => {
     const dispatch = useDispatch();
     const { videos, isVideoLoading } = useSelector(state => state.video);
-    const { isSearched, searchQuery } = useSelector(state => state.condition);
+    const { searchQuery } = useSelector(state => state.condition);
     
     const observerCallback = () => {
         if (videos.nextPageToken && !isVideoLoading) {
-            dispatch(getMoreVideo(videos.nextPageToken, isSearched, searchQuery));
+            dispatch(getMoreVideo(videos.nextPageToken, searchQuery));
         };
     };
 
@@ -27,7 +27,6 @@ const GridVideoListContainer = () => {
             ref={lastVideoRef}
             videos={videos}
             isVideoLoading={isVideoLoading}
-            isSearched={isSearched}
             setObserver={setObserver}
         />
     );

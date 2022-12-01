@@ -7,13 +7,13 @@ import { getMoreVideo } from 'store/actions/getMoreVideo';
 const PlayListContainer = ({ isInSection }) => {
     const dispatch = useDispatch();
     const { videos } = useSelector(state => state.video);
-    const { isSearched, searchQuery } = useSelector(state => state.condition);
+    const { searchQuery } = useSelector(state => state.condition);
     const [isLoading, setIsLoading] = useState(false);
 
     const getVideo = () => {
         setIsLoading(true);
 
-        dispatch(getMoreVideo(videos.nextPageToken, isSearched, searchQuery))
+        dispatch(getMoreVideo(videos.nextPageToken, searchQuery))
         .finally(() => setIsLoading(false));
     }
 

@@ -1,14 +1,13 @@
 import React, { forwardRef } from 'react';
 import styles from './GridVideoList.module.scss';
 import VideoBoxContainer from 'components/VideoBox/VideoBoxContainer';
-import Spinner from 'components/Spinner/Spinner';
 import VideoSkeleton from 'components/VideoBox/VideoSkeleton/VideoSkeleton';
 import { nanoid } from 'nanoid';
 
 const skeletonCount = new Array(8).fill({undefined});
 
 const GridVideoListPresenter = forwardRef((props, ref) => {
-    const { videos, isVideoLoading, isSearched, setObserver } = props;
+    const { videos, isVideoLoading, setObserver } = props;
 
     return (
         <section>
@@ -35,11 +34,6 @@ const GridVideoListPresenter = forwardRef((props, ref) => {
                         skeletonCount.map(() => <VideoSkeleton key={nanoid()} />)
                     }
                     </ul>
-                    { 
-                        // Result page에서는 스켈레톤 UI 없이 Spinner만 필요 
-                        // 추후 Result 컴포넌트 생성 예정 
-                        isSearched && isVideoLoading && <Spinner />
-                    }
                     {
                         !videos.nextPageToken &&
                         <div className={styles.no_more_videos}>

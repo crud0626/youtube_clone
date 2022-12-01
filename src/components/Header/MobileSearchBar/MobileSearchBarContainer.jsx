@@ -1,7 +1,7 @@
 import React, { useCallback, useRef, useState} from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { CHANGE_IS_SEARCHED, CHANGE_SEARCH_QUERY } from 'store/slice/conditionSlice';
+import { CHANGE_SEARCH_QUERY } from 'store/slice/conditionSlice';
 import { CHANGE_VIDEO_LOADING, requestSearchData, RESET_SELECTED_VIDEO } from 'store/slice/videoSlice';
 import MobileSearchBarPresenter from './MobileSearchBarPresenter';
 
@@ -33,7 +33,6 @@ const MobileSearchBarContainer = () => {
             dispatch(requestSearchData({ searchQuery: query, isFirst: true }))
             .then(() => {
                 dispatch(RESET_SELECTED_VIDEO());
-                dispatch(CHANGE_IS_SEARCHED());
                 dispatch(CHANGE_SEARCH_QUERY(query));
                 navigate(`results?search_query=${query}`);
             })
