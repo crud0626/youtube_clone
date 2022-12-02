@@ -1,8 +1,7 @@
 import React, { useRef, useCallback, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { CHANGE_SEARCH_QUERY } from 'store/slice/conditionSlice';
-import { CHANGE_VIDEO_LOADING, requestSearchData, RESET_SELECTED_VIDEO } from 'store/slice/videoSlice';
+import { onSearchVideos } from 'store/actions/onSearchVideos';
 import SearchBarPresenter from './SearchBarPresenter';
 
 const SearchBarContainer = () => {
@@ -16,18 +15,10 @@ const SearchBarContainer = () => {
 
     const onSearch = useCallback((event) => {
         event.preventDefault();
-        dispatch(CHANGE_VIDEO_LOADING());
 
-        if(inputRef.current.value.match(/\S/)) {
-            const query = inputRef.current.value;
-            dispatch(requestSearchData({ searchQuery: query, isFirst: true }))
-            .then(() => {
-                dispatch(RESET_SELECTED_VIDEO());
-                dispatch(CHANGE_SEARCH_QUERY(query));
-                navigate(`results?search_query=${query}`);
-            })
-            .finally(() => dispatch(CHANGE_VIDEO_LOADING()))
-        }
+        const query = inputRef.current.value;
+        dispatch(onSearchVideos(query))
+        .then(() => navigate(`results?search_query=${query}`));
     }, [dispatch, navigate]);
     
     const onErase = useCallback(() => {

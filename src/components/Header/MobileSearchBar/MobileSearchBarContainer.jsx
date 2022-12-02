@@ -1,8 +1,8 @@
 import React, { useCallback, useRef, useState, useEffect} from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { CHANGE_IS_SEARCHING, CHANGE_SEARCH_QUERY } from 'store/slice/conditionSlice';
-import { CHANGE_VIDEO_LOADING, requestSearchData, RESET_SELECTED_VIDEO } from 'store/slice/videoSlice';
+import { CHANGE_IS_SEARCHING } from 'store/slice/conditionSlice';
+import { onSearchVideos } from 'store/actions/onSearchVideos';
 import MobileSearchBarPresenter from './MobileSearchBarPresenter';
 
 const MobileSearchBarContainer = () => {
@@ -29,24 +29,12 @@ const MobileSearchBarContainer = () => {
     }, [dispatch]);
 
     const onSearch = useCallback((event) => {
-        // 검색 아이콘 버튼을 누르는 경우 preventDefault를 호출 할 필요가 없음.
         if(event) event.preventDefault();
 
-        dispatch(CHANGE_VIDEO_LOADING());
-
-        if(inputRef.current.value.match(/\S/)) {
-            const query = inputRef.current.value;
-            dispatch(requestSearchData({ searchQuery: query, isFirst: true }))
-            .then(() => {
-                dispatch(RESET_SELECTED_VIDEO());
-                dispatch(CHANGE_SEARCH_QUERY(query));
-                navigate(`results?search_query=${query}`);
-            })
-            .finally(() => {
-                dispatch(CHANGE_VIDEO_LOADING());
-                dispatch(CHANGE_IS_SEARCHING());
-            })
-        }
+        const query = inputRef.current.value;
+        dispatch(onSearchVideos(query))
+        .then(() => navigate(`results?search_query=${query}`))
+        .finally(() => dispatch(CHANGE_IS_SEARCHING()));
     }, [dispatch, navigate]);
 
     useEffect(() => inputRef.current.focus(), []);
