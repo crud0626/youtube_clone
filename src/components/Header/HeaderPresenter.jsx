@@ -10,7 +10,7 @@ const HeaderPresenter = ({ isMobile, isSearching, onClickLogo }) => {
         <header>
             {/* 검색 버튼 클릭시 MobileSearchBar 렌더링 */}
             {isSearching && <MobileSearchBar />}
-            <div className={styles.container}>
+            <div className={styles.wrapper}>
                 <div 
                     className={styles.left} 
                     onClick={() => onClickLogo()}

@@ -1,6 +1,7 @@
 @use 'colors';
 
 // Margin & Padding spaces
+// 이름 변경 예정
 $small-space: 8px;
 $medium-space: 16px;
 $large-space: 24px;
@@ -24,7 +25,7 @@ $playlist-video-margin: 0 8px 8px 8px;
 $playlist-video-width: 168px;
 $playlist-video-height: 94px;
 $playlist-video-min-width: 300px;
-$playlist-video-max-width: 400px;
+$playlist-video-max-width: 587px;
 
 $playlist-info-default-space: 12px;
 $playlist-variable-width: 1016px;
@@ -33,7 +34,10 @@ $playlist-variable-width: 1016px;
 $grid-gap: 16px;
 $grid-video-box-min-width: 300px;
 $grid-video-box-min-height: 170px;
-$grid-max-width: calc($playlist-video-min-width * 4 + $grid-gap * 3 + $medium-space * 2);
+$grid-max-items: 4;
+// 이름 변경 예정
+$grid-quad-item-width: calc($playlist-video-min-width * 4 + $grid-gap * ($grid-max-items - 1) + $medium-space * 2);
+$grid-max-width: calc($playlist-video-max-width * 4 + $grid-gap * ($grid-max-items - 1) + $medium-space * 2);
 
 // Player
 $player-min-width: 640px;
@@ -48,5 +52,5 @@ $spinner-border: 3px solid colors.$spinner-border-color;
 
 // Common
 $thin-black-border: 1px solid rgba(0, 0, 0, 0.1);
-$body-min-width: 280px;
+$body-min-width: 320px;
 $default-section-padding: 0 $medium-space;

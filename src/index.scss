@@ -51,3 +51,10 @@ button {
 .expander {
   -webkit-line-clamp: unset !important;
 }
+
+// max-width 변수화 예정
+@media screen and (max-width: calc(sizes.$playlist-video-min-width * 2 + sizes.$grid-gap - 1px)) {
+  body main section {
+    padding: 0;
+  }
+}

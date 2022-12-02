@@ -40,7 +40,7 @@ const MobileSearchBarPresenter = forwardRef((props, ref) => {
         >
             <div className={styles.wrapper}>
                 <IconButton 
-                    className={styles.btns}
+                    className={`${styles.btns} ${styles.prev_btn}`}
                     titleName="검색 닫기"
                     def={LEFT_ARROW_MARK}
                     onClick={() => handleMobileSearchBar()}

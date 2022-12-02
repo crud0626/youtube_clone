@@ -65,3 +65,9 @@
     }
   }
 }
+
+@media screen and (max-width: calc(sizes.$playlist-video-max-width + sizes.$playlist-info-default-space * 2)) {
+  .wrapper .info_wrapper {
+    padding: sizes.$playlist-info-default-space;
+  }
+}

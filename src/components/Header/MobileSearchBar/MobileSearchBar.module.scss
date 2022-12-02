@@ -11,16 +11,25 @@
 
     & .wrapper {
         margin: 0;
-        padding: sizes.$default-section-padding;
+        padding: 0;
         display: flex;
         justify-content: space-between;
         align-items: center;
         width: 100%;
         height: sizes.$header-height;
         background: colors.$header-bg-color;
+
+        & .prev_btn {
+            // 변수화
+            width: 48px;
+            height: 48px;
+            justify-content: center;
+            flex-shrink: 0;
+        }
     
         & .voice_btn {
             display: flex;
+            flex-shrink: 0;
             justify-content: center;
             align-items: center;
             width: sizes.$icon-larget-size;
@@ -29,7 +38,7 @@
             background-color: colors.$header-mobile-sub-color;
             border-radius: 50%;
             border: none;
-            margin-left: 10px;
+            margin: 0 12px 0 10px;
             font-size: 1.2rem;
         }
     }

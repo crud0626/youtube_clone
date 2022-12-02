@@ -13,3 +13,9 @@
 .no_more_videos {
   text-align: center;
 }
+
+@media screen and (min-width: sizes.$grid-quad-item-width) {
+  .wrapper {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
