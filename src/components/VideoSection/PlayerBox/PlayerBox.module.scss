@@ -5,7 +5,7 @@
 .player_wrapper {
     position: relative;
     width: 100%;
-    padding-bottom: 56.25%;
+    aspect-ratio: sizes.$video-thumbnail-ratio;
     min-width: sizes.$player-min-width;
     min-height: sizes.$player-min-height;
     max-width: sizes.$player-max-width;

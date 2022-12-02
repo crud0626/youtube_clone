@@ -17,7 +17,8 @@ const VideoBoxPresenter = forwardRef(({ video, isThumbnail, onClickVideo }, ref)
             onClick={() => onClickVideo(video)}
         >
             <VideoThumbnail 
-                thumbnailUrl={snippet.thumbnails.medium.url}
+                // 검색의 경우 standard 썸네일이 제공되지 않음.
+                thumbnailUrl={snippet.thumbnails.standard?.url || snippet.thumbnails.high?.url}
                 duration={contentDetails.duration}
             />
             <div className={styles.info_wrapper}>
