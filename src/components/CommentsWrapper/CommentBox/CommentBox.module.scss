@@ -3,7 +3,7 @@
 @use 'styles/common/mixins';
 
 .wrapper {
-  margin: 0 0 sizes.$medium-space 0;
+  margin: 0 0 sizes.$space-4x 0;
   display: flex;
 
   & a {

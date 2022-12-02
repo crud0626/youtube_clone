@@ -14,7 +14,7 @@
   text-align: center;
 }
 
-@media screen and (min-width: sizes.$grid-quad-item-width) {
+@media screen and (min-width: sizes.$grid-max-width-with-max-items) {
   .wrapper {
     grid-template-columns: repeat(4, 1fr);
   }

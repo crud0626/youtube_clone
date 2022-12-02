@@ -2,7 +2,7 @@
 @use 'styles/common/sizes';
 
 .thumbnail_wrapper {
-    margin-right: sizes.$medium-space;
+    margin-right: sizes.$space-4x;
     width: sizes.$medium-thumbnail;
     height: sizes.$medium-thumbnail;
     flex-shrink: 0;

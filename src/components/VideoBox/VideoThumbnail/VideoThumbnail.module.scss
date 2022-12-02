@@ -27,7 +27,7 @@
 :global {
     .section_select_video {
         & :local .container {
-            margin-right: sizes.$small-space;
+            margin-right: sizes.$space-2x;
             width: sizes.$playlist-video-width;
             height: sizes.$playlist-video-height;
             flex-shrink: 0;

@@ -12,22 +12,22 @@ body {
 }
 
 body {
-  min-width: sizes.$body-min-width;
+  min-width: sizes.$mobile-size;
   font-family: "Roboto", Arial, sans-serif;
 
   & main {
     min-height: calc(100vh - sizes.$header-height);
-    padding-top: sizes.$large-space;
+    padding-top: sizes.$space-6x;
     background-color: colors.$main-bg-color;
     overflow-x: hidden;
 
     & section {
       margin: 0 auto;
-      padding: sizes.$default-section-padding;
+      padding: 0 sizes.$space-4x;
     
       &.section_select_video {
         display: flex;
-        max-width: calc(sizes.$player-max-width + sizes.$large-space + sizes.$playlist-video-max-width + sizes.$small-space * 2);
+        max-width: sizes.$selected-video-max-width;
       }
     }
   }
@@ -39,8 +39,8 @@ svg {
 }
 
 button {
-  background-color: transparent;
   border: 0;
+  background-color: transparent;
   cursor: pointer;
 }
 
@@ -52,8 +52,7 @@ button {
   -webkit-line-clamp: unset !important;
 }
 
-// max-width 변수화 예정
-@media screen and (max-width: calc(sizes.$playlist-video-min-width * 2 + sizes.$grid-gap - 1px)) {
+@media screen and (max-width: calc(sizes.$double-video-section-min-width - 1px)) {
   body main section {
     padding: 0;
   }

@@ -3,12 +3,12 @@
 @use 'styles/common/sizes';
 
 .wrapper {
-    @include mixins.separate-line(sizes.$large-space);
+    @include mixins.separate-line(sizes.$space-6x);
     display: flex;
   
     & .info {
         flex: 1 1;
-        padding-left: sizes.$medium-space;
+        padding-left: sizes.$space-4x;
   
         & > a {
             color: black;
@@ -26,11 +26,11 @@
 }
   
 .desc_wrapper {
-    padding-bottom: 20px;
+    padding-bottom: sizes.$space-5x;
   
     & .desc {
         @include mixins.filp-content(4);
-        margin-top: sizes.$medium-space;
+        margin-top: sizes.$space-4x;
         max-width: 656px;
         font-size: 0.9rem;
         white-space: pre-wrap;

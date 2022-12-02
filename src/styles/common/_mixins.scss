@@ -3,10 +3,11 @@
 
 @mixin separate-line($bottomMargin) {
     border-bottom: 1px solid rgba(0, 0, 0, 0.3);
-    padding-bottom: sizes.$small-space;
+    padding-bottom: sizes.$space-2x;
     margin-bottom: $bottomMargin;
 }
 
+/* 마우스 hover시 titlename이 보이는 버튼들 */
 @mixin btn-hover-title {
     position: relative;
 
@@ -44,7 +45,7 @@
 }
 
 @mixin flip-toggle-button {
-  margin-top: 4px;
+  margin-top: sizes.$space-1x;
   padding: 0;
   border: 0;
   color: colors.$light-gray-color;

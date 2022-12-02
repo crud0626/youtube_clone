@@ -1,56 +1,67 @@
 @use 'colors';
 
-// Margin & Padding spaces
-// 이름 변경 예정
-$small-space: 8px;
-$medium-space: 16px;
-$large-space: 24px;
+/* Viewport */
+$mobile-size: 320px;
+$tablet-size: 768px;
 
-// Thumbnail
+/* Margin & Padding spaces */
+$space-1x: 4px;
+$space-2x: 8px;
+$space-3x: 12px;
+$space-4x: 16px;
+$space-5x: 20px;
+$space-6x: 24px;
+
+/* Thumbnail */
 $small-thumbnail: 32px;
 $medium-thumbnail: 36px;
 $large-thumbnail: 48px;
 
-// Icon
+/* Icon */
 $icon-small-size: 20px;
 $icon-medium-size: 24px;
-$icon-larget-size: 32px;
+$icon-large-size: 32px;
 
-// Header
+/* Header */
 $header-height: 56px;
 $header-mobile-input-height: 32px;
 
-// Playlist
+/* Playlist */
 $playlist-video-margin: 0 8px 8px 8px;
 $playlist-video-width: 168px;
 $playlist-video-height: 94px;
 $playlist-video-min-width: 300px;
 $playlist-video-max-width: 587px;
+$side-playlist-max-width: 402px;
+$playlist-changeable-width: 1016px;
 
-$playlist-info-default-space: 12px;
-$playlist-variable-width: 1016px;
-
-// Grid
+/* Grid */
 $grid-gap: 16px;
 $grid-video-box-min-width: 300px;
 $grid-video-box-min-height: 170px;
 $grid-max-items: 4;
-// 이름 변경 예정
-$grid-quad-item-width: calc($playlist-video-min-width * 4 + $grid-gap * ($grid-max-items - 1) + $medium-space * 2);
-$grid-max-width: calc($playlist-video-max-width * 4 + $grid-gap * ($grid-max-items - 1) + $medium-space * 2);
+$grid-max-width-with-max-items: calc($playlist-video-min-width * 4 + $grid-gap * ($grid-max-items - 1) + $space-4x * 2);
+$grid-max-width: calc($playlist-video-max-width * 4 + $grid-gap * ($grid-max-items - 1) + $space-4x * 2);
 
-// Player
+/* Player */
 $player-min-width: 640px;
 $player-min-height: 360px;
 $player-max-width: 1280px;
 $player-max-height: 720px;
 
-// Loading spinner
+/* Loading spinner */
 $spinner-outer-size: 60px;
 $spinner-inner-size: 30px;
 $spinner-border: 3px solid colors.$spinner-border-color;
 
-// Common
+/* Common */
 $thin-black-border: 1px solid rgba(0, 0, 0, 0.1);
-$body-min-width: 320px;
-$default-section-padding: 0 $medium-space;
+
+// 1개 비디오의 최대 넓이 + 섹션 패딩 * 2
+$single-video-section-max-width: calc($playlist-video-max-width + $space-3x * 2);
+
+// 최소 비디오 넓이 * 2 + 그리드 갭 1
+$double-video-section-min-width: calc($playlist-video-min-width * 2 + $grid-gap);
+
+// 비디오 영역 최대 넓이 + 플레이리스트 넓이 + 섹션 양쪽 패딩 + 섹션과 플레이리스트의 간격
+$selected-video-max-width: calc($player-max-width + $playlist-video-max-width + $space-4x * 2 + $space-2x);

@@ -9,7 +9,7 @@
   & .info_wrapper {
     width: 100%;
     height: 100%;
-    padding: sizes.$playlist-info-default-space 0;
+    padding: sizes.$space-3x 0;
     display: flex;
 
     & .title {
@@ -31,7 +31,7 @@
 
         & span:first-child::after {
           content: "•";
-          margin: 0 4px;
+          margin: 0 sizes.$space-1x;
         }
       }
     }
@@ -54,7 +54,7 @@
 }
 
 :global {
-  @media screen and (max-width: sizes.$playlist-variable-width) {
+  @media screen and (max-width: sizes.$playlist-changeable-width) {
     .section_select_video {
       display: block;
 
@@ -66,8 +66,8 @@
   }
 }
 
-@media screen and (max-width: calc(sizes.$playlist-video-max-width + sizes.$playlist-info-default-space * 2)) {
+@media screen and (max-width: sizes.$single-video-section-max-width) {
   .wrapper .info_wrapper {
-    padding: sizes.$playlist-info-default-space;
+    padding: sizes.$space-3x;
   }
 }

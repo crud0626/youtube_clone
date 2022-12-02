@@ -2,7 +2,6 @@
 @use 'styles/common/mixins';
 @use 'styles/common/sizes';
 
-// Video Player
 .player_wrapper {
     position: relative;
     width: 100%;
@@ -19,22 +18,21 @@
     }
 }
 
-// Video Info
 .info_wrapper {
-    @include mixins.separate-line(sizes.$medium-space);
+    @include mixins.separate-line(sizes.$space-4x);
   
     & .info {
         display: flex;
-        height: 40px;
         justify-content: space-between;
         align-items: center;
+        height: 40px;
         color: colors.$light-gray-color;
         font-size: 0.9rem;
     
       & .info_btn_wrapper {
         display: flex;
-        height: 100%;
         align-items: center;
+        height: 100%;
         color: black;
     
         & .info_btn {

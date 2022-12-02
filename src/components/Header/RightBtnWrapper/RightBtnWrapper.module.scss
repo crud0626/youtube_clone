@@ -9,14 +9,14 @@
   
     & .btns {
         @include mixins.btn-hover-title;
-        padding: sizes.$small-space;
+        padding: sizes.$space-2x;
     }
   
     & .login_btn {
         @include mixins.btn-hover-title;
         justify-content: space-evenly;
         width: 99.5px;
-        margin-left: sizes.$small-space;
+        margin-left: sizes.$space-2x;
         padding: 5px 11px;
         border: 1px solid colors.$link-blue-color;
         border-radius: 3px;
@@ -27,7 +27,7 @@
 }
 
 .thumbnail_wrapper {
-    margin-left: sizes.$small-space;
+    margin-left: sizes.$space-2x;
     padding: 0;
     width: sizes.$small-thumbnail;
     height: sizes.$small-thumbnail;
@@ -51,11 +51,11 @@
     & .modal_header {
         display: flex;
         align-items: center;
-        padding: sizes.$medium-space;
+        padding: sizes.$space-4x;
         border-bottom: sizes.$thin-black-border;
       
         & img {
-            margin-right: sizes.$medium-space;
+            margin-right: sizes.$space-4x;
             width: sizes.$medium-thumbnail;
             height: sizes.$medium-thumbnail;
             border-radius: 50%;
@@ -69,7 +69,7 @@
     & .modal_body .modal_button {
         display: flex;
         align-items: center;
-        padding: 0 sizes.$medium-space;
+        padding: 0 sizes.$space-4x;
         width: 100%;
         height: sizes.$large-thumbnail;
       
@@ -80,12 +80,12 @@
         & > .modal_icons {
             width: sizes.$icon-medium-size;
             height: sizes.$icon-medium-size;
-            margin-right: sizes.$medium-space;
+            margin-right: sizes.$space-4x;
         }
     }
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: sizes.$tablet-size) {
     .wrapper {
         & .btns {
             display: none;
