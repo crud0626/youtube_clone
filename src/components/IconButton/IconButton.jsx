@@ -1,8 +1,8 @@
-import React, { forwardRef, memo } from 'react';
+import React, { forwardRef } from 'react';
 import Icon from 'components/Icon/Icon';
 import styles from './IconButton.module.scss';
 
-const IconButton = ({ className, titleName, text, def, onClick, dataFunc }, ref) => {
+const IconButton = forwardRef(({ className, titleName, text, def, onClick, dataFunc }, ref) => {
     return (
         <button 
             ref={ref}
@@ -15,6 +15,6 @@ const IconButton = ({ className, titleName, text, def, onClick, dataFunc }, ref)
             <span>{text}</span>
         </button>
     );
-};
+});
 
-export default memo(forwardRef(IconButton));
+export default IconButton;

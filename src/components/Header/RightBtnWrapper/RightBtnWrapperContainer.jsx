@@ -32,4 +32,4 @@ const RightBtnWrapperContainer = () => {
     );
 };
 
-export default RightBtnWrapperContainer;
+export default React.memo(RightBtnWrapperContainer);

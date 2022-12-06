@@ -1,11 +1,11 @@
 import React, { forwardRef, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useStableNavigate } from 'hooks/useStableNavigate';
 import VideoBoxPresenter from './VideoBoxPresenter';
 import { requestVideoInfo } from 'store/slice/videoSlice';
 
 const VideoBoxContainer = forwardRef(({ video, setObserver, isThumbnail = true }, ref) => {
-    const dispatch = useDispatch(), navigate = useNavigate();
+    const dispatch = useDispatch(), navigate = useStableNavigate();
 
     const onClickVideo = (video) => {
         dispatch(requestVideoInfo(video))

@@ -1,12 +1,12 @@
 import React, { useCallback, useRef, useState, useEffect} from 'react';
 import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
 import { CHANGE_IS_SEARCHING } from 'store/slice/conditionSlice';
 import { onSearchVideos } from 'store/actions/onSearchVideos';
+import { useStableNavigate } from 'hooks/useStableNavigate';
 import MobileSearchBarPresenter from './MobileSearchBarPresenter';
 
 const MobileSearchBarContainer = () => {
-    const dispatch = useDispatch(), navigate = useNavigate();
+    const dispatch = useDispatch(), navigate = useStableNavigate();
     const [isFillInput, setIsFillInput] = useState(false);
     const inputRef = useRef();
 

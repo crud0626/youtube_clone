@@ -1,11 +1,11 @@
 import React, { useRef, useCallback, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
 import { onSearchVideos } from 'store/actions/onSearchVideos';
+import { useStableNavigate } from 'hooks/useStableNavigate';
 import SearchBarPresenter from './SearchBarPresenter';
 
 const SearchBarContainer = () => {
-    const dispatch = useDispatch(), navigate = useNavigate();
+    const dispatch = useDispatch(), navigate = useStableNavigate();
     const [isDisplayEraser, setIsDisplayEraser] = useState(false);
     const inputRef = useRef();
 
@@ -39,4 +39,4 @@ const SearchBarContainer = () => {
     );
 };
 
-export default SearchBarContainer;
+export default React.memo(SearchBarContainer);
