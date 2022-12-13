@@ -6,7 +6,7 @@ import { getMoreVideo } from 'store/actions/getMoreVideo';
 
 const PlayListContainer = ({ isInSection }) => {
     const dispatch = useDispatch();
-    const { videos } = useSelector(state => state.video);
+    const { videos, isVideoLoading } = useSelector(state => state.video);
     const { searchQuery } = useSelector(state => state.condition);
     const [isLoading, setIsLoading] = useState(false);
 
@@ -18,7 +18,7 @@ const PlayListContainer = ({ isInSection }) => {
     }
 
     const observerCallback = () => {
-        if (!isInSection) getVideo();
+        if (!isInSection && !isVideoLoading) getVideo();
     };
 
     const [lastVideoRef, setObserver] = useScrollObserver(observerCallback);

@@ -18,9 +18,11 @@ const CommentsWrapperContainer = () => {
       }
 
     const observerCallback = async () => {
-        setIsLoading(true);
-        await getMoreComment()
-        .then(() => setIsLoading(false));
+        if(!isLoading) {
+            setIsLoading(true);
+            await getMoreComment()
+            .then(() => setIsLoading(false));
+        }
     }
 
     const [lastCommentRef, setObserver] = useScrollObserver(observerCallback);
